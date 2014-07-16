@@ -3,6 +3,14 @@ require 'ncursesw'
 
 class LocoTerm
 
+  extend Forwardable
+
+  def_delegators :Ncurses, :getch, :refresh, :erase
+  def_delegator :Ncurses, :endwin, :terminate # alias
+
+  def_delegators :@stdscr, :refresh, :move
+
+
   COLOR_BLACK = 0
   COLOR_RED = 1
   COLOR_GREEN = 2
@@ -13,6 +21,8 @@ class LocoTerm
   COLOR_WHITE = 7
   @@colors = [COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW,
     COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE]
+
+  attr_accessor :current_user
 
   def initialize(encoding=nil)
     @encoding = encoding
@@ -29,6 +39,7 @@ class LocoTerm
       Ncurses.init_pair(6, Ncurses::COLOR_CYAN, Ncurses::COLOR_BLACK);
       Ncurses.init_pair(7, Ncurses::COLOR_WHITE, Ncurses::COLOR_BLACK);
     end
+    Ncurses.cbreak
   end
 
   def self.colors
@@ -45,14 +56,6 @@ class LocoTerm
       @cur_color = color
       @stdscr.attrset(Ncurses.COLOR_PAIR(color))
     end
-  end
-
-  def terminate
-    Ncurses.endwin
-  end
-
-  def move(y,x)
-    @stdscr.move(y,x)
   end
 
   def clrtoeol(y=nil)
@@ -74,15 +77,18 @@ class LocoTerm
     @stdscr.mvaddstr(y,x,str)
   end
 
-  def refresh
-    @stdscr.refresh
-  end
-
   def getyx
     y = []
     x = []
     Ncurses.getyx(@stdscr,y,x)
     [y[0],x[0]]
+  end
+
+  def mvgetnstr(y,x,str,n,echo: true)
+    Ncurses.noecho unless echo
+    Ncurses.mvgetnstr(y,x,str,n)
+    str = str.encode(@encoding) unless @encoding.nil?
+    Ncurses.echo
   end
 
 end
