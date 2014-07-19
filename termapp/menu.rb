@@ -3,7 +3,7 @@ require_relative 'locoterm'
 require_relative 'goodbye'
 class LocoMenu
   def self.menu_helper(locoterm,arr)
-    cur_menu = 3
+    cur_menu = 0
     loop do
       #TODO : 전체를 지우고 다시 쓰기 보다 선택된 메뉴와 이전 메뉴만 refresh
       y = 4
@@ -34,7 +34,6 @@ class LocoMenu
 
   def self.main(locoterm)
     arr = []
-    arr << [ /[Aa]/, "(A)dmin", LocoMenu.method(:admin) ]
     arr << [ /[Nn]/, "(N)ew", LocoMenu.method(:read_new) ]
     arr << [ /[Bb]/, "(B)oards", LocoMenu.method(:boards) ]
     arr << [ /[Ss]/, "(S)elect", LocoMenu.method(:select) ]
@@ -50,6 +49,7 @@ class LocoMenu
     arr << [ /[Gg]/, "(G)oodbye", LocoMenu.method(:goodbye) ]
     arr << [ /[Hh]/, "(H)elp", LocoMenu.method(:help) ]
 #    arr << [ /[Ii]/, "(I)nfoBBS", LocoMenu.method(:info_bbs) ]
+    arr << [ /[Aa]/, "(A)dmin", LocoMenu.method(:admin) ] if locoterm.current_user.is_admin?
     LocoMenu.menu_helper(locoterm,arr)
   end
 
