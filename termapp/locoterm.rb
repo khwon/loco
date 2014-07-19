@@ -38,7 +38,16 @@ class LocoTerm
       Ncurses.init_pair(5, Ncurses::COLOR_MAGENTA, Ncurses::COLOR_BLACK);
       Ncurses.init_pair(6, Ncurses::COLOR_CYAN, Ncurses::COLOR_BLACK);
       Ncurses.init_pair(7, Ncurses::COLOR_WHITE, Ncurses::COLOR_BLACK);
+      Ncurses.init_pair(8, Ncurses::COLOR_BLACK, Ncurses::COLOR_WHITE);
+      Ncurses.init_pair(9, Ncurses::COLOR_WHITE, Ncurses::COLOR_RED)
+      Ncurses.init_pair(10, Ncurses::COLOR_BLACK, Ncurses::COLOR_GREEN);
+      Ncurses.init_pair(11, Ncurses::COLOR_BLACK, Ncurses::COLOR_YELLOW);
+      Ncurses.init_pair(12, Ncurses::COLOR_WHITE, Ncurses::COLOR_BLUE);
+      Ncurses.init_pair(13, Ncurses::COLOR_BLACK, Ncurses::COLOR_MAGENTA);
+      Ncurses.init_pair(14, Ncurses::COLOR_BLACK, Ncurses::COLOR_CYAN);
+      Ncurses.init_pair(15, Ncurses::COLOR_BLACK, Ncurses::COLOR_WHITE);
     end
+    getmaxyx
     Ncurses.cbreak
   end
 
@@ -46,8 +55,9 @@ class LocoTerm
     @@colors
   end
 
-  def set_color color, &block
+  def set_color color, reverse: false, &block
     raise "unknown color" unless @@colors.include? color
+    color += 8 if reverse
     if block_given?
       @stdscr.attrset(Ncurses.COLOR_PAIR(color))
       yield
@@ -89,6 +99,24 @@ class LocoTerm
     Ncurses.mvgetnstr(y,x,str,n)
     str = str.encode(@encoding) unless @encoding.nil?
     Ncurses.echo
+  end
+
+  def erase_body
+    getmaxyx
+    clrtoeol(2...(@lines-1))
+  end
+
+  def erase_all
+    getmaxyx
+    clrtoeol(0...@lines)
+  end
+
+  def getmaxyx
+    lines = []
+    columns = []
+    @stdscr.getmaxyx(lines,columns)
+    @lines = lines[0]
+    @columns = columns[0]
   end
 
 end
