@@ -75,7 +75,7 @@ class LocoTerm
       @stdscr.clrtoeol
     else
       old_pos = getyx
-      y = [y] unless y.kind_of? Enumerable
+      y = [y] unless y.is_a? Enumerable
       y.each do |yy|
         @stdscr.move(yy, 0)
         @stdscr.clrtoeol
