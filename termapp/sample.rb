@@ -95,4 +95,3 @@ rescue
 ensure
   locoterm.terminate
 end
-
