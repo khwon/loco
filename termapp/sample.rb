@@ -90,8 +90,8 @@ begin
   sleep(2.5)
   gets
 rescue
-  $stderr.puts $!
-  $stderr.puts $@
+  $stderr.puts $ERROR_INFO
+  $stderr.puts $ERROR_POSITION
 ensure
   locoterm.terminate
 end
