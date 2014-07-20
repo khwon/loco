@@ -24,7 +24,7 @@ class LocoTerm
 
   attr_accessor :current_user
 
-  def initialize(encoding=nil)
+  def initialize(encoding = nil)
     @encoding = encoding
     @cur_color = 0
     @stdscr = Ncurses.initscr
@@ -70,7 +70,7 @@ class LocoTerm
     end
   end
 
-  def clrtoeol(y=nil)
+  def clrtoeol(y = nil)
     if y.nil?
       @stdscr.clrtoeol
     else
