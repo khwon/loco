@@ -32,9 +32,8 @@ class LocoMenu
       else
         if c < 127
           arr.each_with_index do |x, i|
-            if c.chr =~ x[0]
-              cur_menu = i
-            end
+            next unless c.chr =~ x[0]
+            cur_menu = i
           end
         end
       end
