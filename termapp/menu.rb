@@ -58,7 +58,7 @@ class LocoMenu
     arr << [/[Gg]/, "(G)oodbye", LocoMenu.method(:goodbye)]
     arr << [/[Hh]/, "(H)elp", LocoMenu.method(:help)]
 #    arr << [/[Ii]/, "(I)nfoBBS", LocoMenu.method(:info_bbs)]
-    arr << [/[Aa]/, "(A)dmin", LocoMenu.method(:admin)] if locoterm.current_user.is_admin?
+    arr << [/[Aa]/, "(A)dmin", LocoMenu.method(:admin)] if locoterm.current_user.admin?
     LocoMenu.menu_helper(locoterm, arr)
   end
 

@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def is_admin?
+  def admin?
     self.username.include? "admin"
   end
 end
