@@ -10,7 +10,6 @@ class LocoTerm
 
   def_delegators :@stdscr, :refresh, :move, :getch
 
-
   COLOR_BLACK = 0
   COLOR_RED = 1
   COLOR_GREEN = 2
