@@ -8,6 +8,6 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-    self.username.include? 'admin'
+    username.include? 'admin'
   end
 end
