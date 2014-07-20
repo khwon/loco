@@ -58,7 +58,7 @@ class LocoTerm
   end
 
   def set_color color, reverse: false
-    raise "unknown color" unless @@colors.include? color
+    fail "unknown color" unless @@colors.include? color
     color += 8 if reverse
     if block_given?
       @stdscr.attrset(Ncurses.COLOR_PAIR(color))
