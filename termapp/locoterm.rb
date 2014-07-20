@@ -57,7 +57,7 @@ class LocoTerm
     @@colors
   end
 
-  def set_color color, reverse: false, &block
+  def set_color color, reverse: false
     raise "unknown color" unless @@colors.include? color
     color += 8 if reverse
     if block_given?
