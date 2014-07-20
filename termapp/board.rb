@@ -12,10 +12,10 @@ def select_board(locoterm)
     list.each_with_index do |x, i|
       if x == cur_board
         locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
-          locoterm.mvaddstr(i+4, 3, x.path_name)
+          locoterm.mvaddstr(i + 4, 3, x.path_name)
         end
       else
-        locoterm.mvaddstr(i+4, 3, x.path_name)
+        locoterm.mvaddstr(i + 4, 3, x.path_name)
       end
     end
     locoterm.mvaddstr(3, 1, "select board : #{str}")
@@ -31,7 +31,7 @@ def select_board(locoterm)
       str = str[0..-2]
     else
       if c < 127
-        tmp = list.find { |x| x.path_name.starts_with? str+c.chr }
+        tmp = list.find { |x| x.path_name.starts_with? str + c.chr }
         unless tmp.nil?
           cur_board = tmp
           str += c.chr

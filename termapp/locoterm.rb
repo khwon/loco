@@ -105,7 +105,7 @@ class LocoTerm
 
   def erase_body
     getmaxyx
-    clrtoeol(2...(@lines-1))
+    clrtoeol(2...(@lines - 1))
   end
 
   def erase_all

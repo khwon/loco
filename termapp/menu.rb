@@ -12,10 +12,10 @@ class LocoMenu
       arr.each_with_index do |x, i|
         if i == cur_menu
           locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
-            locoterm.mvaddstr(i+4, 3, x[1])
+            locoterm.mvaddstr(i + 4, 3, x[1])
           end
         else
-          locoterm.mvaddstr(i+4, 3, x[1])
+          locoterm.mvaddstr(i + 4, 3, x[1])
         end
       end
       locoterm.move(3, 3)
@@ -23,9 +23,9 @@ class LocoMenu
       c = locoterm.getch
       case c
       when Ncurses::KEY_UP
-        cur_menu = (cur_menu == 0 ? arr.size-1 : cur_menu-1)
+        cur_menu = (cur_menu == 0 ? arr.size - 1 : cur_menu - 1)
       when Ncurses::KEY_DOWN
-        cur_menu = (cur_menu+1) % arr.size
+        cur_menu = (cur_menu + 1) % arr.size
       when Ncurses::KEY_ENTER, 10 # enter
         locoterm.echo
         arr[cur_menu][2].call(locoterm)
