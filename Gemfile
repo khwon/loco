@@ -42,3 +42,4 @@ gem 'spring',        group: :development
 gem 'ncursesw'
 
 gem 'pry-remote', group: :development
+gem 'rubocop', group: :development, require: false
