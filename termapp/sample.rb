@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 require 'ncursesw'
 require_relative 'locoterm'
 

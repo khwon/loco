@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 require_relative 'locoterm'
 require_relative 'goodbye'
 require_relative 'board'
@@ -7,7 +7,7 @@ class LocoMenu
     cur_menu = 0
     loop do
       locoterm.noecho
-      #TODO : 전체를 지우고 다시 쓰기 보다 선택된 메뉴와 이전 메뉴만 refresh
+      # TODO : 전체를 지우고 다시 쓰기 보다 선택된 메뉴와 이전 메뉴만 refresh
       locoterm.erase_body
       arr.each_with_index do |x, i|
         if i == cur_menu

@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 require_relative 'locoterm'
 def draw_login(locoterm, failed: false)
   locoterm.clrtoeol(0..23)

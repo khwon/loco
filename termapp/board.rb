@@ -25,7 +25,7 @@ def select_board(locoterm)
     case c
     when 9, 32 # tab, space
       auto_completion = true
-    when 27 #esc
+    when 27 # esc
       return
     when 127, Ncurses::KEY_BACKSPACE
       str = str[0..-2]
