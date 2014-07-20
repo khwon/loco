@@ -43,22 +43,22 @@ class LocoMenu
 
   def self.main(locoterm)
     arr = []
-    arr << [ /[Nn]/, "(N)ew", LocoMenu.method(:read_new) ]
-    arr << [ /[Bb]/, "(B)oards", LocoMenu.method(:boards) ]
-    arr << [ /[Ss]/, "(S)elect", LocoMenu.method(:select) ]
-    arr << [ /[Rr]/, "(R)ead", LocoMenu.method(:read) ]
-    arr << [ /[Pp]/, "(P)ost", LocoMenu.method(:post) ]
-#    arr << [ /[Ee]/, "(E)xtra", LocoMenu.method(:extra) ]
-    arr << [ /[Tt]/, "(T)alk", LocoMenu.method(:talk) ]
-    arr << [ /[Mm]/, "(M)ail", LocoMenu.method(:mail) ]
-    arr << [ /[Dd]/, "(D)iary", LocoMenu.method(:diary) ]
-#    arr << [ /[Vv]/, "(V)isit", LocoMenu.method(:visit) ]
-#    arr << [ /[Ww]/, "(W)elcome", LocoMenu.method(:welcome) ]
-    arr << [ /[Xx]/, "(X)yz", LocoMenu.method(:xyz) ]
-    arr << [ /[Gg]/, "(G)oodbye", LocoMenu.method(:goodbye) ]
-    arr << [ /[Hh]/, "(H)elp", LocoMenu.method(:help) ]
-#    arr << [ /[Ii]/, "(I)nfoBBS", LocoMenu.method(:info_bbs) ]
-    arr << [ /[Aa]/, "(A)dmin", LocoMenu.method(:admin) ] if locoterm.current_user.is_admin?
+    arr << [/[Nn]/, "(N)ew", LocoMenu.method(:read_new)]
+    arr << [/[Bb]/, "(B)oards", LocoMenu.method(:boards)]
+    arr << [/[Ss]/, "(S)elect", LocoMenu.method(:select)]
+    arr << [/[Rr]/, "(R)ead", LocoMenu.method(:read)]
+    arr << [/[Pp]/, "(P)ost", LocoMenu.method(:post)]
+#    arr << [/[Ee]/, "(E)xtra", LocoMenu.method(:extra)]
+    arr << [/[Tt]/, "(T)alk", LocoMenu.method(:talk)]
+    arr << [/[Mm]/, "(M)ail", LocoMenu.method(:mail)]
+    arr << [/[Dd]/, "(D)iary", LocoMenu.method(:diary)]
+#    arr << [/[Vv]/, "(V)isit", LocoMenu.method(:visit)]
+#    arr << [/[Ww]/, "(W)elcome", LocoMenu.method(:welcome)]
+    arr << [/[Xx]/, "(X)yz", LocoMenu.method(:xyz)]
+    arr << [/[Gg]/, "(G)oodbye", LocoMenu.method(:goodbye)]
+    arr << [/[Hh]/, "(H)elp", LocoMenu.method(:help)]
+#    arr << [/[Ii]/, "(I)nfoBBS", LocoMenu.method(:info_bbs)]
+    arr << [/[Aa]/, "(A)dmin", LocoMenu.method(:admin)] if locoterm.current_user.is_admin?
     LocoMenu.menu_helper(locoterm, arr)
   end
 
