@@ -77,28 +77,28 @@ class LocoTerm
       old_pos = getyx
       y = [y] unless y.kind_of? Enumerable
       y.each do |yy|
-        @stdscr.move(yy,0)
+        @stdscr.move(yy, 0)
         @stdscr.clrtoeol
       end
-      @stdscr.move(old_pos[0],old_pos[1])
+      @stdscr.move(old_pos[0], old_pos[1])
     end
   end
 
-  def mvaddstr(y,x,str)
+  def mvaddstr(y, x, str)
     str = str.encode(@encoding) unless @encoding.nil?
-    @stdscr.mvaddstr(y,x,str)
+    @stdscr.mvaddstr(y, x, str)
   end
 
   def getyx
     y = []
     x = []
-    Ncurses.getyx(@stdscr,y,x)
-    [y[0],x[0]]
+    Ncurses.getyx(@stdscr, y, x)
+    [y[0], x[0]]
   end
 
-  def mvgetnstr(y,x,str,n,echo: true)
+  def mvgetnstr(y, x, str, n, echo: true)
     Ncurses.noecho unless echo
-    Ncurses.mvgetnstr(y,x,str,n)
+    Ncurses.mvgetnstr(y, x, str, n)
     str = str.encode(@encoding) unless @encoding.nil?
     Ncurses.echo
   end
@@ -116,7 +116,7 @@ class LocoTerm
   def getmaxyx
     lines = []
     columns = []
-    @stdscr.getmaxyx(lines,columns)
+    @stdscr.getmaxyx(lines, columns)
     @lines = lines[0]
     @columns = columns[0]
   end

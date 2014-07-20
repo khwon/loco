@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  def self.authorize id,pw
+  def self.authorize id, pw
     if pw == "a"
       return User.new(username: id)
     else

@@ -3,22 +3,22 @@ require_relative 'locoterm'
 require_relative 'goodbye'
 require_relative 'board'
 class LocoMenu
-  def self.menu_helper(locoterm,arr)
+  def self.menu_helper(locoterm, arr)
     cur_menu = 0
     loop do
       locoterm.noecho
       #TODO : 전체를 지우고 다시 쓰기 보다 선택된 메뉴와 이전 메뉴만 refresh
       locoterm.erase_body
-      arr.each_with_index do |x,i|
+      arr.each_with_index do |x, i|
         if i == cur_menu
           locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
-            locoterm.mvaddstr(i+4,3,x[1])
+            locoterm.mvaddstr(i+4, 3, x[1])
           end
         else
-          locoterm.mvaddstr(i+4,3,x[1])
+          locoterm.mvaddstr(i+4, 3, x[1])
         end
       end
-      locoterm.move(3,3)
+      locoterm.move(3, 3)
       locoterm.refresh
       c = locoterm.getch
       case c
@@ -31,7 +31,7 @@ class LocoMenu
         arr[cur_menu][2].call(locoterm)
       else
         if c < 127
-          arr.each_with_index do |x,i|
+          arr.each_with_index do |x, i|
             if c.chr =~ x[0]
               cur_menu = i
             end
@@ -59,26 +59,26 @@ class LocoMenu
     arr << [ /[Hh]/, "(H)elp", LocoMenu.method(:help) ]
 #    arr << [ /[Ii]/, "(I)nfoBBS", LocoMenu.method(:info_bbs) ]
     arr << [ /[Aa]/, "(A)dmin", LocoMenu.method(:admin) ] if locoterm.current_user.is_admin?
-    LocoMenu.menu_helper(locoterm,arr)
+    LocoMenu.menu_helper(locoterm, arr)
   end
 
   def self.admin(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"admin: Not supported yet")
+    locoterm.mvaddstr(5, 5, "admin: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
 
   def self.read_new(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"read_new: Not supported yet")
+    locoterm.mvaddstr(5, 5, "read_new: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
 
   def self.boards(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"boards: Not supported yet")
+    locoterm.mvaddstr(5, 5, "boards: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
@@ -89,42 +89,42 @@ class LocoMenu
 
   def self.read(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"read: Not supported yet")
+    locoterm.mvaddstr(5, 5, "read: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
 
   def self.post(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"post: Not supported yet")
+    locoterm.mvaddstr(5, 5, "post: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
 
   def self.talk(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"talk: Not supported yet")
+    locoterm.mvaddstr(5, 5, "talk: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
 
   def self.mail(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"mail: Not supported yet")
+    locoterm.mvaddstr(5, 5, "mail: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
 
   def self.diary(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"diary: Not supported yet")
+    locoterm.mvaddstr(5, 5, "diary: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
 
   def self.xyz(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"xyz: Not supported yet")
+    locoterm.mvaddstr(5, 5, "xyz: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
@@ -135,7 +135,7 @@ class LocoMenu
 
   def self.help(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5,5,"help: Not supported yet")
+    locoterm.mvaddstr(5, 5, "help: Not supported yet")
     locoterm.refresh
     locoterm.getch
   end
