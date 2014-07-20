@@ -9,7 +9,7 @@ class Board < ActiveRecord::Base
 
   def self.get_list(parent: nil)
     if parent.nil?
-      %w(Korea hackers asia europe northAmerica southAmerica oceania Africa pacific myGroup closed gon writers MySecret Cert).each_with_index.map{ |x, i| Board.new(id: i + 2, name: x, is_dir: true) }
+      %w(Korea hackers asia europe northAmerica southAmerica oceania Africa pacific myGroup closed gon writers MySecret Cert).each_with_index.map { |x, i| Board.new(id: i + 2, name: x, is_dir: true) }
     else
       Board.new(id: 1, name: "test_board", is_dir: false)
     end
