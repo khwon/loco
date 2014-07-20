@@ -1,12 +1,12 @@
 require 'ncursesw'
 def select_board(locoterm)
-  str = ""
+  str = ''
   auto_completion = false
   cur_board = nil
   loop do
-    cur_board = nil if str == ""
+    cur_board = nil if str == ''
     locoterm.erase_body
-    locoterm.mvaddstr(2, 1, "autocompletion not supported") if auto_completion
+    locoterm.mvaddstr(2, 1, 'autocompletion not supported') if auto_completion
     auto_completion = false
     list = Board.get_list
     list.each_with_index do |x, i|

@@ -68,18 +68,18 @@ def draw_main(locoterm)
     locoterm.mvaddstr(14, 52, 'since 1999')
   end
   locoterm.mvaddstr(17, 35, "type 'new' to join")
-  locoterm.mvaddstr(18, 35, "there is no guest ID")
-  hor = "─"
-  locoterm.mvaddstr(19, 32, "┌" + hor * 30 + "┐")
-  locoterm.mvaddstr(20, 5, "total hit: 14520652")
-  locoterm.mvaddstr(21, 5, "today hit: 229")
-  locoterm.mvaddstr(20, 32, "│  ID : ")
-  locoterm.mvaddstr(20, 63, "│")
-  locoterm.mvaddstr(21, 32, "│  PW : ")
-  locoterm.mvaddstr(21, 63, "│")
-  locoterm.mvaddstr(22, 32, "│")
-  locoterm.mvaddstr(22, 63, "│")
-  locoterm.mvaddstr(23, 32, "└" + hor * 30 + "┘")
+  locoterm.mvaddstr(18, 35, 'there is no guest ID')
+  hor = '─'
+  locoterm.mvaddstr(19, 32, '┌' + hor * 30 + '┐')
+  locoterm.mvaddstr(20, 5, 'total hit: 14520652')
+  locoterm.mvaddstr(21, 5, 'today hit: 229')
+  locoterm.mvaddstr(20, 32, '│  ID : ')
+  locoterm.mvaddstr(20, 63, '│')
+  locoterm.mvaddstr(21, 32, '│  PW : ')
+  locoterm.mvaddstr(21, 63, '│')
+  locoterm.mvaddstr(22, 32, '│')
+  locoterm.mvaddstr(22, 63, '│')
+  locoterm.mvaddstr(23, 32, '└' + hor * 30 + '┘')
   locoterm.refresh
 end
 

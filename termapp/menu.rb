@@ -43,42 +43,42 @@ class LocoMenu
 
   def self.main(locoterm)
     arr = []
-    arr << [/[Nn]/, "(N)ew", LocoMenu.method(:read_new)]
-    arr << [/[Bb]/, "(B)oards", LocoMenu.method(:boards)]
-    arr << [/[Ss]/, "(S)elect", LocoMenu.method(:select)]
-    arr << [/[Rr]/, "(R)ead", LocoMenu.method(:read)]
-    arr << [/[Pp]/, "(P)ost", LocoMenu.method(:post)]
-#    arr << [/[Ee]/, "(E)xtra", LocoMenu.method(:extra)]
-    arr << [/[Tt]/, "(T)alk", LocoMenu.method(:talk)]
-    arr << [/[Mm]/, "(M)ail", LocoMenu.method(:mail)]
-    arr << [/[Dd]/, "(D)iary", LocoMenu.method(:diary)]
-#    arr << [/[Vv]/, "(V)isit", LocoMenu.method(:visit)]
-#    arr << [/[Ww]/, "(W)elcome", LocoMenu.method(:welcome)]
-    arr << [/[Xx]/, "(X)yz", LocoMenu.method(:xyz)]
-    arr << [/[Gg]/, "(G)oodbye", LocoMenu.method(:goodbye)]
-    arr << [/[Hh]/, "(H)elp", LocoMenu.method(:help)]
-#    arr << [/[Ii]/, "(I)nfoBBS", LocoMenu.method(:info_bbs)]
-    arr << [/[Aa]/, "(A)dmin", LocoMenu.method(:admin)] if locoterm.current_user.admin?
+    arr << [/[Nn]/, '(N)ew', LocoMenu.method(:read_new)]
+    arr << [/[Bb]/, '(B)oards', LocoMenu.method(:boards)]
+    arr << [/[Ss]/, '(S)elect', LocoMenu.method(:select)]
+    arr << [/[Rr]/, '(R)ead', LocoMenu.method(:read)]
+    arr << [/[Pp]/, '(P)ost', LocoMenu.method(:post)]
+#    arr << [/[Ee]/, '(E)xtra', LocoMenu.method(:extra)]
+    arr << [/[Tt]/, '(T)alk', LocoMenu.method(:talk)]
+    arr << [/[Mm]/, '(M)ail', LocoMenu.method(:mail)]
+    arr << [/[Dd]/, '(D)iary', LocoMenu.method(:diary)]
+#    arr << [/[Vv]/, '(V)isit', LocoMenu.method(:visit)]
+#    arr << [/[Ww]/, '(W)elcome', LocoMenu.method(:welcome)]
+    arr << [/[Xx]/, '(X)yz', LocoMenu.method(:xyz)]
+    arr << [/[Gg]/, '(G)oodbye', LocoMenu.method(:goodbye)]
+    arr << [/[Hh]/, '(H)elp', LocoMenu.method(:help)]
+#    arr << [/[Ii]/, '(I)nfoBBS', LocoMenu.method(:info_bbs)]
+    arr << [/[Aa]/, '(A)dmin', LocoMenu.method(:admin)] if locoterm.current_user.admin?
     LocoMenu.menu_helper(locoterm, arr)
   end
 
   def self.admin(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "admin: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'admin: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end
 
   def self.read_new(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "read_new: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'read_new: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end
 
   def self.boards(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "boards: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'boards: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end
@@ -89,42 +89,42 @@ class LocoMenu
 
   def self.read(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "read: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'read: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end
 
   def self.post(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "post: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'post: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end
 
   def self.talk(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "talk: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'talk: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end
 
   def self.mail(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "mail: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'mail: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end
 
   def self.diary(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "diary: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'diary: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end
 
   def self.xyz(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "xyz: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'xyz: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end
@@ -135,7 +135,7 @@ class LocoMenu
 
   def self.help(locoterm)
     locoterm.erase_body
-    locoterm.mvaddstr(5, 5, "help: Not supported yet")
+    locoterm.mvaddstr(5, 5, 'help: Not supported yet')
     locoterm.refresh
     locoterm.getch
   end

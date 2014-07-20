@@ -66,28 +66,28 @@ def draw_login(locoterm, failed: false)
     locoterm.mvaddstr(14, 52, 'since 1999')
   end
   locoterm.mvaddstr(17, 35, "type 'new' to join")
-  locoterm.mvaddstr(18, 35, "there is no guest ID")
-  hor = "─"
-  locoterm.mvaddstr(19, 32, "┌" + hor * 30 + "┐")
-  locoterm.mvaddstr(20, 5, "total hit: 14520652")
-  locoterm.mvaddstr(21, 5, "today hit: 229")
-  locoterm.mvaddstr(20, 32, "│")
-  locoterm.mvaddstr(20, 63, "│")
-  locoterm.mvaddstr(21, 32, "│")
-  locoterm.mvaddstr(21, 63, "│")
-  locoterm.mvaddstr(22, 32, "│")
-  locoterm.mvaddstr(22, 63, "│")
-  locoterm.mvaddstr(23, 32, "└" + hor * 30 + "┘")
+  locoterm.mvaddstr(18, 35, 'there is no guest ID')
+  hor = '─'
+  locoterm.mvaddstr(19, 32, '┌' + hor * 30 + '┐')
+  locoterm.mvaddstr(20, 5, 'total hit: 14520652')
+  locoterm.mvaddstr(21, 5, 'today hit: 229')
+  locoterm.mvaddstr(20, 32, '│')
+  locoterm.mvaddstr(20, 63, '│')
+  locoterm.mvaddstr(21, 32, '│')
+  locoterm.mvaddstr(21, 63, '│')
+  locoterm.mvaddstr(22, 32, '│')
+  locoterm.mvaddstr(22, 63, '│')
+  locoterm.mvaddstr(23, 32, '└' + hor * 30 + '┘')
 
-  locoterm.mvaddstr(20, 35, "ID : ")
-  locoterm.mvaddstr(21, 35, "PW : ")
-  locoterm.mvaddstr(22, 35, "Login failed!") if failed
+  locoterm.mvaddstr(20, 35, 'ID : ')
+  locoterm.mvaddstr(21, 35, 'PW : ')
+  locoterm.mvaddstr(22, 35, 'Login failed!') if failed
   locoterm.refresh
 end
 
 def get_login_cred(locoterm)
-  id = ""
-  pw = ""
+  id = ''
+  pw = ''
   locoterm.mvgetnstr(20, 40, id, 20)
   locoterm.mvgetnstr(21, 40, pw, 20, echo: false)
   [id, pw]
@@ -100,7 +100,7 @@ def do_login(locoterm)
     draw_login(locoterm, failed: tried)
     tried = true
     id, pw = get_login_cred(locoterm)
-    if id != "new"
+    if id != 'new'
       user = User.authorize(id, pw)
     end
   end
