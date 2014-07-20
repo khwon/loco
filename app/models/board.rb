@@ -9,17 +9,31 @@ class Board < ActiveRecord::Base
 
   def self.get_list(parent: nil)
     if parent.nil?
-      ["Korea", "hackers", "asia", "europe", "northAmerica", "southAmerica", "oceania", "Africa", "pacific", "myGroup", "closed", "gon", "writers", "MySecret", "Cert"].each_with_index.map{ |x,i| Board.new(id: i+2, name: x, is_dir: true) }
+      %w(Korea
+         hackers
+         asia
+         europe
+         northAmerica
+         southAmerica
+         oceania
+         Africa
+         pacific
+         myGroup
+         closed
+         gon
+         writers
+         MySecret
+         Cert
+      ).each_with_index.map { |x, i| Board.new(id: i + 2, name: x, is_dir: true) }
     else
-      Board.new(id: 1,name: "test_board", is_dir: false)
+      Board.new(id: 1, name: 'test_board', is_dir: false)
     end
   end
 
   def path_name
     str = name
-    str += "/" if self.is_dir
-    str = self.parent.path_name + str unless self.parent.nil?
+    str += '/' if is_dir
+    str = parent.path_name + str unless parent.nil?
     str
   end
-
 end

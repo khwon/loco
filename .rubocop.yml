@@ -1,0 +1,23 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Include:
+    - '**/Gemfile'
+    - '**/Rakefile'
+    - '**/config.ru'
+  Exclude:
+    - 'bin/**/*'
+    - 'config/**/*'
+    - 'db/**/*'
+
+Style/Encoding:
+  Enabled: true
+
+Style/IndentHash:
+  EnforcedStyle: consistent
+
+Style/MethodCalledOnDoEndBlock:
+  Enabled: true
+
+Lint/EndAlignment:
+  AlignWith: variable
