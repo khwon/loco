@@ -2,7 +2,6 @@
 require 'ncursesw'
 
 class LocoTerm
-
   extend Forwardable
 
   def_delegators :Ncurses, :erase, :noecho, :echo
@@ -119,5 +118,4 @@ class LocoTerm
     @lines = lines[0]
     @columns = columns[0]
   end
-
 end

@@ -138,5 +138,4 @@ class LocoMenu
     locoterm.refresh
     locoterm.getch
   end
-
 end

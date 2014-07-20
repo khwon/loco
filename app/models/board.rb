@@ -21,5 +21,4 @@ class Board < ActiveRecord::Base
     str = parent.path_name + str unless parent.nil?
     str
   end
-
 end
