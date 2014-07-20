@@ -31,7 +31,7 @@ class LocoTerm
     Ncurses.keypad(@stdscr, true) # enable arrow keys
     Ncurses.ESCDELAY = 25 # wait only 10ms for esc
     if Ncurses.has_colors?
-      Ncurses.start_color()
+      Ncurses.start_color
 
       Ncurses.init_pair(1, Ncurses::COLOR_RED, Ncurses::COLOR_BLACK)
       Ncurses.init_pair(2, Ncurses::COLOR_GREEN, Ncurses::COLOR_BLACK)
