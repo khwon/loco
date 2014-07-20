@@ -1,31 +1,40 @@
 #coding: utf-8
 require_relative 'locoterm'
 require_relative 'goodbye'
+require_relative 'board'
 class LocoMenu
   def self.menu_helper(locoterm,arr)
     cur_menu = 0
     loop do
+      locoterm.noecho
       #TODO : 전체를 지우고 다시 쓰기 보다 선택된 메뉴와 이전 메뉴만 refresh
-      y = 4
       locoterm.erase_body
       arr.each_with_index do |x,i|
         if i == cur_menu
           locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
-            locoterm.mvaddstr(y,3,x[1])
+            locoterm.mvaddstr(i+4,3,x[1])
           end
         else
-          locoterm.mvaddstr(y,3,x[1])
+          locoterm.mvaddstr(i+4,3,x[1])
         end
-        y += 1
       end
+      locoterm.move(3,3)
       locoterm.refresh
-      c = locoterm.getch.chr
-      if c == "\n"
+      c = locoterm.getch
+      case c
+      when Ncurses::KEY_UP
+        cur_menu = (cur_menu == 0 ? arr.size-1 : cur_menu-1)
+      when Ncurses::KEY_DOWN
+        cur_menu = (cur_menu+1) % arr.size
+      when Ncurses::KEY_ENTER, 10 # enter
+        locoterm.echo
         arr[cur_menu][2].call(locoterm)
       else
-        arr.each_with_index do |x,i|
-          if c =~ x[0]
-            cur_menu = i
+        if c < 127
+          arr.each_with_index do |x,i|
+            if c.chr =~ x[0]
+              cur_menu = i
+            end
           end
         end
       end
@@ -75,10 +84,7 @@ class LocoMenu
   end
 
   def self.select(locoterm)
-    locoterm.erase_body
-    locoterm.mvaddstr(5,5,"select: Not supported yet")
-    locoterm.refresh
-    locoterm.getch
+    select_board(locoterm)
   end
 
   def self.read(locoterm)

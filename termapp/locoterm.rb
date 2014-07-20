@@ -5,10 +5,10 @@ class LocoTerm
 
   extend Forwardable
 
-  def_delegators :Ncurses, :getch, :refresh, :erase
+  def_delegators :Ncurses, :erase, :noecho, :echo
   def_delegator :Ncurses, :endwin, :terminate # alias
 
-  def_delegators :@stdscr, :refresh, :move
+  def_delegators :@stdscr, :refresh, :move, :getch
 
 
   COLOR_BLACK = 0
@@ -28,6 +28,8 @@ class LocoTerm
     @encoding = encoding
     @cur_color = 0
     @stdscr = Ncurses.initscr
+    Ncurses.keypad(@stdscr, true) # enable arrow keys
+    Ncurses.ESCDELAY = 25 # wait only 10ms for esc
     if Ncurses.has_colors?
       Ncurses.start_color()
 
