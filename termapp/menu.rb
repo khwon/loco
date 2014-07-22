@@ -5,17 +5,24 @@ require_relative 'board'
 class LocoMenu
   def self.menu_helper(locoterm, arr)
     cur_menu = 0
+    past_menu = nil
     loop do
       locoterm.noecho
-      # TODO : 전체를 지우고 다시 쓰기 보다 선택된 메뉴와 이전 메뉴만 refresh
-      locoterm.erase_body
-      arr.each_with_index do |x, i|
-        if i == cur_menu
-          locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
+      if past_menu.nil?
+        locoterm.erase_body
+        arr.each_with_index do |x, i|
+          if i == cur_menu
+            locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
+              locoterm.mvaddstr(i + 4, 3, x[1])
+            end
+          else
             locoterm.mvaddstr(i + 4, 3, x[1])
           end
-        else
-          locoterm.mvaddstr(i + 4, 3, x[1])
+        end
+      else
+        locoterm.mvaddstr(past_menu + 4, 3, arr[past_menu][1])
+        locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
+          locoterm.mvaddstr(cur_menu + 4, 3, arr[cur_menu][1])
         end
       end
       locoterm.move(3, 3)
@@ -23,16 +30,21 @@ class LocoMenu
       c = locoterm.getch
       case c
       when Ncurses::KEY_UP
+        past_menu = cur_menu
         cur_menu = (cur_menu == 0 ? arr.size - 1 : cur_menu - 1)
       when Ncurses::KEY_DOWN
+        past_menu = cur_menu
         cur_menu = (cur_menu + 1) % arr.size
       when Ncurses::KEY_ENTER, 10 # enter
+        # Erase body after call
+        past_menu = nil
         locoterm.echo
         arr[cur_menu][2].call(locoterm)
       else
         if c < 127
           arr.each_with_index do |x, i|
             next unless c.chr =~ x[0]
+            past_menu = cur_menu
             cur_menu = i
           end
         end
