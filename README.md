@@ -1,15 +1,16 @@
-# loco
+# Loco
 
 LOCO bbs system for KAIST
 
+## Requirements
 
-## requirement
+* Ruby >= 2.1.0
+* For required gems, see [Gemfile](/Gemfile)
 
-* ruby >= 2.1.0
-* for required gems, see Gemfile
+## How to run
 
-## how to run
 ```
 ruby termapp/run.rb
 ```
-use admin//test for login 
+
+Use admin//a for login
