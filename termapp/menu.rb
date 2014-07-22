@@ -3,6 +3,25 @@ require_relative 'locoterm'
 require_relative 'goodbye'
 require_relative 'board'
 class LocoMenu
+  # Public: Helper for main of LocoMenu.
+  #
+  # locoterm - The LocoTerm instance to deal with screen.
+  # arr      - The Array of [regex, title, method] of menu.
+  #
+  # Examples
+  #
+  #   LocoMenu.menu_helper(
+  #     locoterm,
+  #     [
+  #       [/[Bb]/, '(B)oards', LocoMenu.method(:boards)],
+  #       [/[Ss]/, '(S)elect', LocoMenu.method(:select)],
+  #       [/[Rr]/, '(R)ead', LocoMenu.method(:read)],
+  #       [/[Pp]/, '(P)ost', LocoMenu.method(:post)]
+  #       [/[Gg]/, '(G)oodbye', LocoMenu.method(:goodbye)]
+  #     ]
+  #   )
+  #
+  # Returns nothing.
   def self.menu_helper(locoterm, arr)
     cur_menu = 0
     past_menu = nil
@@ -52,6 +71,12 @@ class LocoMenu
     end
   end
 
+  # Public: Main routine of LocoMenu. Show menus. User can navigate menus and
+  # select a menu.
+  #
+  # locoterm - The LocoTerm instance to deal with screen.
+  #
+  # Returns nothing.
   def self.main(locoterm)
     arr = []
     arr << [/[Nn]/, '(N)ew', LocoMenu.method(:read_new)]
