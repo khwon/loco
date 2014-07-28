@@ -13,8 +13,8 @@ begin
   locoterm.getch
 rescue
   binding.remote_pry
-#  $stderr.puts $!
-#  $stderr.puts $@
+  # $stderr.puts $!
+  # $stderr.puts $@
 ensure
   locoterm.terminate
 end
