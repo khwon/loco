@@ -3,7 +3,8 @@ class Board < ActiveRecord::Base
   has_one :linked_board, class_name: 'Board'
   belongs_to :alias_board, class_name: 'Board'
   belongs_to :parent, class_name: 'Board'
-  has_many :children, foreign_key: 'parent_id', class_name: 'Board', inverse_of: :parent
+  has_many :children, foreign_key: 'parent_id', class_name: 'Board',
+                      inverse_of: :parent
 
   attr_accessor :is_dir
 
@@ -24,7 +25,9 @@ class Board < ActiveRecord::Base
          writers
          MySecret
          Cert
-      ).each_with_index.map { |x, i| Board.new(id: i + 2, name: x, is_dir: true) }
+      )
+        .each_with_index
+        .map { |x, i| Board.new(id: i + 2, name: x, is_dir: true) }
     else
       Board.new(id: 1, name: 'test_board', is_dir: false)
     end
