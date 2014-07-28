@@ -41,5 +41,9 @@ gem 'spring',        group: :development
 
 gem 'ncursesw'
 
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0.0'
+end
+
 gem 'pry-remote', group: :development
 gem 'rubocop', group: :development, require: false
