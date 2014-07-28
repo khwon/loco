@@ -3,8 +3,8 @@ require_relative 'locoterm'
 require_relative 'goodbye'
 require_relative 'board'
 class LocoMenu
-  # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a method
-  # to be called when selected.
+  # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a
+  # method to be called when selected.
   class Item
     # Public: Returns the Regexp shortcut for the menu.
     attr_reader :shortcut_regex
@@ -111,17 +111,18 @@ class LocoMenu
     items << Item.new('Select', LocoMenu.method(:select))
     items << Item.new('Read', LocoMenu.method(:read))
     items << Item.new('Post', LocoMenu.method(:post))
-#    items << Item.new('Extra', LocoMenu.method(:extra))
+    # items << Item.new('Extra', LocoMenu.method(:extra))
     items << Item.new('Talk', LocoMenu.method(:talk))
     items << Item.new('Mail', LocoMenu.method(:mail))
     items << Item.new('Diary', LocoMenu.method(:diary))
-#    items << Item.new('Visit', LocoMenu.method(:visit))
-#    items << Item.new('Welcome', LocoMenu.method(:welcome))
+    # items << Item.new('Visit', LocoMenu.method(:visit))
+    # items << Item.new('Welcome', LocoMenu.method(:welcome))
     items << Item.new('Xyz', LocoMenu.method(:xyz))
     items << Item.new('Goodbye', LocoMenu.method(:goodbye))
     items << Item.new('Help', LocoMenu.method(:help))
-#    items << Item.new('InfoBBS', LocoMenu.method(:info_bbs))
-    items << Item.new('Admin', LocoMenu.method(:admin)) if locoterm.current_user.admin?
+    # items << Item.new('InfoBBS', LocoMenu.method(:info_bbs))
+    locoterm.current_user.admin? &&
+      items << Item.new('Admin', LocoMenu.method(:admin))
     LocoMenu.menu_helper(locoterm, items)
   end
 
