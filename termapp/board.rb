@@ -27,7 +27,7 @@ def select_board(locoterm)
     locoterm.clrtoeol(2)
     case c
     when 9, 32 # tab, space
-      if cur_boards.size == 1
+      if cur_boards.size == 1 && str != cur_boards.first.path_name
         selected << cur_boards.first
         str = selected.last.path_name
       else
