@@ -1,5 +1,6 @@
 # coding: utf-8
 require_relative 'locoterm'
+require_relative 'goodbye'
 def draw_login(locoterm, failed: false)
   locoterm.clrtoeol(0..23)
   locoterm.set_color(LocoTerm.colors.sample) do
@@ -89,6 +90,7 @@ def get_login_cred(locoterm)
   id = ''
   pw = ''
   locoterm.mvgetnstr(20, 40, id, 20)
+  do_goodbye(locoterm) if id == 'off'
   locoterm.mvgetnstr(21, 40, pw, 20, echo: false)
   [id, pw]
 end
