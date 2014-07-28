@@ -8,8 +8,8 @@ class Board < ActiveRecord::Base
 
   attr_accessor :is_dir
 
-  def self.get_list(parent: nil)
-    if parent.nil?
+  def self.get_list(parent_board: nil)
+    if parent_board.nil?
       %w(Korea
          hackers
          asia
@@ -29,7 +29,12 @@ class Board < ActiveRecord::Base
         .each_with_index
         .map { |x, i| Board.new(id: i + 2, name: x, is_dir: true) }
     else
-      Board.new(id: 1, name: 'test_board', is_dir: false)
+      if parent_board.is_dir
+        [Board.new(id: 1, name: 'board_' + parent_board.name, is_dir: false,
+                   parent: parent_board)]
+      else
+        []
+      end
     end
   end
 
