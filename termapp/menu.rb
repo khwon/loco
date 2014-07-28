@@ -18,12 +18,15 @@ class LocoMenu
     # Public: Initialize a Item of LocoMenu.
     #
     # name   - A String indicates which menu it is.
-    # method - The Method instance to be called when selected.
+    # method - The Method instance to be called when selected
+    #          (default: LocoMenu.method(name.underscore.to_sym)).
     #
     # Examples
     #
-    #   Item.new('Boards', LocoMenu.method(:boards))
-    def initialize(name, method)
+    #   Item.new('Boards')
+    #
+    #   Item.new('New', LocoMenu.method(:read_new))
+    def initialize(name, method = LocoMenu.method(name.underscore.to_sym))
       @shortcut_regex = Regexp.new("[#{name[0].upcase}#{name[0].downcase}]")
       @title = name.capitalize.sub(/^(.)/, '(\\1)')
       @method = method
@@ -40,11 +43,12 @@ class LocoMenu
   #   LocoMenu.menu_helper(
   #     locoterm,
   #     [
-  #       Item.new('Boards', LocoMenu.method(:boards)),
-  #       Item.new('Select', LocoMenu.method(:select)),
-  #       Item.new('Read', LocoMenu.method(:read)),
-  #       Item.new('Post', LocoMenu.method(:post)),
-  #       Item.new('Goodbye', LocoMenu.method(:goodbye))
+  #       Item.new('New', LocoMenu.method(:read_new)),
+  #       Item.new('Boards'),
+  #       Item.new('Select'),
+  #       Item.new('Read'),
+  #       Item.new('Post'),
+  #       Item.new('Goodbye')
   #     ]
   #   )
   #
@@ -107,22 +111,21 @@ class LocoMenu
   def self.main(locoterm)
     items = []
     items << Item.new('New', LocoMenu.method(:read_new))
-    items << Item.new('Boards', LocoMenu.method(:boards))
-    items << Item.new('Select', LocoMenu.method(:select))
-    items << Item.new('Read', LocoMenu.method(:read))
-    items << Item.new('Post', LocoMenu.method(:post))
-    # items << Item.new('Extra', LocoMenu.method(:extra))
-    items << Item.new('Talk', LocoMenu.method(:talk))
-    items << Item.new('Mail', LocoMenu.method(:mail))
-    items << Item.new('Diary', LocoMenu.method(:diary))
-    # items << Item.new('Visit', LocoMenu.method(:visit))
-    # items << Item.new('Welcome', LocoMenu.method(:welcome))
-    items << Item.new('Xyz', LocoMenu.method(:xyz))
-    items << Item.new('Goodbye', LocoMenu.method(:goodbye))
-    items << Item.new('Help', LocoMenu.method(:help))
-    # items << Item.new('InfoBBS', LocoMenu.method(:info_bbs))
-    locoterm.current_user.admin? &&
-      items << Item.new('Admin', LocoMenu.method(:admin))
+    items << Item.new('Boards')
+    items << Item.new('Select')
+    items << Item.new('Read')
+    items << Item.new('Post')
+    # items << Item.new('Extra')
+    items << Item.new('Talk')
+    items << Item.new('Mail')
+    items << Item.new('Diary')
+    # items << Item.new('Visit')
+    # items << Item.new('Welcome')
+    items << Item.new('Xyz')
+    items << Item.new('Goodbye')
+    items << Item.new('Help')
+    # items << Item.new('InfoBBS')
+    items << Item.new('Admin') if locoterm.current_user.admin?
     LocoMenu.menu_helper(locoterm, items)
   end
 
