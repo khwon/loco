@@ -5,6 +5,19 @@ LOCO bbs system for KAIST
 ## Requirements
 
 * Ruby >= 2.1.0
+* Ncurses
+    * Ubuntu
+        ``` sh
+        sudo apt-get install libncursesw5-dev
+        ```
+
+    * Mac OS X
+        Install [Homebrew](http://brew.sh/).
+        ``` sh
+        brew install homebrew/dupes/ncurses
+        brew doctor
+        brew link --force ncurses
+        ```
 * For required gems, see [Gemfile](/Gemfile)
 
 ## How to run
