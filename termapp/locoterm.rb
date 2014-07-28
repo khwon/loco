@@ -4,7 +4,7 @@ require 'ncursesw'
 class LocoTerm
   extend Forwardable
 
-  def_delegators :Ncurses, :erase, :noecho, :echo
+  def_delegators :Ncurses, :erase, :noecho, :echo, :beep
   def_delegator :Ncurses, :endwin, :terminate # alias
 
   def_delegators :@stdscr, :refresh, :move, :getch
@@ -48,7 +48,7 @@ class LocoTerm
       Ncurses.init_pair(15, Ncurses::COLOR_BLACK, Ncurses::COLOR_WHITE)
     end
     getmaxyx
-    Ncurses.cbreak
+    Ncurses.raw
   end
 
   def self.colors

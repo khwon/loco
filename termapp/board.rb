@@ -10,6 +10,7 @@ def select_board(locoterm)
     auto_completion = false
     list = Board.get_list
     list.each_with_index do |x, i|
+      #TODO : redraw only changed lines
       if x == cur_board
         locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
           locoterm.mvaddstr(i + 4, 3, x.path_name)
@@ -31,10 +32,12 @@ def select_board(locoterm)
       str = str[0..-2]
     else
       if c < 127
-        tmp = list.find { |x| x.path_name.starts_with? str + c.chr }
-        unless tmp.nil?
-          cur_board = tmp
+        matched = list.find_all { |x| x.path_name.starts_with? str + c.chr }
+        if matched.size > 0
+          cur_board = matched.first
           str += c.chr
+        else
+          locoterm.beep
         end
       end
     end
