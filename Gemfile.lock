@@ -38,6 +38,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.1)
+    diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.2.1)
     hike (1.2.3)
@@ -91,6 +92,22 @@ GEM
     rake (10.3.2)
     rdoc (4.1.1)
       json (~> 1.4)
+    rspec-core (3.0.3)
+      rspec-support (~> 3.0.0)
+    rspec-expectations (3.0.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.0.0)
+    rspec-mocks (3.0.3)
+      rspec-support (~> 3.0.0)
+    rspec-rails (3.0.2)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.0.0)
+      rspec-expectations (~> 3.0.0)
+      rspec-mocks (~> 3.0.0)
+      rspec-support (~> 3.0.0)
+    rspec-support (3.0.3)
     rubocop (0.24.1)
       json (>= 1.7.7, < 2)
       parser (>= 2.2.0.pre.3, < 3.0)
@@ -143,6 +160,7 @@ DEPENDENCIES
   ncursesw
   pry-remote
   rails (= 4.1.4)
+  rspec-rails (~> 3.0.0)
   rubocop
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
