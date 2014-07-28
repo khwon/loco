@@ -37,7 +37,7 @@ def select_board(locoterm)
       return
     when 127, Ncurses::KEY_BACKSPACE
       if selected.size > 0 && str == selected.last.path_name
-        cur_boards = [selected[-1]] if selected.size > 0
+        cur_boards = [selected[-1]]
         selected = selected[0..-2]
       end
       str = str[0..-2]
