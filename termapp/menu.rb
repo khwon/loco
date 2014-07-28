@@ -1,5 +1,6 @@
 # coding: utf-8
 require_relative 'locoterm'
+require_relative 'welcome'
 require_relative 'goodbye'
 require_relative 'board'
 class LocoMenu
@@ -120,7 +121,7 @@ class LocoMenu
     items << Item.new('Mail')
     items << Item.new('Diary')
     # items << Item.new('Visit')
-    # items << Item.new('Welcome')
+    items << Item.new('Welcome')
     items << Item.new('Xyz')
     items << Item.new('Goodbye')
     items << Item.new('Help')
@@ -187,6 +188,10 @@ class LocoMenu
     locoterm.mvaddstr(5, 5, 'diary: Not supported yet')
     locoterm.refresh
     locoterm.getch
+  end
+
+  def self.welcome(locoterm)
+    show_welcome(locoterm)
   end
 
   def self.xyz(locoterm)
