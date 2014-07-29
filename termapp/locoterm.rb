@@ -1,17 +1,5 @@
 require 'ncursesw'
-
-class String
-  # helper for string
-  # TODO : move somewhere?
-
-  def size_for_print
-    size = 0
-    each_char do |x|
-      size += x.ascii_only? ? 1 : 2
-    end
-    size
-  end
-end
+require_relative 'core_ext/string'
 
 class LocoTerm
   extend Forwardable
