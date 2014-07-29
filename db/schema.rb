@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140729063027) do
+ActiveRecord::Schema.define(version: 20140729071051) do
 
   create_table "boards", force: true do |t|
     t.integer  "owner_id"
@@ -48,11 +48,12 @@ ActiveRecord::Schema.define(version: 20140729063027) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
-    t.string   "password"
+    t.string   "password_digest"
     t.string   "nickname"
     t.string   "realname"
     t.string   "sex"
     t.string   "email"
+    t.string   "old_crypt_password"
   end
 
 end
