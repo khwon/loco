@@ -145,10 +145,7 @@ class LocoMenu
   end
 
   def self.boards(locoterm)
-    locoterm.erase_body
-    locoterm.mvaddstr(5, 5, 'boards: Not supported yet')
-    locoterm.refresh
-    locoterm.getch
+    print_board(locoterm)
   end
 
   def self.select(locoterm)
