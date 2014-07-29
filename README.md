@@ -26,7 +26,7 @@ LOCO bbs system for KAIST
 ruby termapp/run.rb
 ```
 
-Use admin//a for login
+Use a/a,b/b,c/c,d/d for login
 
 
 ## RuboCop
