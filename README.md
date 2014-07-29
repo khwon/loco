@@ -22,12 +22,18 @@ LOCO bbs system for KAIST
 
 ## How to run
 
+### pour sample data
+
+```
+rake termapp:generate_data
+```
+login credentials: a/a for admin, b/b, c/c, d/d for user
+
+### run
+
 ```
 ruby termapp/run.rb
 ```
-
-Use a/a,b/b,c/c,d/d for login
-
 
 ## RuboCop
 
