@@ -6,6 +6,8 @@ class Board < ActiveRecord::Base
   has_many :children, foreign_key: 'parent_id', class_name: 'Board',
                       inverse_of: :parent
 
+  has_many :post
+
   attr_accessor :is_dir
 
   def self.get_list(parent_board: nil)
