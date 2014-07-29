@@ -142,6 +142,9 @@ class LocoTerm
     offset = @columns - str.size_for_print - 2
     mvaddstr(0, 0, "[NEWLOCO]")
     mvaddstr(0, offset, str)
+    if current_board
+      set_color(COLOR_BLUE) { mvaddstr(1, 0, current_board.path_name) }
+    end
   end
 
   def print_footer
