@@ -85,7 +85,7 @@ class LocoTerm
   end
 
   def mvaddstr(y, x, str)
-    str = str.encode(@encoding) if @encoding
+    str.encode!(@encoding) if @encoding
     @stdscr.mvaddstr(y, x, str)
   end
 
@@ -99,7 +99,7 @@ class LocoTerm
   def mvgetnstr(y, x, str, n, echo: true)
     Ncurses.noecho unless echo
     Ncurses.mvgetnstr(y, x, str, n)
-    str = str.encode(@encoding) if @encoding
+    str.encode!(@encoding) if @encoding
     Ncurses.echo
   end
 
