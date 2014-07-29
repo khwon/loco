@@ -19,5 +19,11 @@ module Loco
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    # By default, rake notes will look in the app, config, lib, bin and test
+    # directories. If you would like to search other directories, you can
+    # provide them as a comma separated list in an environment variable
+    # SOURCE_ANNOTATION_DIRECTORIES.
+    ENV['SOURCE_ANNOTATION_DIRECTORIES'] ||= 'termapp'
   end
 end
