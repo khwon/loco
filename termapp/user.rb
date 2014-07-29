@@ -97,12 +97,12 @@ end
 def do_login(locoterm)
   user = nil
   tried = false
-  while user.nil?
+  until user
     draw_login(locoterm, failed: tried)
     tried = true
     id, pw = get_login_cred(locoterm)
     if id != 'new'
-      user = User.authorize(id, pw)
+      user = User.find_by(username: id).try(:authenticate, pw)
     end
   end
   locoterm.current_user = user

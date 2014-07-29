@@ -1,13 +1,8 @@
 class User < ActiveRecord::Base
-  def self.authorize(id, pw)
-    if pw == 'a'
-      return User.new(username: id)
-    else
-      return nil
-    end
-  end
+  has_secure_password validations: false
 
   def admin?
-    username.include? 'admin'
+    # FIXME : implement admin? function
+    username == 'a'
   end
 end

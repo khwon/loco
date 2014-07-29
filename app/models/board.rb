@@ -9,32 +9,10 @@ class Board < ActiveRecord::Base
   has_many :post
 
   def self.get_list(parent_board: nil)
-    if parent_board.nil?
-      %w(Korea
-         hackers
-         asia
-         europe
-         northAmerica
-         southAmerica
-         oceania
-         Africa
-         pacific
-         myGroup
-         closed
-         gon
-         writers
-         MySecret
-         Cert
-      )
-        .each_with_index
-        .map { |x, i| Board.new(id: i + 2, name: x, is_dir: true) }
+    if parent_board
+      parent_board.children
     else
-      if parent_board.is_dir
-        [Board.new(id: 1, name: 'board_' + parent_board.name, is_dir: false,
-                   parent: parent_board)]
-      else
-        []
-      end
+      Board.where(parent_id: nil)
     end
   end
 
