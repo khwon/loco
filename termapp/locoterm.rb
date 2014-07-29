@@ -5,11 +5,7 @@ class String
   # TODO : move somewhere?
 
   def size_for_print
-    size = 0
-    each_char do |x|
-      size += x.ascii_only? ? 1 : 2
-    end
-    size
+    length + each_char.reject { |x| x.ascii_only? }.length
   end
 end
 
