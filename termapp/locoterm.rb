@@ -6,17 +6,14 @@ class String
 
   def size_for_print
     size = 0
-    self.each_char do |x|
+    each_char do |x|
       size += x.ascii_only? ? 1 : 2
     end
     size
   end
-
 end
 
-
 class LocoTerm
-
   extend Forwardable
 
   def_delegators :Ncurses, :erase, :noecho, :echo, :beep
@@ -137,19 +134,18 @@ class LocoTerm
   end
 
   def print_header
-    # FIXME
-    str = "[새편지없음]"
+    # TODO: design headers
+    str = '[새편지없음]'
     offset = @columns - str.size_for_print - 2
-    mvaddstr(0, 0, "[NEWLOCO]")
+    mvaddstr(0, 0, '[NEWLOCO]')
     mvaddstr(0, offset, str)
-    if current_board
-      set_color(COLOR_BLUE) { mvaddstr(1, 0, current_board.path_name) }
-    end
+    set_color(COLOR_BLUE) do
+      mvaddstr(1, 0, current_board.path_name)
+    end if current_board
   end
 
   def print_footer
-    # FIXME
-    mvaddstr(@lines-1, 10, "sample footer")
+    # TODO: design footers
+    mvaddstr(@lines - 1, 10, 'sample footer')
   end
-
 end

@@ -65,9 +65,9 @@ end
 
 def print_board(locoterm)
   locoterm.erase_body
-  Board.get_list(parent_board: locoterm.current_board).each_with_index do |x,i|
-    locoterm.mvaddstr(i+4, 3, x.path_name)
+  Board.get_list(parent_board: locoterm.current_board).each_with_index do |x, i|
+    locoterm.mvaddstr(i + 4, 3, x.path_name)
   end
-  locoterm.mvaddstr(3, 20, "Press any key..")
+  locoterm.mvaddstr(3, 20, 'Press any key..')
   locoterm.getch
 end

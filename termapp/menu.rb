@@ -129,7 +129,7 @@ class LocoMenu
   end
 
   def self.admin(locoterm)
-    # FIXME admin
+    # FIXME: admin
     locoterm.erase_body
     locoterm.mvaddstr(5, 5, 'admin: Not supported yet')
     locoterm.refresh
@@ -137,7 +137,7 @@ class LocoMenu
   end
 
   def self.read_new(locoterm)
-    # FIXME read_new
+    # FIXME: read_new
     locoterm.erase_body
     locoterm.mvaddstr(5, 5, 'read_new: Not supported yet')
     locoterm.refresh
@@ -153,7 +153,7 @@ class LocoMenu
   end
 
   def self.read(locoterm)
-    # FIXME read
+    # FIXME: read
     locoterm.erase_body
     locoterm.mvaddstr(5, 5, 'read: Not supported yet')
     locoterm.refresh
@@ -161,7 +161,7 @@ class LocoMenu
   end
 
   def self.post(locoterm)
-    # FIXME post
+    # FIXME: post
     locoterm.erase_body
     locoterm.mvaddstr(5, 5, 'post: Not supported yet')
     locoterm.refresh
@@ -169,7 +169,7 @@ class LocoMenu
   end
 
   def self.talk(locoterm)
-    # FIXME talk
+    # FIXME: talk
     locoterm.erase_body
     locoterm.mvaddstr(5, 5, 'talk: Not supported yet')
     locoterm.refresh
@@ -177,7 +177,7 @@ class LocoMenu
   end
 
   def self.mail(locoterm)
-    # FIXME mail
+    # FIXME: mail
     locoterm.erase_body
     locoterm.mvaddstr(5, 5, 'mail: Not supported yet')
     locoterm.refresh
@@ -185,7 +185,7 @@ class LocoMenu
   end
 
   def self.diary(locoterm)
-    # FIXME diary
+    # FIXME: diary
     locoterm.erase_body
     locoterm.mvaddstr(5, 5, 'diary: Not supported yet')
     locoterm.refresh
@@ -197,7 +197,7 @@ class LocoMenu
   end
 
   def self.xyz(locoterm)
-    # FIXME xyz
+    # FIXME: xyz
     locoterm.erase_body
     locoterm.mvaddstr(5, 5, 'xyz: Not supported yet')
     locoterm.refresh
@@ -209,7 +209,7 @@ class LocoMenu
   end
 
   def self.help(locoterm)
-    # FIXME help
+    # FIXME: help
     locoterm.erase_body
     locoterm.mvaddstr(5, 5, 'help: Not supported yet')
     locoterm.refresh
