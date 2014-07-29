@@ -1,6 +1,22 @@
 require 'ncursesw'
 
+class String
+  # helper for string
+  # TODO : move somewhere?
+
+  def size_for_print
+    size = 0
+    self.each_char do |x|
+      size += x.ascii_only? ? 1 : 2
+    end
+    size
+  end
+
+end
+
+
 class LocoTerm
+
   extend Forwardable
 
   def_delegators :Ncurses, :erase, :noecho, :echo, :beep
@@ -102,8 +118,9 @@ class LocoTerm
   end
 
   def erase_body
-    getmaxyx
-    clrtoeol(2...(@lines - 1))
+    erase_all
+    print_header
+    print_footer
   end
 
   def erase_all
@@ -118,4 +135,18 @@ class LocoTerm
     @lines = lines[0]
     @columns = columns[0]
   end
+
+  def print_header
+    # FIXME
+    str = "[새편지없음]"
+    offset = @columns - str.size_for_print - 2
+    mvaddstr(0, 0, "[NEWLOCO]")
+    mvaddstr(0, offset, str)
+  end
+
+  def print_footer
+    # FIXME
+    mvaddstr(@lines-1, 10, "sample footer")
+  end
+
 end
