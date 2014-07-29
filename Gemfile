@@ -47,3 +47,6 @@ end
 
 gem 'pry-remote', group: :development
 gem 'rubocop', group: :development, require: false
+
+#ActiveModel::SecurePassword
+gem 'bcrypt', '~> 3.1.7'
