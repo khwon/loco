@@ -17,8 +17,9 @@ class LocoTerm
   COLOR_MAGENTA = 5
   COLOR_CYAN = 6
   COLOR_WHITE = 7
-  @@colors = [COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW,
-              COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE]
+  COLORS = [COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW,
+            COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE]
+  private_constant :COLORS
 
   attr_accessor :current_user
   attr_accessor :current_board
@@ -53,11 +54,11 @@ class LocoTerm
   end
 
   def self.colors
-    @@colors
+    COLORS
   end
 
   def set_color(color, reverse: false)
-    fail 'unknown color' unless @@colors.include? color
+    fail 'unknown color' unless COLORS.include? color
     color += 8 if reverse
     if block_given?
       @stdscr.attrset(Ncurses.COLOR_PAIR(color))
