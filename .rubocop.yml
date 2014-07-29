@@ -10,6 +10,10 @@ AllCops:
     - 'config/**/*'
     - 'db/**/*'
 
+Style/AsciiComments:
+  Exclude:
+    - 'termapp/core_ext/string.rb'
+
 Style/ClassLength:
   Enabled: false
 
