@@ -78,11 +78,10 @@ class LocoMenu
       end
       locoterm.move(3, 3)
       locoterm.refresh
-      c = locoterm.getch
-      case c
+      case c = locoterm.getch
       when Ncurses::KEY_UP
         past_menu = cur_menu
-        cur_menu = (cur_menu == 0 ? items.size - 1 : cur_menu - 1)
+        cur_menu = (cur_menu - 1) % items.size
       when Ncurses::KEY_DOWN
         past_menu = cur_menu
         cur_menu = (cur_menu + 1) % items.size
