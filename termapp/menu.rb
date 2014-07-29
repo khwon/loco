@@ -75,7 +75,7 @@ class LocoMenu
           locoterm.mvaddstr(cur_menu + 4, 3, items[cur_menu].title)
         end
       end
-      locoterm.move(3, 3)
+      locoterm.move(cur_menu + 4, 3)
       locoterm.refresh
       case c = locoterm.getch
       when Ncurses::KEY_UP

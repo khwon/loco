@@ -20,6 +20,7 @@ class LocoTerm
               COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE]
 
   attr_accessor :current_user
+  attr_accessor :current_board
 
   def initialize(encoding = nil)
     @encoding = encoding

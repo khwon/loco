@@ -4,6 +4,7 @@ def select_board(locoterm)
   cur_boards = []
   selected = []
   loop do
+    # TODO : consider setting start point as locoterm.current_board
     cur_boards = [] if str == ''
     locoterm.erase_body
     if selected.last.nil? || selected.last.is_dir
@@ -35,6 +36,14 @@ def select_board(locoterm)
       end
     when 27 # esc
       return
+    when Ncurses::KEY_ENTER, 10 # enter
+      if cur_boards.size == 1 && !cur_boards.first.is_dir
+        # TODO : for now, only allow selecting non-dir boards
+        locoterm.current_board = cur_boards.first
+        return
+      else
+        locoterm.beep
+      end
     when 127, Ncurses::KEY_BACKSPACE
       if selected.size > 0 && str == selected.last.path_name
         cur_boards = [selected[-1]]
