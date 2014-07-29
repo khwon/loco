@@ -8,8 +8,6 @@ class Board < ActiveRecord::Base
 
   has_many :post
 
-  attr_accessor :is_dir
-
   def self.get_list(parent_board: nil)
     if parent_board.nil?
       %w(Korea
