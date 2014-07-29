@@ -1,4 +1,3 @@
-require 'ncursesw'
 def select_board(locoterm)
   str = ''
   cur_boards = []
