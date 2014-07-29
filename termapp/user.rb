@@ -1,4 +1,3 @@
-# coding: utf-8
 require_relative 'locoterm'
 require_relative 'goodbye'
 def draw_login(locoterm, failed: false)
