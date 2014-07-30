@@ -1,5 +1,7 @@
 # Loco
 
+[![Code Climate](https://codeclimate.com/github/khwon/loco.png)](https://codeclimate.com/github/khwon/loco)
+
 LOCO bbs system for KAIST
 
 ## Requirements
