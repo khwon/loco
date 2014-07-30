@@ -122,6 +122,12 @@ class LocoTerm
     @columns = columns[0]
   end
 
+  def print_block(y, x, str)
+    str.each_line.with_index do |line, index|
+      mvaddstr(y + index, x + line[/^\s*/].size, line.chomp.lstrip)
+    end
+  end
+
   def print_header
     # TODO: design headers
     str = '[새편지없음]'
