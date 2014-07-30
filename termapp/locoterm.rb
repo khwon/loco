@@ -18,9 +18,9 @@ class LocoTerm
   COLOR_CYAN = 6
   COLOR_WHITE = 7
   COLORS = [COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW,
-            COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE]
+            COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE].freeze
   COLOR_SYMBOLS = %i(color_black color_red color_green color_yellow
-                     color_blue color_magenta color_cyan color_white)
+                     color_blue color_magenta color_cyan color_white).freeze
   private_constant :COLORS, :COLOR_SYMBOLS
 
   COLOR_SYMBOLS.each do |sym|
