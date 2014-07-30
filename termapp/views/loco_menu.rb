@@ -1,5 +1,4 @@
 class LocoMenu < TermApp::View
-  
   # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a
   # method to be called when selected.
   class Item
