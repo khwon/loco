@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140729071051) do
+ActiveRecord::Schema.define(version: 20140729130650) do
 
   create_table "boards", force: true do |t|
     t.integer  "owner_id"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140729071051) do
 
   add_index "boards", ["alias_board_id"], name: "index_boards_on_alias_board_id"
   add_index "boards", ["linked_board_id"], name: "index_boards_on_linked_board_id"
+  add_index "boards", ["name"], name: "index_boards_on_name"
   add_index "boards", ["owner_id"], name: "index_boards_on_owner_id"
   add_index "boards", ["parent_id"], name: "index_boards_on_parent_id"
 
