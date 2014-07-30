@@ -1,12 +1,7 @@
 class LocoMenu < TermApp::View
+  
   # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a
   # method to be called when selected.
-  def initialize *args
-    @cur_menu = 0
-    @past_menu = nil
-    super
-  end
-
   class Item
     # Public: Returns the Regexp shortcut for the menu.
     attr_reader :shortcut_regex
@@ -33,6 +28,12 @@ class LocoMenu < TermApp::View
       @title = name.capitalize.sub(/^(.)/, '(\\1)')
       @menu = bind_menu
     end
+  end
+
+  def initialize(*args)
+    @cur_menu = 0
+    @past_menu = nil
+    super
   end
 
   # Public: Main routine of LocoMenu. Show menus. User can navigate menus and
@@ -127,5 +128,4 @@ class LocoMenu < TermApp::View
       end
     end
   end
- 
 end

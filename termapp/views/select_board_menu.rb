@@ -35,7 +35,7 @@ class SelectBoardMenu < TermApp::View
           term.beep
         end
       when 27 # esc
-        break :loco_menu 
+        break :loco_menu
       when Ncurses::KEY_ENTER, 10 # enter
         if cur_boards.size == 1 && !cur_boards.first.is_dir
           # TODO : for now, only allow selecting non-dir boards

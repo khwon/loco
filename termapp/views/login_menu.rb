@@ -5,7 +5,7 @@ class LoginMenu < TermApp::View
     until user
       draw_login(failed: tried)
       tried = true
-      id, pw = get_login_cred
+      id, pw = login_cred
       return :goodbye_menu if id == 'off'
       if id != 'new'
         user = User.find_by(username: id).try(:authenticate, pw)
@@ -102,7 +102,7 @@ class LoginMenu < TermApp::View
     term.refresh
   end
 
-  def get_login_cred
+  def login_cred
     id = ''
     pw = ''
     term.mvgetnstr(20, 40, id, 20)

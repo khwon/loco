@@ -2,7 +2,7 @@ require 'active_support/inflector'
 module TermApp
   class Application
     attr_reader :term
-    
+
     def initialize
       @term = Terminal.new
       @cached_views = {}
@@ -20,17 +20,14 @@ module TermApp
 
     def run
       next_view = :login_menu
-      while next_view
-        next_view = process(*next_view)
-      end
+      next_view = process(*next_view) while next_view
     end
   end
+
   def self.run
-    begin
-      app = Application.new
-      app.run
-    ensure
-      app.term.terminate
-    end
+    app = Application.new
+    app.run
+  ensure
+    app.term.terminate
   end
 end

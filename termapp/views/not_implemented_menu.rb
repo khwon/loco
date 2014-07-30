@@ -1,5 +1,5 @@
 class NotImplementedMenu < TermApp::View
-  def initialize name, *args
+  def initialize(name, *args)
     @name = name
     super(*args)
   end
