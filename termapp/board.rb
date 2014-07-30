@@ -14,7 +14,7 @@ def select_board(locoterm)
     list.each_with_index do |x, i|
       # TODO : redraw only changed lines
       if x == cur_boards.first
-        locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
+        locoterm.color_black(reverse: true) do
           locoterm.mvaddstr(i + 4, 3, x.path_name)
         end
       else
