@@ -1,20 +1,15 @@
-require_relative '../config/environment'
-require_relative 'locoterm'
-require_relative 'user'
-require_relative 'welcome'
-require_relative 'menu'
+root = File.expand_path(File.dirname(__FILE__))
+require "#{root}/../config/environment.rb"
+require "#{root}/terminal"
+require "#{root}/application"
+require "#{root}/view"
+Dir["#{root}/views/*.rb"].each{ |f| require f }
+
 require 'pry-remote'
-locoterm = nil
+
 begin
-  locoterm = LocoTerm.new
-  do_login(locoterm)
-  show_welcome(locoterm)
-  LocoMenu.main(locoterm)
-  locoterm.getch
-rescue
-  binding.remote_pry
-  # $stderr.puts $!
-  # $stderr.puts $@
-ensure
-  locoterm.terminate
+  TermApp.run
+rescue => e
+  binding.pry_remote
 end
+  
