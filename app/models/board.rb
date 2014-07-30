@@ -19,7 +19,7 @@ class Board < ActiveRecord::Base
   def path_name
     str = name
     str += '/' if is_dir
-    str = parent.path_name + str unless parent.nil?
+    str = parent.path_name + str if parent
     str
   end
 end
