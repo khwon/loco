@@ -2,6 +2,7 @@ require_relative 'locoterm'
 require_relative 'welcome'
 require_relative 'goodbye'
 require_relative 'board'
+
 class LocoMenu
   # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a
   # method to be called when selected.

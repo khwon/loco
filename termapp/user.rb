@@ -1,5 +1,6 @@
 require_relative 'locoterm'
 require_relative 'goodbye'
+
 def draw_login(locoterm, failed: false)
   locoterm.clrtoeol(0..23)
   locoterm.set_color(LocoTerm.colors.sample) do

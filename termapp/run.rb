@@ -4,6 +4,7 @@ require_relative 'user'
 require_relative 'welcome'
 require_relative 'menu'
 require 'pry-remote'
+
 locoterm = nil
 begin
   locoterm = LocoTerm.new
