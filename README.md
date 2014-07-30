@@ -1,6 +1,7 @@
 # Loco
 
 [![Code Climate](https://codeclimate.com/github/khwon/loco.png)](https://codeclimate.com/github/khwon/loco)
+[![Inline docs](http://inch-ci.org/github/khwon/loco.png?branch=develop)](http://inch-ci.org/github/khwon/loco)
 
 LOCO bbs system for KAIST
 
