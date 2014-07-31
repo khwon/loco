@@ -22,9 +22,9 @@ class LocoMenu < TermApp::View
     #   Item.new('Boards')
     #
     #   Item.new('New', LocoMenu.method(:read_new))
-    def initialize(name, bind_menu)
+    def initialize(name, bind_menu = "#{name}Menu".camelize.underscore.to_sym)
       @shortcut_regex = Regexp.new("[#{name[0].upcase}#{name[0].downcase}]")
-      @title = name.capitalize.sub(/^(.)/, '(\\1)')
+      @title = name.camelize.sub(/^(.)/, '(\\1)')
       @menu = bind_menu
     end
   end
@@ -47,18 +47,18 @@ class LocoMenu < TermApp::View
     items << Item.new('Boards', :print_board_menu)
     items << Item.new('Select', :select_board_menu)
     items << Item.new('Read', :read_board_menu)
-    items << Item.new('Post', :post_menu)
+    items << Item.new('Post')
     # items << Item.new('Extra')
-    items << Item.new('Talk', :talk_menu)
-    items << Item.new('Mail', :mail_menu)
-    items << Item.new('Diary', :diary_menu)
+    items << Item.new('Talk')
+    items << Item.new('Mail')
+    items << Item.new('Diary')
     # items << Item.new('Visit')
-    items << Item.new('Welcome', :welcome_menu)
-    items << Item.new('Xyz', :xyz_menu)
-    items << Item.new('Goodbye', :goodbye_menu)
-    items << Item.new('Help', :help_menu)
+    items << Item.new('Welcome')
+    items << Item.new('Xyz')
+    items << Item.new('Goodbye')
+    items << Item.new('Help')
     # items << Item.new('InfoBBS')
-    items << Item.new('Admin', :admin_menu) if term.current_user.admin?
+    items << Item.new('Admin') if term.current_user.admin?
     menu_helper(items)
   end
 
