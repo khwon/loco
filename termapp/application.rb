@@ -5,6 +5,10 @@ module TermApp
   class Application
     attr_reader :term
 
+    def self.run
+      new.run
+    end
+
     def initialize
       @term = Terminal.new
       @cached_views = {}
@@ -24,13 +28,12 @@ module TermApp
     def run
       next_view = :login_menu
       next_view = process(*next_view) while next_view
+    ensure
+      @term.terminate
     end
   end
 
   def self.run
-    app = Application.new
-    app.run
-  ensure
-    app.term.terminate
+    Application.run
   end
 end
