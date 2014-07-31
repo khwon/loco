@@ -12,10 +12,10 @@ RSpec.describe String, type: :termapp do
       @term.terminate
     end
 
-    it 'returns 1 for ASCII characters' do
-      (32..126).each do |ascii|
+    it 'returns the appropriate size for every ASCII characters' do
+      [0, *32..126].each do |ascii|
         @term.mvaddstr(0, 0, ascii.chr)
-        expect([ascii, [0, 1]]).to eq([ascii, @term.getyx])
+        expect([ascii, ascii.chr.size_for_print]).to eq([ascii, @term.getyx[1]])
       end
     end
 
@@ -31,13 +31,14 @@ RSpec.describe String, type: :termapp do
         'あい',
         '가あ',
         '單語',
-        # 'å∫ç', => 3
         '　',
-        # '★', => 1
-        # '​' => 1
+        # FIXME
+        # 'å∫ç' expectd to be 4, got 3
+        # '★' expectd to be 2, got 1
+        # '​' expectd to be 1, got 0
       ].each do |str|
         @term.mvaddstr(0, 0, str)
-        expect([0, str.size_for_print]).to eq(@term.getyx)
+        expect([str, str.size_for_print]).to eq([str, @term.getyx[1]])
       end
     end
   end
