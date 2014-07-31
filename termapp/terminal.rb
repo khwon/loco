@@ -126,7 +126,7 @@ module TermApp
     #
     # Returns nothing.
     def color_sample(*args, &block)
-      send(COLOR_SYMBOLS.sample, *args, &block)
+      send(COLOR_SYMBOLS[0..-2].sample, *args, &block)
     end
 
     def clrtoeol(y = nil)
