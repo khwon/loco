@@ -86,7 +86,7 @@ class LocoMenu < TermApp::View
         term.erase_body
         items.each_with_index do |item, i|
           if i == @cur_menu
-            term.set_color(TermApp::Terminal::COLOR_BLACK, reverse: true) do
+            term.color_black(reverse: true) do
               term.mvaddstr(i + 4, 3, item.title)
             end
           else
@@ -95,7 +95,7 @@ class LocoMenu < TermApp::View
         end
       else
         term.mvaddstr(@past_menu + 4, 3, items[@past_menu].title)
-        term.set_color(TermApp::Terminal::COLOR_BLACK, reverse: true) do
+        term.color_black(reverse: true) do
           term.mvaddstr(@cur_menu + 4, 3, items[@cur_menu].title)
         end
       end

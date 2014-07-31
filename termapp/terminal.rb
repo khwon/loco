@@ -18,8 +18,25 @@ module TermApp
     COLOR_CYAN = 6
     COLOR_WHITE = 7
     COLORS = [COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW,
-              COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE]
-    private_constant :COLORS
+              COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE].freeze
+    COLOR_SYMBOLS = %i(color_black color_red color_green color_yellow
+                       color_blue color_magenta color_cyan color_white).freeze
+    private_constant :COLORS, :COLOR_SYMBOLS
+
+    COLOR_SYMBOLS.each do |sym|
+      define_method(sym) do |reverse: false, &block|
+        color = Terminal.const_get(sym.upcase)
+        color += 8 if reverse
+        if block
+          @stdscr.attrset(Ncurses.COLOR_PAIR(color))
+          block.call
+          @stdscr.attrset(Ncurses.COLOR_PAIR(@cur_color))
+        else
+          @cur_color = color
+          @stdscr.attrset(Ncurses.COLOR_PAIR(color))
+        end
+      end
+    end
 
     attr_accessor :current_user
     attr_accessor :current_board
@@ -53,20 +70,13 @@ module TermApp
       Ncurses.raw
     end
 
-    def self.colors
-      COLORS
-    end
-
-    def set_color(color, reverse: false)
-      fail 'unknown color' unless COLORS.include? color
-      color += 8 if reverse
-      if block_given?
-        @stdscr.attrset(Ncurses.COLOR_PAIR(color))
-        yield
-        @stdscr.attrset(Ncurses.COLOR_PAIR(@cur_color))
+    def color_sample(*args, &block)
+      if block
+        send(COLOR_SYMBOLS.sample, *args) do
+          block.call
+        end
       else
-        @cur_color = color
-        @stdscr.attrset(Ncurses.COLOR_PAIR(color))
+        send(COLOR_SYMBOLS.sample, *args)
       end
     end
 
@@ -128,9 +138,7 @@ module TermApp
       offset = @columns - str.size_for_print - 2
       mvaddstr(0, 0, '[NEWLOCO]')
       mvaddstr(0, offset, str)
-      set_color(COLOR_BLUE) do
-        mvaddstr(1, 0, current_board.path_name)
-      end if current_board
+      color_blue { mvaddstr(1, 0, current_board.path_name) } if current_board
     end
 
     def print_footer

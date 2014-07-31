@@ -22,7 +22,7 @@ class LoginMenu < TermApp::View
 
   def draw_login(failed: false)
     term.clrtoeol(0..23)
-    term.set_color(TermApp::Terminal.colors.sample) do
+    term.color_sample do
       term.mvaddstr(2, 8, '=$')
       term.mvaddstr(3, 3, '~OMMMMM8.')
       term.mvaddstr(4, 2, 'MMMMMMMMM+')
@@ -40,7 +40,7 @@ class LoginMenu < TermApp::View
       term.mvaddstr(16, 7, '=+.')
     end
 
-    term.set_color(TermApp::Terminal.colors.sample) do
+    term.color_sample do
       term.mvaddstr(5, 26, ',=,,')
       term.mvaddstr(6, 20, ':OMMMMMMMMM?')
       term.mvaddstr(7, 18, '?MMMMMMMMMMMMM')
@@ -54,7 +54,7 @@ class LoginMenu < TermApp::View
       term.mvaddstr(15, 22, '.  .')
     end
 
-    term.set_color(TermApp::Terminal.colors.sample) do
+    term.color_sample do
       term.mvaddstr(3, 40, '=ZMMMMDI.')
       term.mvaddstr(4, 36, '?MMMD=   =MMMM')
       term.mvaddstr(5, 34, 'IMMMM8  $MMMMMMMO')
@@ -68,7 +68,7 @@ class LoginMenu < TermApp::View
       term.mvaddstr(13, 38, ',.~ ..')
     end
 
-    term.set_color(TermApp::Terminal.colors.sample) do
+    term.color_sample do
       term.mvaddstr(2, 56, ':ZMMMMMMMMM:')
       term.mvaddstr(3, 54, '?MMMMMMMMMMMMM')
       term.mvaddstr(4, 52, '.DMMMMMMMMMMMMMM')
@@ -81,7 +81,7 @@ class LoginMenu < TermApp::View
       term.mvaddstr(11, 61, '.')
     end
 
-    term.set_color(TermApp::Terminal::COLOR_WHITE) do
+    term.color_white do
       term.mvaddstr(13, 50, 'managed by GoN security')
       term.mvaddstr(14, 52, 'since 1999')
     end

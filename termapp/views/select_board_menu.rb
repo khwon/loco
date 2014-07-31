@@ -15,7 +15,7 @@ class SelectBoardMenu < TermApp::View
       list.each_with_index do |x, i|
         # TODO : redraw only changed lines
         if x == cur_boards.first
-          term.set_color(TermApp::Terminal::COLOR_BLACK, reverse: true) do
+          term.color_black(reverse: true) do
             term.mvaddstr(i + 4, 3, x.path_name)
           end
         else
