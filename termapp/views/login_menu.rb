@@ -10,9 +10,8 @@ class LoginMenu < TermApp::View
       term.mvgetnstr(20, 40, id, 20)
       return :goodbye_menu if id == 'off'
       term.mvgetnstr(21, 40, pw, 20, echo: false)
-      if id != 'new'
-        user = User.find_by(username: id).try(:authenticate, pw)
-      end
+      next if id == 'new'
+      user = User.find_by(username: id).try(:authenticate, pw)
     end
     term.current_user = user
     :welcome_menu
