@@ -1,25 +1,25 @@
 require 'rails_helper'
 require 'core_ext/string'
-require 'locoterm'
+require 'terminal'
 
 RSpec.describe String, type: :termapp do
   describe '#size_for_print' do
     before(:context) do
-      @locoterm = LocoTerm.new
+      @term = TermApp::Terminal.new
     end
 
     after(:context) do
-      @locoterm.terminate
+      @term.terminate
     end
 
     it 'returns 1 for ASCII characters' do
       (32..126).each do |ascii|
-        @locoterm.mvaddstr(0, 0, ascii.chr)
-        expect([ascii, [0, 1]]).to eq([ascii, @locoterm.getyx])
+        @term.mvaddstr(0, 0, ascii.chr)
+        expect([ascii, [0, 1]]).to eq([ascii, @term.getyx])
       end
     end
 
-    it 'returns the size to pring on Ncurses screen' do
+    it 'returns the size to print on Ncurses screen' do
       [
         '가',
         '가나',
@@ -36,8 +36,8 @@ RSpec.describe String, type: :termapp do
         # '★', => 1
         # '​' => 1
       ].each do |str|
-        @locoterm.mvaddstr(0, 0, str)
-        expect([0, str.size_for_print]).to eq(@locoterm.getyx)
+        @term.mvaddstr(0, 0, str)
+        expect([0, str.size_for_print]).to eq(@term.getyx)
       end
     end
   end
