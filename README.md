@@ -3,7 +3,7 @@
 [![Code Climate](https://codeclimate.com/github/khwon/loco.png)](https://codeclimate.com/github/khwon/loco)
 [![Inline docs](http://inch-ci.org/github/khwon/loco.png?branch=develop)](http://inch-ci.org/github/khwon/loco)
 
-LOCO bbs system for KAIST
+LOCO BBS system for KAIST
 
 ## Requirements
 
@@ -15,6 +15,7 @@ LOCO bbs system for KAIST
         ```
 
     * Mac OS X
+
         Install [Homebrew](http://brew.sh/).
         ``` sh
         brew install homebrew/dupes/ncurses
@@ -25,16 +26,16 @@ LOCO bbs system for KAIST
 
 ## How to run
 
-### pour sample data
+### Pour sample data
 
-```
+``` sh
 rake termapp:generate_data
 ```
 login credentials: a/a for admin, b/b, c/c, d/d for user
 
-### run
+### Run
 
-```
+``` sh
 ruby termapp/run.rb
 ```
 
