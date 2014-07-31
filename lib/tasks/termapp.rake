@@ -34,7 +34,7 @@ namespace :termapp do
 
       Board.where(is_dir: false).each do |b|
         10.times do |i|
-          post = Post.new(title: "title_#{i}", content: "content_#{i}\n" * 20)
+          post = Post.new(title: "title_#{i}", content: "content_#{i}\n" * 20, num: i+1)
           post.board = b
           post.writer = User.all.sample
           post.save!
