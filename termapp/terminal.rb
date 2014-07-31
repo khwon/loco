@@ -24,6 +24,9 @@ module TermApp
     attr_accessor :current_user
     attr_accessor :current_board
 
+    # Public: Returns the Integer available number of lines.
+    attr_reader :lines
+
     def initialize(encoding = nil)
       @encoding = encoding
       @cur_color = 0
