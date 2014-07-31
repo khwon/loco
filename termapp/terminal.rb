@@ -71,13 +71,7 @@ module TermApp
     end
 
     def color_sample(*args, &block)
-      if block
-        send(COLOR_SYMBOLS.sample, *args) do
-          block.call
-        end
-      else
-        send(COLOR_SYMBOLS.sample, *args)
-      end
+      send(COLOR_SYMBOLS.sample, *args, &block)
     end
 
     def clrtoeol(y = nil)
