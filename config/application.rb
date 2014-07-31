@@ -24,6 +24,6 @@ module Loco
     # directories. If you would like to search other directories, you can
     # provide them as a comma separated list in an environment variable
     # SOURCE_ANNOTATION_DIRECTORIES.
-    ENV['SOURCE_ANNOTATION_DIRECTORIES'] ||= 'termapp'
+    ENV['SOURCE_ANNOTATION_DIRECTORIES'] ||= 'termapp,spec'
   end
 end

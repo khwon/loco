@@ -2,6 +2,7 @@ require_relative 'locoterm'
 require_relative 'welcome'
 require_relative 'goodbye'
 require_relative 'board'
+
 class LocoMenu
   # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a
   # method to be called when selected.
@@ -110,22 +111,22 @@ class LocoMenu
   def self.main(locoterm)
     items = []
     items << Item.new('New', LocoMenu.method(:read_new))
-    items << Item.new('Boards')
-    items << Item.new('Select')
-    items << Item.new('Read')
-    items << Item.new('Post')
-    # items << Item.new('Extra')
-    items << Item.new('Talk')
-    items << Item.new('Mail')
-    items << Item.new('Diary')
-    # items << Item.new('Visit')
-    items << Item.new('Welcome')
-    items << Item.new('Xyz')
-    items << Item.new('Goodbye')
-    items << Item.new('Help')
-    # items << Item.new('InfoBBS')
+    items.concat(%w(
+      Boards
+      Select
+      Read
+      Post
+      Talk
+      Mail
+      Diary
+      Welcome
+      Xyz
+      Goodbye
+      Help
+    ).map { |name| Item.new(name) })
+    # items.concat(%w(Extra Visit InfoBBS).map { |name| Item.new(name) })
     items << Item.new('Admin') if locoterm.current_user.admin?
-    LocoMenu.menu_helper(locoterm, items)
+    LocoMenu.menu_helper(locoterm, items.freeze)
   end
 
   def self.admin(locoterm)
