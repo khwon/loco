@@ -1,8 +1,4 @@
 class ReadBoardMenu < TermApp::View
-  def initialize(*args)
-    super
-  end
-
   def process
     term.erase_body
     if term.current_board
