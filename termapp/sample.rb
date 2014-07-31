@@ -3,7 +3,7 @@ require_relative 'locoterm'
 
 def draw_main(locoterm)
   locoterm.clrtoeol(0..2)
-  locoterm.set_color(LocoTerm.colors.sample) do
+  locoterm.color_sample do
     locoterm.mvaddstr(2, 8, '=$')
     locoterm.mvaddstr(3, 3, '~OMMMMM8.')
     locoterm.mvaddstr(4, 2, 'MMMMMMMMM+')
@@ -21,7 +21,7 @@ def draw_main(locoterm)
     locoterm.mvaddstr(16, 7, '=+.')
   end
 
-  locoterm.set_color(LocoTerm.colors.sample) do
+  locoterm.color_sample do
     locoterm.mvaddstr(5, 26, ',=,,')
     locoterm.mvaddstr(6, 20, ':OMMMMMMMMM?')
     locoterm.mvaddstr(7, 18, '?MMMMMMMMMMMMM')
@@ -35,7 +35,7 @@ def draw_main(locoterm)
     locoterm.mvaddstr(15, 22, '.  .')
   end
 
-  locoterm.set_color(LocoTerm.colors.sample) do
+  locoterm.color_sample do
     locoterm.mvaddstr(3, 40, '=ZMMMMDI.')
     locoterm.mvaddstr(4, 36, '?MMMD=   =MMMM')
     locoterm.mvaddstr(5, 34, 'IMMMM8  $MMMMMMMO')
@@ -49,7 +49,7 @@ def draw_main(locoterm)
     locoterm.mvaddstr(13, 38, ',.~ ..')
   end
 
-  locoterm.set_color(LocoTerm.colors.sample) do
+  locoterm.color_sample do
     locoterm.mvaddstr(2, 56, ':ZMMMMMMMMM:')
     locoterm.mvaddstr(3, 54, '?MMMMMMMMMMMMM')
     locoterm.mvaddstr(4, 52, '.DMMMMMMMMMMMMMM')
@@ -62,7 +62,7 @@ def draw_main(locoterm)
     locoterm.mvaddstr(11, 61, '.')
   end
 
-  locoterm.set_color(LocoTerm::COLOR_WHITE) do
+  locoterm.color_white do
     locoterm.mvaddstr(13, 50, 'managed by GoN security')
     locoterm.mvaddstr(14, 52, 'since 1999')
   end

@@ -62,7 +62,7 @@ class LocoMenu
         locoterm.erase_body
         items.each_with_index do |item, i|
           if i == cur_menu
-            locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
+            locoterm.color_black(reverse: true) do
               locoterm.mvaddstr(i + 4, 3, item.title)
             end
           else
@@ -71,7 +71,7 @@ class LocoMenu
         end
       else
         locoterm.mvaddstr(past_menu + 4, 3, items[past_menu].title)
-        locoterm.set_color(LocoTerm::COLOR_BLACK, reverse: true) do
+        locoterm.color_black(reverse: true) do
           locoterm.mvaddstr(cur_menu + 4, 3, items[cur_menu].title)
         end
       end
