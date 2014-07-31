@@ -1,14 +1,29 @@
 require_relative 'core_ext/string'
 
 module TermApp
+  # Public: Wrapper for Ncurses to do terminal operations. Make sure to call
+  # terminate before termination of the program.
+  #
+  # Examples
+  #
+  #   begin
+  #     term = Terminal.new
+  #   ensure
+  #     term.terminate
+  #   end
   class Terminal
     extend Forwardable
 
+    # Public: Delegates erase, noecho, echo, beep to each method of Ncurses.
     def_delegators :Ncurses, :erase, :noecho, :echo, :beep
-    def_delegator :Ncurses, :endwin, :terminate # alias
 
+    # Public: Delegates terminate to Ncurses.endwin.
+    def_delegator :Ncurses, :endwin, :terminate
+
+    # Public: Delegates refresh, move, getch to each method of @stdscr.
     def_delegators :@stdscr, :refresh, :move, :getch
 
+    # Internal: The constants for color of Ncurses.
     COLOR_BLACK = 0
     COLOR_RED = 1
     COLOR_GREEN = 2
@@ -69,6 +84,15 @@ module TermApp
     attr_accessor :current_user
     attr_accessor :current_board
 
+    # Public: Initialize a Terminal.
+    #
+    # encoding - The Encoding of Terminal.
+    #
+    # Examples
+    #
+    #   Terminal.new
+    #
+    #   Terminal.new(Encoding::UTF_8)
     def initialize(encoding = nil)
       @encoding = encoding
       @cur_color = 0
@@ -98,6 +122,9 @@ module TermApp
       Ncurses.raw
     end
 
+    # Public: Set a random color of Terminal. Delegates to color_<color> method.
+    #
+    # Returns nothing.
     def color_sample(*args, &block)
       send(COLOR_SYMBOLS.sample, *args, &block)
     end
