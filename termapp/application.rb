@@ -1,4 +1,5 @@
 require 'active_support/inflector'
+require_relative 'terminal'
 
 module TermApp
   class Application
