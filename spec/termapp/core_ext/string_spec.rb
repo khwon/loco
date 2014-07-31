@@ -5,7 +5,7 @@ require 'terminal'
 RSpec.describe String, type: :termapp do
   describe '#size_for_print' do
     around(:example) do |example|
-      @term = TermApp::Terminal.new
+      suppress_warnings { @term = TermApp::Terminal.new }
       example.run
       @term.terminate
     end

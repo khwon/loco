@@ -4,7 +4,7 @@ require 'terminal'
 RSpec.describe TermApp::Terminal, type: :termapp do
   context 'with delegators' do
     around(:example) do |example|
-      @term = TermApp::Terminal.new
+      suppress_warnings { @term = TermApp::Terminal.new }
       example.run
       @term.terminate
     end
