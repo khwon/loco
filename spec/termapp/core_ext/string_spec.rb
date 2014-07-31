@@ -4,11 +4,9 @@ require 'terminal'
 
 RSpec.describe String, type: :termapp do
   describe '#size_for_print' do
-    before(:context) do
+    around(:example) do |example|
       @term = TermApp::Terminal.new
-    end
-
-    after(:context) do
+      example.run
       @term.terminate
     end
 

@@ -3,11 +3,9 @@ require 'terminal'
 
 RSpec.describe TermApp::Terminal, type: :termapp do
   context 'with delegators' do
-    before(:context) do
+    around(:example) do |example|
       @term = TermApp::Terminal.new
-    end
-
-    after(:context) do
+      example.run
       @term.terminate
     end
 
