@@ -52,14 +52,17 @@ module TermApp
     # Examples
     #
     #   color_black
+    #   # => :color_black
     #
     #   color_red(reverse: true)
+    #   # => :color_red
     #
     #   color_green do
     #     term.mvaddstr(14, 52, 'Successfully saved!')
     #   end
+    #   # => :color_green
     #
-    # Returns nothing.
+    # Returns the Symbol of used color.
     #
     # Signature
     #
@@ -78,6 +81,7 @@ module TermApp
           @cur_color = color
           @stdscr.attrset(Ncurses.COLOR_PAIR(color))
         end
+        sym
       end
     end
 
@@ -124,7 +128,7 @@ module TermApp
 
     # Public: Set a random color of Terminal. Delegates to color_<color> method.
     #
-    # Returns nothing.
+    # Returns the Symbol of the random color.
     def color_sample(*args, &block)
       send(COLOR_SYMBOLS[0..-2].sample, *args, &block)
     end

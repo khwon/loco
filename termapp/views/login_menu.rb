@@ -22,7 +22,8 @@ class LoginMenu < TermApp::View
 
   def draw_login(failed: false)
     term.clrtoeol(0..23)
-    term.color_sample do
+    logo_colors = []
+    logo_colors << term.color_sample do
       term.print_block(2, 2, <<EOF
       =$
  ~OMMMMM8.
@@ -43,7 +44,7 @@ EOF
       )
     end
 
-    term.color_sample do
+    logo_colors << term.color_sample do
       term.print_block(5, 15, <<EOF
            ,=,,
      :OMMMMMMMMM?
@@ -60,7 +61,7 @@ EOF
       )
     end
 
-    term.color_sample do
+    logo_colors << term.color_sample do
       term.print_block(3, 33, <<EOF
        =ZMMMMDI.
    ?MMMD=   =MMMM
@@ -77,7 +78,7 @@ EOF
       )
     end
 
-    term.color_sample do
+    logo_colors << term.color_sample do
       term.print_block(2, 51, <<EOF
      :ZMMMMMMMMM:
    ?MMMMMMMMMMMMM
@@ -96,6 +97,9 @@ EOF
     term.color_white do
       term.mvaddstr(13, 50, 'managed by GoN security')
       term.mvaddstr(14, 52, 'since 1999')
+    end
+    if logo_colors.uniq.size == 1
+      term.color_red { term.mvaddstr(18, 17, 'JACKPOT!!!!') }
     end
     term.mvaddstr(20, 5, 'total hit: 14520652')
     term.mvaddstr(21, 5, 'today hit: 229')
