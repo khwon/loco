@@ -50,3 +50,6 @@ gem 'rubocop', group: :development, require: false
 
 # ActiveModel::SecurePassword
 gem 'bcrypt', '~> 3.1.7'
+
+# for checking string width in terminal
+gem 'unicode'

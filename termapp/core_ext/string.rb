@@ -12,6 +12,6 @@ class String
   #
   # Returns the Integer size of the String to print on Ncurses screen.
   def size_for_print
-    length + each_char.reject { |x| x.ascii_only? }.length
+    Unicode::width(self,true)
   end
 end
