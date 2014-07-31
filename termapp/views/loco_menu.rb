@@ -46,19 +46,19 @@ class LocoMenu < TermApp::View
     items << Item.new('Boards', :print_board_menu)
     items << Item.new('Select', :select_board_menu)
     items << Item.new('Read', :read_board_menu)
-    items << Item.new('Post')
-    # items << Item.new('Extra')
-    items << Item.new('Talk')
-    items << Item.new('Mail')
-    items << Item.new('Diary')
-    # items << Item.new('Visit')
-    items << Item.new('Welcome')
-    items << Item.new('Xyz')
-    items << Item.new('Goodbye')
-    items << Item.new('Help')
-    # items << Item.new('InfoBBS')
+    items.concat(%w(
+      Post
+      Talk
+      Mail
+      Diary
+      Welcome
+      Xyz
+      Goodbye
+      Help
+    ).map { |name| Item.new(name) })
+    # items.concat(%w(Extra Visit InfoBBS).map { |name| Item.new(name) }))
     items << Item.new('Admin') if term.current_user.admin?
-    menu_helper(items)
+    menu_helper(items.freeze)
   end
 
   # Public: Helper for main of LocoMenu.
