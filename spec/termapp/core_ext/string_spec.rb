@@ -15,7 +15,7 @@ RSpec.describe String, type: :termapp do
     it 'fails on control characters' do
       # TODO: Fails on 0 < ord < 32 || 127 <= ord < 160
       # Use Array#pack('U') instead of Integer#chr because of encoding problem.
-      pending 'need to be implemented'
+      pending 'Not yet implemented'
       [*1..31, *127..159].each do |ch|
         expect([ch].pack('U').size_for_print).to raise_error
       end
