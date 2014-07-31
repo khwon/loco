@@ -10,12 +10,13 @@ module TermApp
     end
 
     def process(name, *args)
-      view = @cached_views[name] ||= begin
-        klass = name.to_s.classify.constantize
-        klass.new(self)
-      rescue NameError
-        NotImplementedMenu.new(name, self)
-      end
+      view = @cached_views[name] ||=
+        begin
+          klass = name.to_s.classify.constantize
+          klass.new(self)
+        rescue NameError
+          NotImplementedMenu.new(name, self)
+        end
       view.process(*args)
     end
 
