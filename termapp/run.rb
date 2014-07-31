@@ -1,9 +1,8 @@
-root = File.expand_path(File.dirname(__FILE__))
-require "#{root}/../config/environment.rb"
-require "#{root}/terminal"
-require "#{root}/application"
-require "#{root}/view"
-Dir["#{root}/views/*.rb"].each { |f| require f }
+require_relative '../config/environment'
+require_relative 'terminal'
+require_relative 'application'
+require_relative 'view'
+Dir[File.expand_path('../views/*.rb', __FILE__)].each { |f| require f }
 
 begin
   TermApp.run
