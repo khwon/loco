@@ -1,6 +1,5 @@
 class String
-  # Public: Calculate the size of the String to print on Ncurses screen. Each
-  # ASCII characters have size 1, other characters have size 2.
+  # Public: Calculate the size of the String to print on Ncurses screen.
   #
   # Examples
   #

@@ -1,6 +1,6 @@
 class LocoMenu < TermApp::View
-  # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a
-  # method to be called when selected.
+  # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a menu
+  # symbol of the class inheriting TermApp::View.
   class Item
     # Public: Returns the Regexp shortcut for the menu.
     attr_reader :shortcut_regex
@@ -8,20 +8,21 @@ class LocoMenu < TermApp::View
     # Public: Returns the String title of the menu.
     attr_reader :title
 
-    # Public: Returns the Method to be called when the menu is selected.
+    # Public: Returns the Symbol of the class inheriting TermApp::View.
     attr_reader :menu
 
     # Public: Initialize a Item of LocoMenu.
     #
-    # name   - A String indicates which menu it is.
-    # method - The Method instance to be called when selected
-    #          (default: LocoMenu.method(name.underscore.to_sym)).
+    # name      - A String indicates which menu it is.
+    # bind_menu - The Symbol of the class inheriting TermApp::View of which the
+    #             process method to be called when selected (default:
+    #             "#{name}Menu".camelize.underscore.to_sym).
     #
     # Examples
     #
-    #   Item.new('Boards')
+    #   Item.new('Post')
     #
-    #   Item.new('New', LocoMenu.method(:read_new))
+    #   Item.new('New', :read_new_menu)
     def initialize(name, bind_menu = "#{name}Menu".camelize.underscore.to_sym)
       @shortcut_regex = Regexp.new("[#{name[0].upcase}#{name[0].downcase}]")
       @title = name.camelize.sub(/^(.)/, '(\\1)')
@@ -37,8 +38,6 @@ class LocoMenu < TermApp::View
 
   # Public: Main routine of LocoMenu. Show menus. User can navigate menus and
   # select a menu.
-  #
-  # locoterm - The LocoTerm instance to deal with screen.
   #
   # Returns nothing.
   def process
@@ -64,18 +63,16 @@ class LocoMenu < TermApp::View
 
   # Public: Helper for main of LocoMenu.
   #
-  # locoterm - The LocoTerm instance to deal with screen.
   # items    - The Array of Item instances of menu to show.
   #
   # Examples
   #
-  #   LocoMenu.menu_helper(
-  #     locoterm,
+  #   menu_helper(
   #     [
-  #       Item.new('New', LocoMenu.method(:read_new)),
-  #       Item.new('Boards'),
-  #       Item.new('Select'),
-  #       Item.new('Read'),
+  #       Item.new('New', :read_new_menu),
+  #       Item.new('Boards', :print_board_menu),
+  #       Item.new('Select', :select_board_menu),
+  #       Item.new('Read', :read_board_menu),
   #       Item.new('Post'),
   #       Item.new('Goodbye')
   #     ]
