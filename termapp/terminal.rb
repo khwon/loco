@@ -23,6 +23,34 @@ module TermApp
                        color_blue color_magenta color_cyan color_white).freeze
     private_constant :COLORS, :COLOR_SYMBOLS
 
+    # Public: Set a color of Terminal. This method will be available for each
+    # color initialized on Ncurses.
+    #
+    # options - The Hash options used to refine the color
+    #           (default: { reverse: false }):
+    #           :reverse - The Boolean whether to reverse the foreground and
+    #                      background color or not (optional).
+    # block   - An optional block that can be used as an sandbox. If it is
+    #           present, color of terminal will be set to previous color after
+    #           the finish of block call.
+    #
+    # Examples
+    #
+    #   color_black
+    #
+    #   color_red(reverse: true)
+    #
+    #   color_green do
+    #     term.mvaddstr(14, 52, 'Successfully saved!')
+    #   end
+    #
+    # Returns nothing.
+    #
+    # Signature
+    #
+    #   color_<color>(reverse: false, &block)
+    #
+    # color - A color name.
     COLOR_SYMBOLS.each do |sym|
       define_method(sym) do |reverse: false, &block|
         color = Terminal.const_get(sym.upcase)
