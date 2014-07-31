@@ -1,4 +1,5 @@
 require 'active_support/inflector'
+
 module TermApp
   class Application
     attr_reader :term
