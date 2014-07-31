@@ -7,6 +7,7 @@ class ReadBoardMenu < TermApp::View
     term.erase_body
     if term.current_board
       term.current_board.post.each_with_index do |x, i|
+        break if i + 4 >= term.lines - 1
         term.mvaddstr(i + 4, 1, "#{format('%8d', x.num)} #{x.title}")
       end
     else
