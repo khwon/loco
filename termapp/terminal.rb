@@ -1,4 +1,3 @@
-require 'ncursesw'
 require_relative 'core_ext/string'
 
 module TermApp
