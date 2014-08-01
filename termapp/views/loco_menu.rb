@@ -1,6 +1,6 @@
 class LocoMenu < TermApp::View
-  # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a
-  # method to be called when selected.
+  # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a menu
+  # symbol of the class inheriting TermApp::View.
   class Item
     # Public: Returns the Regexp shortcut for the menu.
     attr_reader :shortcut_regex
@@ -8,23 +8,24 @@ class LocoMenu < TermApp::View
     # Public: Returns the String title of the menu.
     attr_reader :title
 
-    # Public: Returns the Method to be called when the menu is selected.
+    # Public: Returns the Symbol of the class inheriting TermApp::View.
     attr_reader :menu
 
     # Public: Initialize a Item of LocoMenu.
     #
-    # name   - A String indicates which menu it is.
-    # method - The Method instance to be called when selected
-    #          (default: LocoMenu.method(name.underscore.to_sym)).
+    # name      - A String indicates which menu it is.
+    # bind_menu - The Symbol of the class inheriting TermApp::View of which the
+    #             process method to be called when selected (default:
+    #             "#{name}Menu".camelize.underscore.to_sym).
     #
     # Examples
     #
-    #   Item.new('Boards')
+    #   Item.new('Post')
     #
-    #   Item.new('New', LocoMenu.method(:read_new))
-    def initialize(name, bind_menu)
+    #   Item.new('New', :read_new_menu)
+    def initialize(name, bind_menu = "#{name}Menu".camelize.underscore.to_sym)
       @shortcut_regex = Regexp.new("[#{name[0].upcase}#{name[0].downcase}]")
-      @title = name.capitalize.sub(/^(.)/, '(\\1)')
+      @title = name.camelize.sub(/^(.)/, '(\\1)')
       @menu = bind_menu
     end
   end
@@ -38,8 +39,6 @@ class LocoMenu < TermApp::View
   # Public: Main routine of LocoMenu. Show menus. User can navigate menus and
   # select a menu.
   #
-  # locoterm - The LocoTerm instance to deal with screen.
-  #
   # Returns nothing.
   def process
     items = []
@@ -47,35 +46,33 @@ class LocoMenu < TermApp::View
     items << Item.new('Boards', :print_board_menu)
     items << Item.new('Select', :select_board_menu)
     items << Item.new('Read', :read_board_menu)
-    items << Item.new('Post', :post_menu)
-    # items << Item.new('Extra')
-    items << Item.new('Talk', :talk_menu)
-    items << Item.new('Mail', :mail_menu)
-    items << Item.new('Diary', :diary_menu)
-    # items << Item.new('Visit')
-    items << Item.new('Welcome', :welcome_menu)
-    items << Item.new('Xyz', :xyz_menu)
-    items << Item.new('Goodbye', :goodbye_menu)
-    items << Item.new('Help', :help_menu)
-    # items << Item.new('InfoBBS')
-    items << Item.new('Admin', :admin_menu) if term.current_user.admin?
-    menu_helper(items)
+    items.concat(%w(
+      Post
+      Talk
+      Mail
+      Diary
+      Welcome
+      Xyz
+      Goodbye
+      Help
+    ).map { |name| Item.new(name) })
+    # items.concat(%w(Extra Visit InfoBBS).map { |name| Item.new(name) }))
+    items << Item.new('Admin') if term.current_user.admin?
+    menu_helper(items.freeze)
   end
 
   # Public: Helper for main of LocoMenu.
   #
-  # locoterm - The LocoTerm instance to deal with screen.
   # items    - The Array of Item instances of menu to show.
   #
   # Examples
   #
-  #   LocoMenu.menu_helper(
-  #     locoterm,
+  #   menu_helper(
   #     [
-  #       Item.new('New', LocoMenu.method(:read_new)),
-  #       Item.new('Boards'),
-  #       Item.new('Select'),
-  #       Item.new('Read'),
+  #       Item.new('New', :read_new_menu),
+  #       Item.new('Boards', :print_board_menu),
+  #       Item.new('Select', :select_board_menu),
+  #       Item.new('Read', :read_board_menu),
   #       Item.new('Post'),
   #       Item.new('Goodbye')
   #     ]
@@ -89,7 +86,7 @@ class LocoMenu < TermApp::View
         term.erase_body
         items.each_with_index do |item, i|
           if i == @cur_menu
-            term.set_color(TermApp::Terminal::COLOR_BLACK, reverse: true) do
+            term.color_black(reverse: true) do
               term.mvaddstr(i + 4, 3, item.title)
             end
           else
@@ -98,7 +95,7 @@ class LocoMenu < TermApp::View
         end
       else
         term.mvaddstr(@past_menu + 4, 3, items[@past_menu].title)
-        term.set_color(TermApp::Terminal::COLOR_BLACK, reverse: true) do
+        term.color_black(reverse: true) do
           term.mvaddstr(@cur_menu + 4, 3, items[@cur_menu].title)
         end
       end
