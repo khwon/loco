@@ -88,7 +88,8 @@ module TermApp
     attr_accessor :current_user
     attr_accessor :current_board
 
-    # Internal: Initialize a Terminal.
+    # Internal: Initialize a Terminal. Set initial Ncurses configurations and
+    # start Ncurses screen.
     #
     # encoding - The Encoding of Terminal.
     #
@@ -128,6 +129,19 @@ module TermApp
 
     # Internal: Set a random color of Terminal. Delegates to color_<color>
     # method.
+    #
+    #
+    # Examples
+    #
+    #   color_sample(reverse: true)
+    #
+    #   color_sample do
+    #     term.mvaddstr(14, 52, 'Random color text')
+    #   end
+    #
+    #   color_sample(reverse: true) do
+    #     term.mvaddstr(14, 52, 'Random reversed color text')
+    #   end
     #
     # Returns the Symbol of the random color.
     def color_sample(*args, &block)
