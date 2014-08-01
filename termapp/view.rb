@@ -1,6 +1,6 @@
 module TermApp
   class View
-    # Public: Initialize a View.
+    # Internal: Initialize a View.
     #
     # app - The Application instance which is now running.
     def initialize(app)

@@ -2,16 +2,16 @@ class LocoMenu < TermApp::View
   # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a menu
   # symbol of the class inheriting TermApp::View.
   class Item
-    # Public: Returns the Regexp shortcut for the menu.
+    # Internal: Returns the Regexp shortcut for the menu.
     attr_reader :shortcut_regex
 
-    # Public: Returns the String title of the menu.
+    # Internal: Returns the String title of the menu.
     attr_reader :title
 
-    # Public: Returns the Symbol of the class inheriting TermApp::View.
+    # Internal: Returns the Symbol of the class inheriting TermApp::View.
     attr_reader :menu
 
-    # Public: Initialize a Item of LocoMenu.
+    # Internal: Initialize a Item of LocoMenu.
     #
     # name      - A String indicates which menu it is.
     # bind_menu - The Symbol of the class inheriting TermApp::View of which the
@@ -36,7 +36,7 @@ class LocoMenu < TermApp::View
     super
   end
 
-  # Public: Main routine of LocoMenu. Show menus. User can navigate menus and
+  # Internal: Main routine of LocoMenu. Show menus. User can navigate menus and
   # select a menu.
   #
   # Returns nothing.
@@ -61,7 +61,7 @@ class LocoMenu < TermApp::View
     menu_helper(items.freeze)
   end
 
-  # Public: Helper for main of LocoMenu.
+  # Internal: Helper for main of LocoMenu.
   #
   # items    - The Array of Item instances of menu to show.
   #

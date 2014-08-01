@@ -3,23 +3,23 @@ require_relative 'terminal'
 
 module TermApp
   class Application
-    # Public: Returns the Terminal instance of the application.
+    # Internal: Returns the Terminal instance of the application.
     attr_reader :term
 
-    # Public: Initialize a Application and run it.
+    # Internal: Initialize a Application and run it.
     #
     # Returns nothing.
     def self.run
       new.run
     end
 
-    # Public: Initialize a Application. Initialize a Terminal.
+    # Internal: Initialize a Application. Initialize a Terminal.
     def initialize
       @term = Terminal.new
       @cached_views = {}
     end
 
-    # Public: Process the Views.
+    # Internal: Process the Views.
     #
     # name - The Symbol of a class inheriting TermApp::View to process.
     # args - Zero or more values to pass to process method of class as
@@ -50,7 +50,7 @@ module TermApp
     end
   end
 
-  # Public: Main routine of the TermApp. Run the Application.
+  # Internal: Main routine of the TermApp. Run the Application.
   #
   # Returns nothing.
   def self.run

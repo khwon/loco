@@ -1,5 +1,5 @@
 class String
-  # Public: Calculate the size of the String to print on Ncurses screen.
+  # Internal: Calculate the size of the String to print on Ncurses screen.
   #
   # Examples
   #
