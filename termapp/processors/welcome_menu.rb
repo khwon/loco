@@ -1,4 +1,4 @@
-class WelcomeMenu < TermApp::View
+class WelcomeMenu < TermApp::Processor
   def process
     term.erase
     term.mvaddstr(15, 30, 'welcome to new loco!')

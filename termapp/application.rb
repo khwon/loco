@@ -19,14 +19,14 @@ module TermApp
       @cached_views = {}
     end
 
-    # Internal: Process the Views.
+    # Internal: Run process of a passed Processors. Get the name of a Processor
+    # and process it with the passed arguments.
     #
-    # name - The Symbol of a class inheriting TermApp::View to process.
+    # name - The Symbol of a class inheriting TermApp::Processor to process.
     # args - Zero or more values to pass to process method of class as
     #        parameters.
     #
-    # Returns a Symbol of View or an Array consists of a Symbol of View and its
-    #   process arguments or nil.
+    # Returns a Symbol of Processor with its process arguments or nil.
     def process(name, *args)
       view = @cached_views[name] ||=
         begin
@@ -38,13 +38,13 @@ module TermApp
       view.process(*args)
     end
 
-    # Internal: Main routine of the Application. Process a View until it returns
-    # next view as nil. Terminate the term at the finish.
+    # Internal: Main routine of the Application. Process a Processor until it
+    # returns next processor as nil. Terminate the term at the finish.
     #
     # Returns nothing.
     def run
-      next_view = :login_menu
-      next_view = process(*next_view) while next_view
+      next_processor = :login_menu
+      next_processor = process(*next_processor) while next_processor
     ensure
       @term.terminate
     end

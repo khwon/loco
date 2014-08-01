@@ -1,4 +1,4 @@
-class LoginMenu < TermApp::View
+class LoginMenu < TermApp::Processor
   def process
     user = nil
     tried = false

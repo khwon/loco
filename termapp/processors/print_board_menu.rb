@@ -1,4 +1,4 @@
-class PrintBoardMenu < TermApp::View
+class PrintBoardMenu < TermApp::Processor
   def process
     term.erase_body
     Board.get_list(parent_board: term.current_board).each_with_index do |x, i|
