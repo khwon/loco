@@ -1,6 +1,6 @@
 class LocoMenu < TermApp::Processor
   # Internal: Item of LocoMenu. Contains a regex for shortcut, title and a menu
-  # symbol of the class inheriting TermApp::Processor.
+  # symbol of the class inheriting Processor.
   class Item
     # Internal: Returns the Regexp shortcut for the menu.
     attr_reader :shortcut_regex
@@ -8,14 +8,14 @@ class LocoMenu < TermApp::Processor
     # Internal: Returns the String title of the menu.
     attr_reader :title
 
-    # Internal: Returns the Symbol of the class inheriting TermApp::Processor.
+    # Internal: Returns the Symbol of the class inheriting Processor.
     attr_reader :menu
 
     # Internal: Initialize a Item of LocoMenu.
     #
     # name      - A String indicates which menu it is.
-    # bind_menu - The Symbol of the class inheriting TermApp::Processor of which
-    #             the process method to be called when selected
+    # bind_menu - The Symbol of the class inheriting Processor of which the
+    #             process method to be called when selected
     #             (default: "#{name}Menu".camelize.underscore.to_sym).
     #
     # Examples

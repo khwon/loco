@@ -22,7 +22,7 @@ module TermApp
     # Internal: Run process of a passed Processors. Get the name of a Processor
     # and process it with the passed arguments.
     #
-    # name - The Symbol of a class inheriting TermApp::Processor to process.
+    # name - The Symbol of a class inheriting Processor to process.
     # args - Zero or more values to pass to process method of class as
     #        parameters.
     #
