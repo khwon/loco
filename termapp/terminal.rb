@@ -1,7 +1,7 @@
 require_relative 'core_ext/string'
 
 module TermApp
-  # Public: Wrapper for Ncurses to do terminal operations. Make sure to call
+  # Internal: Wrapper for Ncurses to do terminal operations. Make sure to call
   # terminate before termination of the program.
   #
   # Examples
@@ -14,13 +14,13 @@ module TermApp
   class Terminal
     extend Forwardable
 
-    # Public: Delegates erase, noecho, echo, beep to each method of Ncurses.
+    # Internal: Delegates erase, noecho, echo, beep to each method of Ncurses.
     def_delegators :Ncurses, :erase, :noecho, :echo, :beep
 
-    # Public: Delegates terminate to Ncurses.endwin.
+    # Internal: Delegates terminate to Ncurses.endwin.
     def_delegator :Ncurses, :endwin, :terminate
 
-    # Public: Delegates refresh, move, getch to each method of @stdscr.
+    # Internal: Delegates refresh, move, getch to each method of @stdscr.
     def_delegators :@stdscr, :refresh, :move, :getch
 
     # Internal: The constants for color of Ncurses.
@@ -38,7 +38,7 @@ module TermApp
                        color_blue color_magenta color_cyan color_white).freeze
     private_constant :COLORS, :COLOR_SYMBOLS
 
-    # Public: Set a color of Terminal. This method will be available for each
+    # Internal: Set a color of Terminal. This method will be available for each
     # color initialized on Ncurses.
     #
     # options - The Hash options used to refine the color
@@ -88,7 +88,8 @@ module TermApp
     attr_accessor :current_user
     attr_accessor :current_board
 
-    # Public: Initialize a Terminal.
+    # Internal: Initialize a Terminal. Set initial Ncurses configurations and
+    # start Ncurses screen.
     #
     # encoding - The Encoding of Terminal.
     #
@@ -126,7 +127,21 @@ module TermApp
       Ncurses.raw
     end
 
-    # Public: Set a random color of Terminal. Delegates to color_<color> method.
+    # Internal: Set a random color of Terminal. Delegates to color_<color>
+    # method.
+    #
+    #
+    # Examples
+    #
+    #   color_sample(reverse: true)
+    #
+    #   color_sample do
+    #     term.mvaddstr(14, 52, 'Random color text')
+    #   end
+    #
+    #   color_sample(reverse: true) do
+    #     term.mvaddstr(14, 52, 'Random reversed color text')
+    #   end
     #
     # Returns the Symbol of the random color.
     def color_sample(*args, &block)
