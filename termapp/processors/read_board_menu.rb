@@ -1,4 +1,4 @@
-class ReadBoardMenu < TermApp::View
+class ReadBoardMenu < TermApp::Processor
   def process
     term.erase_body
     if term.current_board

@@ -1,6 +1,9 @@
 module TermApp
-  class View
-    # Internal: Initialize a View. It holds the Application instance.
+  # Internal: Base Processor class. The process method must be implemented. The
+  # process method must return the Symbol of Processor to be processed next with
+  # its arguments or nil for termination.
+  class Processor
+    # Internal: Initialize a Processor. It holds the Application instance.
     #
     # app - The Application instance which is now running.
     def initialize(app)

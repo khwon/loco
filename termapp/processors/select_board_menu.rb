@@ -1,4 +1,4 @@
-class SelectBoardMenu < TermApp::View
+class SelectBoardMenu < TermApp::Processor
   def process
     str = ''
     cur_boards = []

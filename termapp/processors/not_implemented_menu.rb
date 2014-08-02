@@ -1,4 +1,4 @@
-class NotImplementedMenu < TermApp::View
+class NotImplementedMenu < TermApp::Processor
   def initialize(name, *args)
     @name = name
     super(*args)
