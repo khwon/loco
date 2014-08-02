@@ -50,3 +50,15 @@ group :specs, halt_on_fail: true do
     watch(/.+\.rake$/)
   end
 end
+
+# Set default plugin scope of Guard to RuboCop. If you want to run RSpec plugin,
+# just type
+#
+#   rspec
+#
+# in Guard command line. Also you can type
+#
+#   scope specs
+#
+# in Guard command line to use both RSpec and RuboCop plugins by default.
+scope plugin: :rubocop
