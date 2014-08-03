@@ -3,24 +3,24 @@ require_relative 'terminal'
 
 module TermApp
   class Application
-    # Internal: Returns the Terminal instance of the application.
+    # Returns the Terminal instance of the application.
     attr_reader :term
 
-    # Internal: Initialize a Application and run it.
+    # Initialize a Application and run it.
     #
     # Returns nothing.
     def self.run
       new.run
     end
 
-    # Internal: Initialize a Application. Initialize a Terminal.
+    # Initialize a Application. Initialize a Terminal.
     def initialize
       @term = Terminal.new
       @cached_views = {}
     end
 
-    # Internal: Run process of a passed Processors. Get the name of a Processor
-    # and process it with the passed arguments.
+    # Run process of a passed Processors. Get the name of a Processor and
+    # process it with the passed arguments.
     #
     # name - The Symbol of a class inheriting Processor to process.
     # args - Zero or more values to pass to process method of class as
@@ -38,8 +38,8 @@ module TermApp
       view.process(*args)
     end
 
-    # Internal: Main routine of the Application. Process a Processor until it
-    # returns next processor as nil. Terminate the term at the finish.
+    # Main routine of the Application. Process a Processor until it returns next
+    # processor as nil. Terminate the term at the finish.
     #
     # Returns nothing.
     def run
@@ -50,7 +50,7 @@ module TermApp
     end
   end
 
-  # Internal: Main routine of the TermApp. Run the Application.
+  # Main routine of the TermApp. Run the Application.
   #
   # Returns nothing.
   def self.run
