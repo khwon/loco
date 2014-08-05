@@ -41,6 +41,3 @@ Style/MethodCalledOnDoEndBlock:
 
 Style/MethodLength:
   Enabled: false
-
-Lint/EndAlignment:
-  AlignWith: variable
