@@ -16,7 +16,7 @@ module TermApp
     # Internal: Initialize a Application. Initialize a Terminal.
     def initialize
       @term = Terminal.new
-      @cached_views = {}
+      @cached_processors = {}
     end
 
     # Internal: Run process of a passed Processors. Get the name of a Processor
@@ -28,14 +28,14 @@ module TermApp
     #
     # Returns a Symbol of Processor with its process arguments or nil.
     def process(name, *args)
-      view = @cached_views[name] ||=
+      processor = @cached_processors[name] ||=
         begin
           klass = name.to_s.classify.constantize
           klass.new(self)
         rescue NameError
           NotImplementedMenu.new(name, self)
         end
-      view.process(*args)
+      processor.process(*args)
     end
 
     # Internal: Main routine of the Application. Process a Processor until it
