@@ -30,8 +30,5 @@ Style/Documentation:
     - 'app/helpers/application_helper.rb'
     - 'test/test_helper.rb'
 
-Style/Encoding:
-  Enabled: true
-
 Style/MethodLength:
   Enabled: false
