@@ -1,8 +1,8 @@
 require_relative 'core_ext/string'
 
 module TermApp
-  # Internal: Wrapper for Ncurses to do terminal operations. Make sure to call
-  # terminate before termination of the program.
+  # Wrapper for Ncurses to do terminal operations. Make sure to call terminate
+  # before termination of the program.
   #
   # Examples
   #
@@ -14,16 +14,16 @@ module TermApp
   class Terminal
     extend Forwardable
 
-    # Internal: Delegates erase, noecho, echo, beep to each method of Ncurses.
+    # Delegates erase, noecho, echo, beep to each method of Ncurses.
     def_delegators :Ncurses, :erase, :noecho, :echo, :beep
 
-    # Internal: Delegates terminate to Ncurses.endwin.
+    # Delegates terminate to Ncurses.endwin.
     def_delegator :Ncurses, :endwin, :terminate
 
-    # Internal: Delegates refresh, move, getch to each method of @stdscr.
+    # Delegates refresh, move, getch to each method of @stdscr.
     def_delegators :@stdscr, :refresh, :move, :getch
 
-    # Internal: The constants for color of Ncurses.
+    # The constants for color of Ncurses.
     COLOR_BLACK = 0
     COLOR_RED = 1
     COLOR_GREEN = 2
@@ -38,8 +38,8 @@ module TermApp
                        color_blue color_magenta color_cyan color_white).freeze
     private_constant :COLORS, :COLOR_SYMBOLS
 
-    # Internal: Set a color of Terminal. This method will be available for each
-    # color initialized on Ncurses.
+    # Set a color of Terminal. This method will be available for each color
+    # initialized on Ncurses.
     #
     # options - The Hash options used to refine the color
     #           (default: { reverse: false }):
@@ -88,8 +88,8 @@ module TermApp
     attr_accessor :current_user
     attr_accessor :current_board
 
-    # Internal: Initialize a Terminal. Set initial Ncurses configurations and
-    # start Ncurses screen.
+    # Initialize a Terminal. Set initial Ncurses configurations and start
+    # Ncurses screen.
     #
     # encoding - The Encoding of Terminal.
     #
@@ -127,8 +127,7 @@ module TermApp
       Ncurses.raw
     end
 
-    # Internal: Set a random color of Terminal. Delegates to color_<color>
-    # method.
+    # Set a random color of Terminal. Delegates to color_<color> method.
     #
     #
     # Examples
