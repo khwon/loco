@@ -33,10 +33,9 @@ RSpec.describe TermApp, type: :termapp do
       @app.run
 
       cached_processors = @app.instance_variable_get(:@cached_processors)
-      expect(cached_processors).not_to be_empty
-      expect(cached_processors.size).to eq(2)
-      expect(cached_processors[:login_menu]).to be_instance_of(LoginMenu)
-      expect(cached_processors[:goodbye_menu]).to be_instance_of(GoodbyeMenu)
+      expect(cached_processors).to only_have_processors(%i(
+        login_menu goodbye_menu
+      ))
     end
   end
 end
