@@ -33,8 +33,5 @@ Style/Documentation:
 Style/Encoding:
   Enabled: true
 
-Style/MethodCalledOnDoEndBlock:
-  Enabled: true
-
 Style/MethodLength:
   Enabled: false
