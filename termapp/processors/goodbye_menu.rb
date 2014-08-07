@@ -1,3 +1,5 @@
+# Corresponding Processor of LocoMenu::Item.new('Goodbye'). Terminate the
+# Application after processing.
 class GoodbyeMenu < TermApp::Processor
   def process
     term.erase_all

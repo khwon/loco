@@ -1,3 +1,5 @@
+# Main processor of the Application. User can navigate menus and select a menu.
+# Processed after WelcomeMenu.
 class LocoMenu < TermApp::Processor
   # Item of LocoMenu. Contains a regex for shortcut, title and a menu symbol of
   # the class inheriting Processor.

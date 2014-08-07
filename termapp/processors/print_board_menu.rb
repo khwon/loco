@@ -1,3 +1,5 @@
+# Corresponding Processor of LocoMenu::Item.new('Boards', :print_board_menu).
+# Print the child Board list of current Board.
 class PrintBoardMenu < TermApp::Processor
   def process
     term.erase_body

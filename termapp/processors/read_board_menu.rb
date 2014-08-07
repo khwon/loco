@@ -1,3 +1,5 @@
+# Corresponding Processor of LocoMenu::Item.new('Read', :read_board_menu). Print
+# the Post list of current Board.
 class ReadBoardMenu < TermApp::Processor
   def process
     term.erase_body
