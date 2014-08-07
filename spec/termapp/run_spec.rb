@@ -6,7 +6,7 @@ Dir[File.expand_path('../../../termapp/processors/*.rb', __FILE__)]
   .each { |f| require f }
 
 RSpec.describe TermApp, type: :termapp do
-  context 'when it runs' do
+  describe '.run' do
     def mock_id_input(dummy_id)
       mocking = true
       allow(@app.term).to receive(:mvgetnstr).with(
@@ -46,6 +46,9 @@ RSpec.describe TermApp, type: :termapp do
       allow(@app.term).to receive(:getch) { Ncurses::KEY_ENTER }
       @app.run
 
+      expect(@app.term).to have_received_id.once
+      expect(@app.term).to have_received(:getch).with(no_args).once
+
       cached_processors = @app.instance_variable_get(:@cached_processors)
       expect(cached_processors).to only_have_processors(%i(
         login_menu goodbye_menu
@@ -58,9 +61,9 @@ RSpec.describe TermApp, type: :termapp do
         mock_pw_input('testpw')
         user = instance_double('User')
         allow(User).to receive(:find_by).with(username: 'testid')
-                       .and_return(user)
+                                        .and_return(user)
         allow(user).to receive(:try).with(:authenticate, 'testpw')
-                       .and_return(user)
+                                    .and_return(user)
         allow(user).to receive(:admin?).and_return(true)
         allow(@app.term).to receive(:getch).and_return(
           # WelcomeMenu
@@ -75,8 +78,13 @@ RSpec.describe TermApp, type: :termapp do
 
         @app.run
 
+        expect(@app.term).to have_received_id.once
+        expect(@app.term).to have_received_pw.once
         expect(User).to have_received(:find_by).with(username: 'testid').once
         expect(user).to have_received(:try).with(:authenticate, 'testpw').once
+        expect(user).to have_received(:admin?).with(no_args).once
+        expect(@app.term).to have_received(:getch).with(no_args)
+                                                  .exactly(4).times
 
         cached_processors = @app.instance_variable_get(:@cached_processors)
         expect(cached_processors).to only_have_processors(%i(

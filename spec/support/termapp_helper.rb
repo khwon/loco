@@ -9,3 +9,37 @@ RSpec::Matchers.define :only_have_processors do |expected|
     expected.all? { |e| actual[e].is_a? e.to_s.classify.constantize }
   end
 end
+
+RSpec::Matchers.define :have_received_id do
+  match do |actual|
+    result = have_received(:mvgetnstr).with(20, 40, anything, 20)
+    @count_args.each do |args|
+      result.send(*args)
+    end
+    expect(actual).to result
+  end
+
+  %i(exactly at_least at_most times once twice).each do |expectation|
+    chain expectation do |*args|
+      @count_args ||= []
+      @count_args << [expectation, *args]
+    end
+  end
+end
+
+RSpec::Matchers.define :have_received_pw do
+  match do |actual|
+    result = have_received(:mvgetnstr).with(21, 40, anything, 20, echo: false)
+    @count_args.each do |args|
+      result.send(*args)
+    end
+    expect(actual).to result
+  end
+
+  %i(exactly at_least at_most times once twice).each do |expectation|
+    chain expectation do |*args|
+      @count_args ||= []
+      @count_args << [expectation, *args]
+    end
+  end
+end
