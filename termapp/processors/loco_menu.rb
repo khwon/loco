@@ -114,12 +114,11 @@ class LocoMenu < TermApp::Processor
         term.echo
         break items[@cur_menu].menu
       else
-        if c < 127
-          items.each_with_index do |item, i|
-            next unless c.chr =~ item.shortcut_regex
-            @past_menu = @cur_menu
-            @cur_menu = i
-          end
+        next unless c < 127
+        items.each_with_index do |item, i|
+          next unless c.chr =~ item.shortcut_regex
+          @past_menu = @cur_menu
+          @cur_menu = i
         end
       end
     end
