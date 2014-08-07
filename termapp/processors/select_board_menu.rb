@@ -52,14 +52,13 @@ class SelectBoardMenu < TermApp::Processor
         end
         str = str[0..-2]
       else
-        if c < 127
-          matched = list.select { |x| x.path_name.starts_with? str + c.chr }
-          if matched.size > 0
-            cur_boards = matched
-            str += c.chr
-          else
-            term.beep
-          end
+        next unless c < 127
+        matched = list.select { |x| x.path_name.starts_with? str + c.chr }
+        if matched.size > 0
+          cur_boards = matched
+          str += c.chr
+        else
+          term.beep
         end
       end
     end
