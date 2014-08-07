@@ -1,4 +1,15 @@
+# Print the message saying this menu is not implemented yet.
 class NotImplementedMenu < TermApp::Processor
+  # Initialize a NotImplementedMenu. It holds the Symbol of the menu which is
+  # not implemented yet.
+  #
+  # name - The Symbol of the menu which is not implemented yet.
+  # args - Zero or more values to pass to initialize of super class as
+  #        parameters.
+  #
+  # Examples
+  #
+  #   NotImplementedMenu.new(:future_menu, app)
   def initialize(name, *args)
     @name = name
     super(*args)

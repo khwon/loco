@@ -1,3 +1,5 @@
+# Corresponding Processor of LocoMenu::Item.new('Select', :select_board_menu).
+# User can navigate Boards and select a Board.
 class SelectBoardMenu < TermApp::Processor
   def process
     str = ''

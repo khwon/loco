@@ -1,3 +1,5 @@
+# Process login screen. Processed at first. Terminate the Application when user
+# input 'off' on id field.
 class LoginMenu < TermApp::Processor
   def process
     user = nil
@@ -20,6 +22,21 @@ class LoginMenu < TermApp::Processor
 
   private
 
+  # Draw login page with the logo of Loco. Each character of logo is colored
+  # randomly. If every letter has same color, print 'JACKPOT!!!!' on screen.
+  #
+  # options - The Hash options used to print login failed message
+  #           (default: { failed: false }):
+  #           :failed - The Boolean indicates whether user has failed to login
+  #                     or not (optional).
+  #
+  # Examples
+  #
+  #   draw_login
+  #
+  #   draw_login(failed: true)
+  #
+  # Returns nothing.
   def draw_login(failed: false)
     term.clrtoeol(0..23)
     logo_colors = []
