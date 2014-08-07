@@ -58,9 +58,9 @@ RSpec.describe TermApp, type: :termapp do
         mock_pw_input('testpw')
         user = instance_double('User')
         allow(User).to receive(:find_by).with(username: 'testid')
-                       .and_return(user)
+                                        .and_return(user)
         allow(user).to receive(:try).with(:authenticate, 'testpw')
-                       .and_return(user)
+                                    .and_return(user)
         allow(user).to receive(:admin?).and_return(true)
         allow(@app.term).to receive(:getch).and_return(
           # WelcomeMenu
