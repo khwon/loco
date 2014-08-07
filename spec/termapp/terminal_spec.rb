@@ -15,4 +15,12 @@ RSpec.describe TermApp::Terminal, type: :termapp do
       end
     end
   end
+
+  context 'with define_method' do
+    TermApp::Terminal.const_get(:COLOR_SYMBOLS).each do |color_method|
+      it "responds to #{color_method}" do
+        expect(@term.respond_to? color_method).to be true
+      end
+    end
+  end
 end
