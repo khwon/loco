@@ -56,15 +56,16 @@ RSpec.describe TermApp, type: :termapp do
     end
 
     context 'when logged in' do
+      let(:user) { FactoryGirl.create(:user) }
+
       it 'processes WelcomeMenu and LocoMenu' do
-        mock_id_input('testid')
-        mock_pw_input('testpw')
-        user = instance_double('User')
-        allow(User).to receive(:find_by).with(username: 'testid')
+        mock_id_input('johndoe')
+        mock_pw_input('password')
+        allow(User).to receive(:find_by).with(username: user.username)
                                         .and_return(user)
-        allow(user).to receive(:try).with(:authenticate, 'testpw')
-                                    .and_return(user)
-        allow(user).to receive(:admin?).and_return(true)
+        allow(user).to receive(:try).with(:authenticate, user.password)
+                                    .and_call_original
+        allow(user).to receive(:admin?).and_call_original
         allow(@app.term).to receive(:getch).and_return(
           # WelcomeMenu
           Ncurses::KEY_ENTER,
@@ -80,8 +81,10 @@ RSpec.describe TermApp, type: :termapp do
 
         expect(@app.term).to have_received_id.once
         expect(@app.term).to have_received_pw.once
-        expect(User).to have_received(:find_by).with(username: 'testid').once
-        expect(user).to have_received(:try).with(:authenticate, 'testpw').once
+        expect(User).to have_received(:find_by).with(username: user.username)
+                                               .once
+        expect(user).to have_received(:try).with(:authenticate, user.password)
+                                           .once
         expect(user).to have_received(:admin?).with(no_args).once
         expect(@app.term).to have_received(:getch).with(no_args)
                                                   .exactly(4).times
