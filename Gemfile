@@ -28,7 +28,8 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+# ActiveModel::SecurePassword
+gem 'bcrypt', '~> 3.1.7'
 
 # Use unicorn as the app server
 # gem 'unicorn'
@@ -52,9 +53,6 @@ group :development do
   gem 'guard-rspec', '~> 4.3.1', require: false
   gem 'guard-rubocop', '~> 1.1.0', require: false
 end
-
-# ActiveModel::SecurePassword
-gem 'bcrypt', '~> 3.1.7'
 
 # for checking string width in terminal
 gem 'unicode'
