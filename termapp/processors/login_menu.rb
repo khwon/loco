@@ -2,9 +2,9 @@ class LoginMenu < TermApp::Processor
   def process
     user = nil
     tried = false
-    id = ''
-    pw = ''
     until user
+      id = ''
+      pw = ''
       draw_login(failed: tried)
       tried = true
       term.mvgetnstr(20, 40, id, 20)
