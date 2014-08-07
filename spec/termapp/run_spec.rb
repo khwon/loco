@@ -6,7 +6,7 @@ Dir[File.expand_path('../../../termapp/processors/*.rb', __FILE__)]
   .each { |f| require f }
 
 RSpec.describe TermApp, type: :termapp do
-  context 'when it runs' do
+  describe '.run' do
     def mock_id_input(dummy_id)
       mocking = true
       allow(@app.term).to receive(:mvgetnstr).with(
