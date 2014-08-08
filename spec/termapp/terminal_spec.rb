@@ -7,13 +7,21 @@ RSpec.describe TermApp::Terminal, type: :termapp do
     subject.terminate
   end
 
-  %i(erase noecho echo beep terminate refresh move getch).each do |method|
-    it { is_expected.to respond_to(method) }
+  it do
+    is_expected.to respond_to(:erase,
+                              :noecho,
+                              :echo,
+                              :beep,
+                              :terminate,
+                              :refresh,
+                              :move,
+                              :getch)
   end
 
   describe '.color_<color>' do
-    TermApp::Terminal.const_get(:COLOR_SYMBOLS).each do |color_method|
-      it { is_expected.to respond_to(color_method) }
+    it do
+      is_expected.to respond_to(
+                       *TermApp::Terminal.const_get(:COLOR_SYMBOLS))
     end
   end
 end
