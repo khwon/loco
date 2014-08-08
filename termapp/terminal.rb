@@ -15,7 +15,7 @@ module TermApp
     extend Forwardable
 
     # Delegates erase, noecho, echo, beep to each method of Ncurses.
-    def_delegators :Ncurses, :erase, :noecho, :echo, :beep
+    delegate [:erase, :noecho, :echo, :beep] => :Ncurses
 
     # Delegates terminate to Ncurses.endwin.
     def_delegator :Ncurses, :endwin, :terminate
