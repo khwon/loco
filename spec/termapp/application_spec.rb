@@ -6,8 +6,7 @@ module LoginHelpers
   def mock_id_input(dummy_id)
     mocking = true
     allow(subject.term).to receive(:mvgetnstr).with(
-      20, 40, anything, 20
-    ) do |y, x, str, n|
+                             20, 40, anything, 20) do |y, x, str, n|
       if mocking
         mocking = false
         str.replace(dummy_id)
@@ -20,8 +19,8 @@ module LoginHelpers
   def mock_pw_input(dummy_pw)
     mocking = true
     allow(subject.term).to receive(:mvgetnstr).with(
-      21, 40, anything, 20, echo: false
-    ) do |y, x, str, n, echo: false|
+                             21, 40, anything, 20, echo: false
+                           ) do |y, x, str, n, echo: false|
       if mocking
         mocking = false
         str.replace(dummy_pw)
@@ -50,9 +49,11 @@ RSpec.describe TermApp::Application, type: :termapp do
       expect(subject.term).to have_received(:getch).with(no_args).once
 
       cached_processors = subject.instance_variable_get(:@cached_processors)
-      expect(cached_processors).to only_have_processors(%i(
-        login_menu goodbye_menu
-      ))
+      expect(cached_processors).to only_have_processors(
+                                     %i(
+                                       login_menu
+                                       goodbye_menu
+                                     ))
     end
 
     context 'when logged in' do
@@ -67,15 +68,15 @@ RSpec.describe TermApp::Application, type: :termapp do
                                     .and_call_original
         allow(user).to receive(:admin?).and_call_original
         allow(subject.term).to receive(:getch).and_return(
-          # WelcomeMenu
-          Ncurses::KEY_ENTER,
-          # g
-          103,
-          # LocoMenu
-          Ncurses::KEY_ENTER,
-          # GoodbyeMenu
-          Ncurses::KEY_ENTER
-        )
+                                 # WelcomeMenu
+                                 Ncurses::KEY_ENTER,
+                                 # g
+                                 103,
+                                 # LocoMenu
+                                 Ncurses::KEY_ENTER,
+                                 # GoodbyeMenu
+                                 Ncurses::KEY_ENTER
+                               )
 
         subject.run
 
@@ -90,9 +91,13 @@ RSpec.describe TermApp::Application, type: :termapp do
                                                      .exactly(4).times
 
         cached_processors = subject.instance_variable_get(:@cached_processors)
-        expect(cached_processors).to only_have_processors(%i(
-          login_menu welcome_menu loco_menu goodbye_menu
-        ))
+        expect(cached_processors).to only_have_processors(
+                                       %i(
+                                         login_menu
+                                         welcome_menu
+                                         loco_menu
+                                         goodbye_menu
+                                       ))
       end
     end
   end
