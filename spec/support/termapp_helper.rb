@@ -1,45 +1,49 @@
 $LOAD_PATH.unshift(File.expand_path('../../../termapp', __FILE__))
 
-RSpec::Matchers.define :only_have_processors do |expected|
-  match do |actual|
-    expected.size == actual.size && contain_all?(expected, actual)
-  end
+module TermAppHelpers
+  extend RSpec::Matchers::DSL
 
-  def contain_all?(expected, actual)
-    expected.all? { |e| actual[e].is_a? e.to_s.classify.constantize }
-  end
-end
-
-RSpec::Matchers.define :have_received_id do
-  match do |actual|
-    result = have_received(:mvgetnstr).with(20, 40, anything, 20)
-    @count_args.each do |args|
-      result.send(*args)
+  matcher :only_have_processors do |expected|
+    match do |actual|
+      expected.size == actual.size && contain_all?(expected, actual)
     end
-    expect(actual).to result
-  end
 
-  %i(exactly at_least at_most times once twice).each do |expectation|
-    chain expectation do |*args|
-      @count_args ||= []
-      @count_args << [expectation, *args]
+    def contain_all?(expected, actual)
+      expected.all? { |e| actual[e].is_a? e.to_s.classify.constantize }
     end
   end
-end
 
-RSpec::Matchers.define :have_received_pw do
-  match do |actual|
-    result = have_received(:mvgetnstr).with(21, 40, anything, 20, echo: false)
-    @count_args.each do |args|
-      result.send(*args)
+  matcher :have_received_id do
+    match do |actual|
+      result = have_received(:mvgetnstr).with(20, 40, anything, 20)
+      @count_args.each do |args|
+        result.send(*args)
+      end
+      expect(actual).to result
     end
-    expect(actual).to result
+
+    %i(exactly at_least at_most times once twice).each do |expectation|
+      chain expectation do |*args|
+        @count_args ||= []
+        @count_args << [expectation, *args]
+      end
+    end
   end
 
-  %i(exactly at_least at_most times once twice).each do |expectation|
-    chain expectation do |*args|
-      @count_args ||= []
-      @count_args << [expectation, *args]
+  matcher :have_received_pw do
+    match do |actual|
+      result = have_received(:mvgetnstr).with(21, 40, anything, 20, echo: false)
+      @count_args.each do |args|
+        result.send(*args)
+      end
+      expect(actual).to result
+    end
+
+    %i(exactly at_least at_most times once twice).each do |expectation|
+      chain expectation do |*args|
+        @count_args ||= []
+        @count_args << [expectation, *args]
+      end
     end
   end
 end

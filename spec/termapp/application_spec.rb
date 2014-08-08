@@ -3,6 +3,8 @@ require_relative '../../config/environment'
 require 'application'
 
 RSpec.describe TermApp::Application, type: :termapp do
+  include TermAppHelpers
+
   describe '.run' do
     def mock_id_input(dummy_id)
       mocking = true
