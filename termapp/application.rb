@@ -9,21 +9,25 @@ Dir[File.expand_path('../processors/*.rb', __FILE__)].each { |f| require f }
 #
 #   TermApp.run
 module TermApp
+  extend SingleForwardable
+
+  # Delegates self.run to Application.run. Main routine of the TermApp. Run the
+  # Application.
+  def_delegator 'TermApp::Application', :run
+
   # Application of TermApp.
   #
   # Examples
   #
   #   TermApp::Application.run
   class Application
+    extend SingleForwardable
+
+    # Delegates self.run to new.run. Initialize a Application and run it.
+    def_delegator :new, :run
+
     # Returns the Terminal instance of the application.
     attr_reader :term
-
-    # Initialize a Application and run it.
-    #
-    # Returns nothing.
-    def self.run
-      new.run
-    end
 
     # Initialize a Application. Initialize a Terminal.
     def initialize
@@ -60,12 +64,5 @@ module TermApp
     ensure
       @term.terminate
     end
-  end
-
-  # Main routine of the TermApp. Run the Application. Alias for Application.run.
-  #
-  # Returns nothing.
-  def self.run
-    Application.run
   end
 end
