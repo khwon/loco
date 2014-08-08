@@ -36,7 +36,7 @@ login credentials: a/a for admin, b/b, c/c, d/d for user
 ### Run
 
 ``` sh
-ruby termapp/run.rb
+./bin/term
 ```
 
 ## Test
