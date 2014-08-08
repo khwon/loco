@@ -1,7 +1,17 @@
 require 'active_support/inflector'
 require_relative 'terminal'
 
+# Terminal application of Loco.
+#
+# Examples
+#
+#   TermApp.run
 module TermApp
+  # Application of TermApp.
+  #
+  # Examples
+  #
+  #   TermApp::Application.run
   class Application
     # Returns the Terminal instance of the application.
     attr_reader :term
@@ -50,7 +60,7 @@ module TermApp
     end
   end
 
-  # Main routine of the TermApp. Run the Application.
+  # Main routine of the TermApp. Run the Application. Alias for Application.run.
   #
   # Returns nothing.
   def self.run

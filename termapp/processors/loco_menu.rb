@@ -32,6 +32,14 @@ class LocoMenu < TermApp::Processor
     end
   end
 
+  # Initialize a LocoMenu. Initialize cur_menu and past_menu.
+  #
+  # args - Zero or more values to pass to initialize of super class as
+  #        parameters.
+  #
+  # Examples
+  #
+  #   LocoMenu.new(app)
   def initialize(*args)
     @cur_menu = 0
     @past_menu = nil
