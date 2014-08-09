@@ -93,16 +93,7 @@ class LocoMenu < TermApp::Processor
     loop do
       term.noecho
       if @past_menu.nil?
-        term.erase_body
-        items.each_with_index do |item, i|
-          if i == @cur_menu
-            term.color_black(reverse: true) do
-              term.mvaddstr(i + 4, 3, item.title)
-            end
-          else
-            term.mvaddstr(i + 4, 3, item.title)
-          end
-        end
+        print_items(items)
       else
         term.mvaddstr(@past_menu + 4, 3, items[@past_menu].title)
         term.color_black(reverse: true) do
@@ -130,6 +121,33 @@ class LocoMenu < TermApp::Processor
           @past_menu = @cur_menu
           @cur_menu = i
         end
+      end
+    end
+  end
+
+  # Print items of menu.
+  #
+  # items - The Array of Item instances of menu to show.
+  #
+  # Examples
+  #
+  #   print_items([Item.new('New', :read_new_menu),
+  #                Item.new('Boards', :print_board_menu),
+  #                Item.new('Select', :select_board_menu),
+  #                Item.new('Read', :read_board_menu),
+  #                Item.new('Post'),
+  #                Item.new('Goodbye')])
+  #
+  # Returns nothing.
+  def print_items(items)
+    term.erase_body
+    items.each_with_index do |item, i|
+      if i == @cur_menu
+        term.color_black(reverse: true) do
+          term.mvaddstr(i + 4, 3, item.title)
+        end
+      else
+        term.mvaddstr(i + 4, 3, item.title)
       end
     end
   end
