@@ -41,9 +41,24 @@ class LocoMenu < TermApp::Processor
   #
   #   LocoMenu.new(app)
   def initialize(*args)
+    super
     @cur_menu = 0
     @past_menu = nil
-    super
+    @items = [Item.new('New', :read_new_menu),
+              Item.new('Boards', :print_board_menu),
+              Item.new('Select', :select_board_menu),
+              Item.new('Read', :read_board_menu)]
+    @items.concat(%w(Post
+                     Talk
+                     Mail
+                     Diary
+                     Welcome
+                     Xyz
+                     Goodbye
+                     Help).map { |name| Item.new(name) })
+    # @items.concat(%w(Extra Visit InfoBBS).map { |name| Item.new(name) }))
+    @items << Item.new('Admin') if term.current_user.admin?
+    @items.freeze
   end
 
   # Main routine of LocoMenu. Show menus. User can navigate menus and select a
@@ -51,53 +66,14 @@ class LocoMenu < TermApp::Processor
   #
   # Returns a Symbol of Processor with its process arguments or nil.
   def process
-    items = []
-    items << Item.new('New', :read_new_menu)
-    items << Item.new('Boards', :print_board_menu)
-    items << Item.new('Select', :select_board_menu)
-    items << Item.new('Read', :read_board_menu)
-    items.concat(%w(
-      Post
-      Talk
-      Mail
-      Diary
-      Welcome
-      Xyz
-      Goodbye
-      Help
-    ).map { |name| Item.new(name) })
-    # items.concat(%w(Extra Visit InfoBBS).map { |name| Item.new(name) }))
-    items << Item.new('Admin') if term.current_user.admin?
-    menu_helper(items.freeze)
-  end
-
-  # Helper for main of LocoMenu.
-  #
-  # items    - The Array of Item instances of menu to show.
-  #
-  # Examples
-  #
-  #   menu_helper(
-  #     [
-  #       Item.new('New', :read_new_menu),
-  #       Item.new('Boards', :print_board_menu),
-  #       Item.new('Select', :select_board_menu),
-  #       Item.new('Read', :read_board_menu),
-  #       Item.new('Post'),
-  #       Item.new('Goodbye')
-  #     ]
-  #   )
-  #
-  # Returns a Symbol of Processor with its process arguments or nil.
-  def menu_helper(items)
     loop do
       term.noecho
       if @past_menu.nil?
-        print_items(items)
+        print_items
       else
-        term.mvaddstr(@past_menu + 4, 3, items[@past_menu].title)
+        term.mvaddstr(@past_menu + 4, 3, @items[@past_menu].title)
         term.color_black(reverse: true) do
-          term.mvaddstr(@cur_menu + 4, 3, items[@cur_menu].title)
+          term.mvaddstr(@cur_menu + 4, 3, @items[@cur_menu].title)
         end
       end
       term.move(@cur_menu + 4, 3)
@@ -105,18 +81,18 @@ class LocoMenu < TermApp::Processor
       case c = term.getch
       when Ncurses::KEY_UP
         @past_menu = @cur_menu
-        @cur_menu = (@cur_menu - 1) % items.size
+        @cur_menu = (@cur_menu - 1) % @items.size
       when Ncurses::KEY_DOWN
         @past_menu = @cur_menu
-        @cur_menu = (@cur_menu + 1) % items.size
+        @cur_menu = (@cur_menu + 1) % @items.size
       when Ncurses::KEY_ENTER, 10 # enter
         # Erase body after call
         @past_menu = nil
         term.echo
-        break items[@cur_menu].menu
+        break @items[@cur_menu].menu
       else
         next unless c < 127
-        items.each_with_index do |item, i|
+        @items.each_with_index do |item, i|
           next unless c.chr =~ item.shortcut_regex
           @past_menu = @cur_menu
           @cur_menu = i
@@ -127,21 +103,10 @@ class LocoMenu < TermApp::Processor
 
   # Print items of menu.
   #
-  # items - The Array of Item instances of menu to show.
-  #
-  # Examples
-  #
-  #   print_items([Item.new('New', :read_new_menu),
-  #                Item.new('Boards', :print_board_menu),
-  #                Item.new('Select', :select_board_menu),
-  #                Item.new('Read', :read_board_menu),
-  #                Item.new('Post'),
-  #                Item.new('Goodbye')])
-  #
   # Returns nothing.
-  def print_items(items)
+  def print_items
     term.erase_body
-    items.each_with_index do |item, i|
+    @items.each_with_index do |item, i|
       if i == @cur_menu
         term.color_black(reverse: true) do
           term.mvaddstr(i + 4, 3, item.title)
