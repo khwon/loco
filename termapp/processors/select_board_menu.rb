@@ -8,11 +8,11 @@ class SelectBoardMenu < TermApp::Processor
     loop do
       # TODO : consider setting start point as locoterm.current_board
       @cur_boards = [] if str == ''
-      if selected.last.nil? || selected.last.is_dir
-        list = Board.get_list(parent_board: selected.last)
-      else
-        list = Board.get_list(parent_board: selected[-2])
-      end
+      list = if selected.last.nil? || selected.last.is_dir
+               Board.get_list(parent_board: selected.last)
+             else
+               Board.get_list(parent_board: selected[-2])
+             end
       print_boards(list)
       term.mvaddstr(3, 1, "select board : #{str}")
       term.refresh
@@ -39,8 +39,7 @@ class SelectBoardMenu < TermApp::Processor
         end
       when 127, Ncurses::KEY_BACKSPACE
         if selected.size > 0 && str == selected.last.path_name
-          @cur_boards = [selected[-1]]
-          selected = selected[0..-2]
+          @cur_boards = [selected.pop]
         end
         str = str[0..-2]
       else
