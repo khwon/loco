@@ -20,23 +20,19 @@ class SelectBoardMenu < TermApp::Processor
       term.clrtoeol(3)
       case c
       when 9, 32 # tab, space
-        if @cur_boards.size == 1 && str != @cur_boards.first.path_name
-          selected << @cur_boards.first
-          str = selected.last.path_name
-        else
-          term.beep
+        unless @cur_boards.size == 1 && str != @cur_boards.first.path_name
+          next term.beep
         end
+        selected << @cur_boards.first
+        str = selected.last.path_name
       when 27 # esc
         break :loco_menu
       when Ncurses::KEY_ENTER, 10 # enter
-        if @cur_boards.size == 1 && !@cur_boards.first.is_dir
-          # TODO : for now, only allow selecting non-dir boards
-          term.current_board = @cur_boards.first
-          # TODO : for now, return to loco menu
-          break :loco_menu
-        else
-          term.beep
-        end
+        next term.beep unless @cur_boards.size == 1 && !@cur_boards.first.is_dir
+        # TODO : for now, only allow selecting non-dir boards
+        term.current_board = @cur_boards.first
+        # TODO : for now, return to loco menu
+        break :loco_menu
       when 127, Ncurses::KEY_BACKSPACE
         if selected.size > 0 && str == selected.last.path_name
           @cur_boards = [selected.pop]
@@ -45,12 +41,9 @@ class SelectBoardMenu < TermApp::Processor
       else
         next unless c < 127
         matched = list.select { |x| x.path_name.starts_with? str + c.chr }
-        if matched.size > 0
-          @cur_boards = matched
-          str += c.chr
-        else
-          term.beep
-        end
+        next term.beep unless matched.size > 0
+        @cur_boards = matched
+        str += c.chr
       end
     end
   end
