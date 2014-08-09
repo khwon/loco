@@ -68,14 +68,7 @@ class LocoMenu < TermApp::Processor
   def process
     loop do
       term.noecho
-      if @past_menu.nil?
-        print_items
-      else
-        term.mvaddstr(@past_menu + 4, 3, @items[@past_menu].title)
-        term.color_black(reverse: true) do
-          term.mvaddstr(@cur_menu + 4, 3, @items[@cur_menu].title)
-        end
-      end
+      print_items
       term.move(@cur_menu + 4, 3)
       term.refresh
       case c = term.getch
@@ -101,18 +94,25 @@ class LocoMenu < TermApp::Processor
     end
   end
 
-  # Print items of menu.
+  # Print Items of menu. Refresh only changed lines if past_menu exists.
   #
   # Returns nothing.
   def print_items
-    term.erase_body
-    @items.each_with_index do |item, i|
-      if i == @cur_menu
-        term.color_black(reverse: true) do
+    if @past_menu.nil?
+      term.erase_body
+      @items.each_with_index do |item, i|
+        if i == @cur_menu
+          term.color_black(reverse: true) do
+            term.mvaddstr(i + 4, 3, item.title)
+          end
+        else
           term.mvaddstr(i + 4, 3, item.title)
         end
-      else
-        term.mvaddstr(i + 4, 3, item.title)
+      end
+    else
+      term.mvaddstr(@past_menu + 4, 3, @items[@past_menu].title)
+      term.color_black(reverse: true) do
+        term.mvaddstr(@cur_menu + 4, 3, @items[@cur_menu].title)
       end
     end
   end
