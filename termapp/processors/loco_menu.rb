@@ -71,25 +71,45 @@ class LocoMenu < TermApp::Processor
       print_items
       term.move(@cur_menu + 4, 3)
       term.refresh
-      case c = term.getch
-      when Ncurses::KEY_UP
+      control, *args = process_key(term.getch)
+      case control
+      when :break
+        break args
+      end
+    end
+  end
+
+  # Process key input for LocoMenu.
+  #
+  # key - A Integer key input which is returned from term.getch.
+  #
+  # Examples
+  #
+  #   process_key(term.getch)
+  #
+  #   process_key(10)
+  #   # => [:break, :welcome_menu]
+  #
+  # Returns nil or a Symbol :break with additional arguments.
+  def process_key(key)
+    case key
+    when Ncurses::KEY_UP
+      @past_menu = @cur_menu
+      @cur_menu = (@cur_menu - 1) % @items.size
+    when Ncurses::KEY_DOWN
+      @past_menu = @cur_menu
+      @cur_menu = (@cur_menu + 1) % @items.size
+    when Ncurses::KEY_ENTER, 10 # enter
+      # Erase body after call
+      @past_menu = nil
+      term.echo
+      return :break, @items[@cur_menu].menu
+    else
+      return unless key < 127
+      @items.each_with_index do |item, i|
+        next unless key.chr =~ item.shortcut_regex
         @past_menu = @cur_menu
-        @cur_menu = (@cur_menu - 1) % @items.size
-      when Ncurses::KEY_DOWN
-        @past_menu = @cur_menu
-        @cur_menu = (@cur_menu + 1) % @items.size
-      when Ncurses::KEY_ENTER, 10 # enter
-        # Erase body after call
-        @past_menu = nil
-        term.echo
-        break @items[@cur_menu].menu
-      else
-        next unless c < 127
-        @items.each_with_index do |item, i|
-          next unless c.chr =~ item.shortcut_regex
-          @past_menu = @cur_menu
-          @cur_menu = i
-        end
+        @cur_menu = i
       end
     end
   end
