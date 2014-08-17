@@ -39,7 +39,11 @@ login credentials: a/a for admin, b/b, c/c, d/d for user
 ruby termapp/run.rb
 ```
 
-## RuboCop
+## Test
+
+Run every tests with `rake`. Also `rake spec` and `rake rubocop` are available, which are same with `rspec`, `rubocop` respectively.
+
+### RuboCop
 
 All available configurations of RuboCop can be found in [default.yml](https://github.com/bbatsov/rubocop/blob/master/config/default.yml).
 
