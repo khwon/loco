@@ -1,3 +1,5 @@
+# Post information of Loco. Belong to Board and User. Can have many Post as
+# replies.
 class Post < ActiveRecord::Base
   belongs_to :board
   belongs_to :parent, class_name: 'Post'

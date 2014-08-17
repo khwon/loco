@@ -1,3 +1,5 @@
+# Board information of Loco. Belongs to User. Can have a linked Board and belong
+# to alias Board. Can have many Boards as children.
 class Board < ActiveRecord::Base
   belongs_to :owner, class_name: 'User'
   has_one :linked_board, class_name: 'Board'

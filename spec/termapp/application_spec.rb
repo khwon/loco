@@ -2,6 +2,7 @@ require 'rails_helper'
 require_relative '../../config/environment'
 require 'application'
 
+# Helper methods for login process test of TermApp::Application.
 module LoginHelpers
   def mock_id_input(dummy_id)
     mocking = true
