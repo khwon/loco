@@ -12,6 +12,12 @@ AllCops:
     - 'config/**/*'
     - 'db/**/*'
 
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
 Style/AsciiComments:
   Exclude:
     - 'termapp/core_ext/string.rb'
@@ -21,14 +27,8 @@ Style/ClassAndModuleChildren:
   Exclude:
     - 'test/test_helper.rb'
 
-Style/ClassLength:
-  Enabled: false
-
 Style/Documentation:
   Exclude:
     - 'app/controllers/application_controller.rb'
     - 'app/helpers/application_helper.rb'
     - 'test/test_helper.rb'
-
-Style/MethodLength:
-  Enabled: false
