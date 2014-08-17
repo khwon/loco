@@ -1,11 +1,8 @@
 require 'rails_helper'
 require_relative '../../config/environment'
 require 'application'
-require 'processor'
-Dir[File.expand_path('../../../termapp/processors/*.rb', __FILE__)]
-  .each { |f| require f }
 
-RSpec.describe TermApp, type: :termapp do
+RSpec.describe TermApp::Application, type: :termapp do
   describe '.run' do
     def mock_id_input(dummy_id)
       mocking = true
