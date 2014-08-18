@@ -27,7 +27,7 @@ class SelectBoardMenu < TermApp::Processor
       term.mvaddstr(3, 1, "select board : #{str}")
       term.refresh
       c = term.getch
-      term.clrtoeol(2)
+      term.clrtoeol(3)
       case c
       when 9, 32 # tab, space
         if cur_boards.size == 1 && str != cur_boards.first.path_name
