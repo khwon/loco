@@ -5,12 +5,12 @@ class ReadBoardMenu < TermApp::Processor
     term.erase_body
     cur_board = term.current_board
     if cur_board
-      posts = cur_board.post.order("num desc").limit(term.lines - 5)
+      posts = cur_board.post.order('num desc').limit(term.lines - 5)
       posts.reverse.each_with_index do |x, i|
         str = format('%8d', x.num)
-        str += format(' %13s',x.writer.nickname)
-        str += '??' # 날짜
-        str += '??' # 조회수
+        str += format(' %13s', x.writer.nickname)
+        str += '??' # Date
+        str += '??' # View count
         str += x.title
         term.mvaddstr(i + 4, 1, str)
       end
