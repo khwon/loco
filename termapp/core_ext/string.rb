@@ -16,14 +16,21 @@ class String
   end
 
   def unicode_slice(length)
-    if self.ascii_only?
-      if self.size <= length
-        self
-      else
-        self[0..(size-2)] + ".."
-      end
+    if self.size_for_print <= length
+      self
     else
-      #FUCK
+      if self.ascii_only?
+        self[0..(size-2)] + ".."
+      else
+        result = ""
+        # TODO : need optimize
+        self.each_char do |x|
+          if result.size_for_print < length - 2
+            result << x
+          end
+        end
+        result + ".."
+      end
     end
   end
 end
