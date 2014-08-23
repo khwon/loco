@@ -14,4 +14,16 @@ class String
   def size_for_print
     Unicode.width(self, true)
   end
+
+  def unicode_slice(length)
+    if self.ascii_only?
+      if self.size <= length
+        self
+      else
+        self[0..(size-2)] + ".."
+      end
+    else
+      #FUCK
+    end
+  end
 end

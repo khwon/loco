@@ -23,6 +23,8 @@ module TermApp
     # Delegates refresh, move, getch to each method of @stdscr.
     def_delegators :@stdscr, :refresh, :move, :getch
 
+    attr_reader :lines, :columns
+
     # The constants for color of Ncurses.
     COLOR_BLACK = 0
     COLOR_RED = 1
