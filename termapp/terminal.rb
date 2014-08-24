@@ -23,7 +23,11 @@ module TermApp
     # Delegates refresh, move, getch to each method of @stdscr.
     def_delegators :@stdscr, :refresh, :move, :getch
 
-    attr_reader :lines, :columns
+    # Returns the Integer number of screen lines.
+    attr_reader :lines
+
+    # Returns the Integer number of screen columns.
+    attr_reader :columns
 
     # The constants for color of Ncurses.
     COLOR_BLACK = 0
@@ -87,7 +91,10 @@ module TermApp
       end
     end
 
+    # Gets/Sets the User who is logged in.
     attr_accessor :current_user
+
+    # Gets/Sets the selected Board.
     attr_accessor :current_board
 
     # Initialize a Terminal. Set initial Ncurses configurations and start
@@ -149,6 +156,13 @@ module TermApp
       send(COLOR_SYMBOLS[0..-2].sample, *args, &block)
     end
 
+    # Erase the line from the right of the cursor to the end of the line. With
+    # given y positions, erase the lines.
+    #
+    # y - An Integer y position or an Array of Integer y positions to clear
+    #     (default: nil).
+    #
+    # Returns nothing.
     def clrtoeol(y = nil)
       if y.nil?
         @stdscr.clrtoeol
@@ -163,11 +177,21 @@ module TermApp
       end
     end
 
+    # Move the cursor and add a String to screen.
+    #
+    # y   - An Integer y position which cursor moves to.
+    # x   - An Integer x position which cursor moves to.
+    # str - A String to add to screen.
+    #
+    # Returns nothing.
     def mvaddstr(y, x, str)
       str.encode!(@encoding) if @encoding
       @stdscr.mvaddstr(y, x, str)
     end
 
+    # Get the position of current cursor.
+    #
+    # Returns an Array of Integer consists of y position and x position.
     def getyx
       y = []
       x = []
@@ -175,6 +199,17 @@ module TermApp
       [y[0], x[0]]
     end
 
+    # Move the cursor and accept a String from terminal.
+    #
+    # y       - An Integer y position which cursor moves to.
+    # x       - An Integer x position which cursor moves to.
+    # str     - A String variable which will store the accepted String.
+    # n       - The Integer size of str.
+    # options - The Hash options used to control screen output
+    #           (default: { echo: true }).
+    #           :echo - The Boolean whether to echo input to screen or not.
+    #
+    # Returns nothing.
     def mvgetnstr(y, x, str, n, echo: true)
       Ncurses.noecho unless echo
       Ncurses.mvgetnstr(y, x, str, n)
@@ -182,17 +217,26 @@ module TermApp
       Ncurses.echo
     end
 
+    # Erase body of screen. Print header and footer again.
+    #
+    # Returns nothing.
     def erase_body
       erase_all
       print_header
       print_footer
     end
 
+    # Erase whole screen.
+    #
+    # Returns nothing.
     def erase_all
       getmaxyx
       clrtoeol(0...@lines)
     end
 
+    # Get the number of lines and columns of screen.
+    #
+    # Returns nothing.
     def getmaxyx
       lines = []
       columns = []
@@ -201,12 +245,22 @@ module TermApp
       @columns = columns[0]
     end
 
+    # Print the multi-line String to screen.
+    #
+    # y   - An Integer y position of top-left corner of str.
+    # x   - An Integer x position of top-left corner of str.
+    # str - A String to print to screen.
+    #
+    # Returns nothing.
     def print_block(y, x, str)
       str.each_line.with_index do |line, index|
         mvaddstr(y + index, x + line[/^\s*/].size, line.chomp.lstrip)
       end
     end
 
+    # Print header to screen.
+    #
+    # Returns nothing.
     def print_header
       # TODO: design headers
       str = '[새편지없음]'
@@ -216,6 +270,9 @@ module TermApp
       color_blue { mvaddstr(1, 0, current_board.path_name) } if current_board
     end
 
+    # Print footer to screen.
+    #
+    # Returns nothing.
     def print_footer
       # TODO: design footers
       mvaddstr(@lines - 1, 10, 'sample footer')
