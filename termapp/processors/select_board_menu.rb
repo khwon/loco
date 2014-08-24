@@ -4,25 +4,44 @@ class SelectBoardMenu < TermApp::Processor
   def process
     str = ''
     cur_boards = []
+    past_board = nil
     selected = []
+    past_list = nil
     loop do
       # TODO : consider setting start point as locoterm.current_board
-      cur_boards = [] if str == ''
-      term.erase_body
+      if str == ''
+        past_board = cur_boards.first
+        cur_boards = []
+      end
       if selected.last.nil? || selected.last.is_dir
         list = Board.get_list(parent_board: selected.last)
       else
         list = Board.get_list(parent_board: selected[-2])
       end
-      list.each_with_index do |x, i|
-        # TODO : redraw only changed lines
-        if x == cur_boards.first
+      if past_list && past_list == list
+        # If past_board is nil, past_idx will be also nil.
+        past_idx = past_list.index(past_board)
+        cur_idx = past_list.index(cur_boards.first)
+        if past_idx
+          term.mvaddstr(past_idx + 4, 3, past_board.path_name)
+        end
+        if cur_idx
           term.color_black(reverse: true) do
+            term.mvaddstr(cur_idx + 4, 3, cur_boards.first.path_name)
+          end
+        end
+      else
+        term.erase_body
+        list.each_with_index do |x, i|
+          if x == cur_boards.first
+            term.color_black(reverse: true) do
+              term.mvaddstr(i + 4, 3, x.path_name)
+            end
+          else
             term.mvaddstr(i + 4, 3, x.path_name)
           end
-        else
-          term.mvaddstr(i + 4, 3, x.path_name)
         end
+        past_list = list
       end
       term.mvaddstr(3, 1, "select board : #{str}")
       term.refresh
@@ -49,6 +68,7 @@ class SelectBoardMenu < TermApp::Processor
         end
       when 127, Ncurses::KEY_BACKSPACE
         if selected.size > 0 && str == selected.last.path_name
+          past_board = cur_boards.first
           cur_boards = [selected[-1]]
           selected = selected[0..-2]
         end
@@ -57,6 +77,7 @@ class SelectBoardMenu < TermApp::Processor
         next unless c < 127
         matched = list.select { |x| x.path_name.starts_with? str + c.chr }
         if matched.size > 0
+          past_board = cur_boards.first
           cur_boards = matched
           str += c.chr
         else
