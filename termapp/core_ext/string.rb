@@ -22,12 +22,12 @@ class String
       if self.ascii_only?
         self[0...(length - 2)] + '..'
       else
-        result = ''
-        # TODO : need optimize
-        each_char do |x|
-          result << x if result.size_for_print < length - 3
+        result = each_char.with_object(str: '', print_size: 0) do |x, hash|
+          break hash if hash[:print_size] >= length - 3
+          hash[:str] << x
+          hash[:print_size] += x.size_for_print
         end
-        result + '..'
+        result[:str] + '..'
       end
     end
   end
