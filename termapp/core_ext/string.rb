@@ -20,12 +20,12 @@ class String
       self
     else
       if self.ascii_only?
-        self[0..(size - 2)] + '..'
+        self[0...(length - 2)] + '..'
       else
         result = ''
         # TODO : need optimize
         each_char do |x|
-          result << x if result.size_for_print < length - 2
+          result << x if result.size_for_print < length - 3
         end
         result + '..'
       end
