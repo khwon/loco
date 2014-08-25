@@ -7,6 +7,7 @@ class PrintBoardMenu < TermApp::Processor
       term.mvaddstr(i + 4, 3, x.path_name)
     end
     term.mvaddstr(3, 20, 'Press any key..')
+    term.refresh
     term.getch
     :loco_menu
   end

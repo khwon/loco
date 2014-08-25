@@ -17,6 +17,7 @@ class ReadBoardMenu < TermApp::Processor
     else
       term.mvaddstr(8, 8, '보드를 먼저 선택해 주세요')
     end
+    term.refresh
     term.getch
     :loco_menu
   end
