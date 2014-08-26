@@ -22,9 +22,3 @@ Style/AsciiComments:
   Exclude:
     - 'termapp/core_ext/string.rb'
     - 'spec/termapp/core_ext/string_spec.rb'
-
-Style/Documentation:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/helpers/application_helper.rb'
-    - 'test/test_helper.rb'
