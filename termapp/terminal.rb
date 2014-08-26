@@ -113,25 +113,7 @@ module TermApp
       @stdscr = Ncurses.initscr
       Ncurses.keypad(@stdscr, true) # enable arrow keys
       Ncurses.ESCDELAY = 25 # wait only 10ms for esc
-      if Ncurses.has_colors?
-        Ncurses.start_color
-
-        Ncurses.init_pair(1, Ncurses::COLOR_RED, Ncurses::COLOR_BLACK)
-        Ncurses.init_pair(2, Ncurses::COLOR_GREEN, Ncurses::COLOR_BLACK)
-        Ncurses.init_pair(3, Ncurses::COLOR_YELLOW, Ncurses::COLOR_BLACK)
-        Ncurses.init_pair(4, Ncurses::COLOR_BLUE, Ncurses::COLOR_BLACK)
-        Ncurses.init_pair(5, Ncurses::COLOR_MAGENTA, Ncurses::COLOR_BLACK)
-        Ncurses.init_pair(6, Ncurses::COLOR_CYAN, Ncurses::COLOR_BLACK)
-        Ncurses.init_pair(7, Ncurses::COLOR_WHITE, Ncurses::COLOR_BLACK)
-        Ncurses.init_pair(8, Ncurses::COLOR_BLACK, Ncurses::COLOR_WHITE)
-        Ncurses.init_pair(9, Ncurses::COLOR_WHITE, Ncurses::COLOR_RED)
-        Ncurses.init_pair(10, Ncurses::COLOR_BLACK, Ncurses::COLOR_GREEN)
-        Ncurses.init_pair(11, Ncurses::COLOR_BLACK, Ncurses::COLOR_YELLOW)
-        Ncurses.init_pair(12, Ncurses::COLOR_WHITE, Ncurses::COLOR_BLUE)
-        Ncurses.init_pair(13, Ncurses::COLOR_BLACK, Ncurses::COLOR_MAGENTA)
-        Ncurses.init_pair(14, Ncurses::COLOR_BLACK, Ncurses::COLOR_CYAN)
-        Ncurses.init_pair(15, Ncurses::COLOR_BLACK, Ncurses::COLOR_WHITE)
-      end
+      initialize_colors if Ncurses.has_colors?
       getmaxyx
       Ncurses.raw
     end
@@ -276,6 +258,29 @@ module TermApp
     def print_footer
       # TODO: design footers
       mvaddstr(@lines - 1, 10, 'sample footer')
+    end
+
+    private
+
+    # Initialize color pairs for Ncurses.
+    #
+    # Returns nothing.
+    def initialize_colors
+      Ncurses.start_color
+      [[Ncurses::COLOR_RED, Ncurses::COLOR_WHITE],
+       [Ncurses::COLOR_GREEN, Ncurses::COLOR_BLACK],
+       [Ncurses::COLOR_YELLOW, Ncurses::COLOR_BLACK],
+       [Ncurses::COLOR_BLUE, Ncurses::COLOR_WHITE],
+       [Ncurses::COLOR_MAGENTA, Ncurses::COLOR_BLACK],
+       [Ncurses::COLOR_CYAN, Ncurses::COLOR_BLACK],
+       [Ncurses::COLOR_WHITE, Ncurses::COLOR_BLACK]
+      ].each.with_index(1) do |pair, i|
+        # Initialize color.
+        Ncurses.init_pair(i, pair[0], Ncurses::COLOR_BLACK)
+        # Initialize reversed color.
+        Ncurses.init_pair(i + 8, pair[1], pair[0])
+      end
+      Ncurses.init_pair(8, Ncurses::COLOR_BLACK, Ncurses::COLOR_WHITE)
     end
   end
 end
