@@ -149,13 +149,13 @@ module TermApp
       if y.nil?
         @stdscr.clrtoeol
       else
-        old_pos = getyx
+        old_y, old_x = getyx
         y = [y] unless y.is_a? Enumerable
         y.each do |yy|
           @stdscr.move(yy, 0)
           @stdscr.clrtoeol
         end
-        @stdscr.move(old_pos[0], old_pos[1])
+        @stdscr.move(old_y, old_x)
       end
     end
 
