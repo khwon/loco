@@ -3,7 +3,7 @@ require_relative '../config/environment'
 require_relative '../termapp/application'
 
 begin
-  TermApp.run
+  TermApp::Application.new.run
 rescue
   binding.pry_remote
 end
