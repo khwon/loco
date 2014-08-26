@@ -41,7 +41,7 @@ class LoginMenu < TermApp::Processor
     term.clrtoeol(0..23)
     logo_colors = []
     logo_colors << term.color_sample do
-      term.print_block(2, 2, <<EOF
+      term.print_block(2, 2, <<END
       =$
  ~OMMMMM8.
 MMMMMMMMM+
@@ -57,12 +57,12 @@ MMMMMMMMM+
      ,MMMMMM$
      .MMMMZI$.
      =+.
-EOF
+END
       )
     end
 
     logo_colors << term.color_sample do
-      term.print_block(5, 15, <<EOF
+      term.print_block(5, 15, <<END
            ,=,,
      :OMMMMMMMMM?
    ?MMMMMMMMMMMMM
@@ -74,12 +74,12 @@ EOF
  .IMMMMMMMMMMMM?.
     +MMMMMMMMI.
        .  .
-EOF
+END
       )
     end
 
     logo_colors << term.color_sample do
-      term.print_block(3, 33, <<EOF
+      term.print_block(3, 33, <<END
        =ZMMMMDI.
    ?MMMD=   =MMMM
  IMMMM8  $MMMMMMMO
@@ -91,12 +91,12 @@ OMMMMMM    .
  ?MMMMMMMMMMMMM.
    MMMMMMMMMM+.
      ,.~ ..
-EOF
+END
       )
     end
 
     logo_colors << term.color_sample do
-      term.print_block(2, 51, <<EOF
+      term.print_block(2, 51, <<END
      :ZMMMMMMMMM:
    ?MMMMMMMMMMMMM
  .DMMMMMMMMMMMMMM
@@ -107,7 +107,7 @@ EOF
  .OMMMMMMMMMMMM~
    .$MMMMMMMM7
           .
-EOF
+END
       )
     end
 
@@ -120,7 +120,7 @@ EOF
     end
     term.mvaddstr(20, 5, 'total hit: 14520652')
     term.mvaddstr(21, 5, 'today hit: 229')
-    term.print_block(17, 32, <<EOF
+    term.print_block(17, 32, <<END
    type 'new' to join
    there is no guest ID
 ┌──────────────────────────────┐
@@ -128,7 +128,7 @@ EOF
 │  PW :                        │
 │                              │
 └──────────────────────────────┘
-EOF
+END
     )
     term.mvaddstr(22, 35, 'Login failed!') if failed
     term.refresh

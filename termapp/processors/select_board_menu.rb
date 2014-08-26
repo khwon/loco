@@ -51,15 +51,15 @@ class SelectBoardMenu < TermApp::Processor
   #   arguments.
   def process_key(key)
     case key
-    when 9, 32 # tab, space
+    when 9, 32 # Tab, Space
       unless @cur_boards.size == 1 && @str != @cur_boards.first.path_name
         return :beep
       end
       @selected << @cur_boards.first
       @str = @selected.last.path_name
-    when 27 # esc
+    when 27 # ESC
       return :break, :loco_menu
-    when Ncurses::KEY_ENTER, 10 # enter
+    when Ncurses::KEY_ENTER, 10 # Enter
       return :beep unless @cur_boards.size == 1 && !@cur_boards.first.is_dir
       # TODO : for now, only allow selecting non-dir boards
       term.current_board = @cur_boards.first

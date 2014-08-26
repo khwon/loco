@@ -99,7 +99,7 @@ class LocoMenu < TermApp::Processor
     when Ncurses::KEY_DOWN
       @past_menu = @cur_menu
       @cur_menu = (@cur_menu + 1) % @items.size
-    when Ncurses::KEY_ENTER, 10 # enter
+    when Ncurses::KEY_ENTER, 10 # Enter
       # Erase body after call
       @past_menu = nil
       term.echo
