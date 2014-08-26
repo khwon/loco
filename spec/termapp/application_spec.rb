@@ -19,9 +19,8 @@ module LoginHelpers
 
   def mock_pw_input(dummy_pw)
     mocking = true
-    allow(app.term).to receive(:mvgetnstr).with(
-                         21, 40, anything, 20, echo: false
-                       ) do |y, x, str, n, echo: false|
+    allow(app.term).to receive(:mvgetnstr)
+      .with(21, 40, anything, 20, echo: false) do |y, x, str, n, echo: false|
       if mocking
         mocking = false
         str.replace(dummy_pw)

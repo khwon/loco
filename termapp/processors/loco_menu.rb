@@ -48,14 +48,9 @@ class LocoMenu < TermApp::Processor
               Item.new('Boards', :print_board_menu),
               Item.new('Select', :select_board_menu),
               Item.new('Read', :read_board_menu)]
-    @items.concat(%w(Post
-                     Talk
-                     Mail
-                     Diary
-                     Welcome
-                     Xyz
-                     Goodbye
-                     Help).map { |name| Item.new(name) })
+    @items.concat(
+      %w(Post Talk Mail Diary Welcome Xyz Goodbye Help)
+        .map { |name| Item.new(name) })
     # @items.concat(%w(Extra Visit InfoBBS).map { |name| Item.new(name) }))
     @items << Item.new('Admin') if term.current_user.admin?
     @items.freeze
