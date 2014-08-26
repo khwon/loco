@@ -12,23 +12,7 @@ AllCops:
     - 'config/**/*'
     - 'db/**/*'
 
-Metrics/ClassLength:
-  Enabled: false
-
-Metrics/MethodLength:
-  Enabled: false
-
 Style/AsciiComments:
   Exclude:
     - 'termapp/core_ext/string.rb'
     - 'spec/termapp/core_ext/string_spec.rb'
-
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'test/test_helper.rb'
-
-Style/Documentation:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/helpers/application_helper.rb'
-    - 'test/test_helper.rb'
