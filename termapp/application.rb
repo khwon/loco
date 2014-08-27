@@ -3,27 +3,21 @@ require_relative 'terminal'
 require_relative 'processor'
 Dir[File.expand_path('../processors/*.rb', __FILE__)].each { |f| require f }
 
-# Terminal application of Loco.
+# Terminal application of Loco. To run, use Application class.
 #
 # Examples
 #
-#   TermApp.run
+#   TermApp::Application.new.run
 module TermApp
   # Application of TermApp.
   #
   # Examples
   #
-  #   TermApp::Application.run
+  #   app = TermApp::Application.new
+  #   app.run
   class Application
     # Returns the Terminal instance of the application.
     attr_reader :term
-
-    # Initialize a Application and run it.
-    #
-    # Returns nothing.
-    def self.run
-      new.run
-    end
 
     # Initialize a Application. Initialize a Terminal.
     def initialize
@@ -60,12 +54,5 @@ module TermApp
     ensure
       @term.terminate
     end
-  end
-
-  # Main routine of the TermApp. Run the Application. Alias for Application.run.
-  #
-  # Returns nothing.
-  def self.run
-    Application.run
   end
 end
