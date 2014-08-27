@@ -18,17 +18,15 @@ class String
   def unicode_slice(length)
     if size_for_print <= length
       self
+    elsif ascii_only?
+      self[0...(length - 2)] + '..'
     else
-      if self.ascii_only?
-        self[0...(length - 2)] + '..'
-      else
-        result = each_char.with_object(str: '', print_size: 0) do |x, hash|
-          break hash if hash[:print_size] >= length - 3
-          hash[:str] << x
-          hash[:print_size] += x.size_for_print
-        end
-        result[:str] + '..'
+      result = each_char.with_object(str: '', print_size: 0) do |x, hash|
+        break hash if hash[:print_size] >= length - 3
+        hash[:str] << x
+        hash[:print_size] += x.size_for_print
       end
+      result[:str] + '..'
     end
   end
 end
