@@ -8,10 +8,10 @@ class ReadBoardMenu < TermApp::Processor
       posts = cur_board.post.order('num desc').limit(term.lines - 5)
       posts.reverse.each_with_index do |x, i|
         str = format('%8d', x.num)
-        str += format(' %13s', x.writer.nickname)
-        str += '??' # Date
-        str += '??' # View count
-        str += x.title
+        str << format(' %13s', x.writer.nickname)
+        str << '??' # Date
+        str << '??' # View count
+        str << x.title
         term.mvaddstr(i + 4, 1, str)
       end
     else

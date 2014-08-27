@@ -15,6 +15,11 @@ class String
     Unicode.width(self, true)
   end
 
+  # Slice the String with max length.
+  #
+  # length - An Integer print size to slice.
+  #
+  # Returns the sliced String.
   def unicode_slice(length)
     if size_for_print <= length
       self

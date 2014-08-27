@@ -141,21 +141,21 @@ module TermApp
     # Erase the line from the right of the cursor to the end of the line. With
     # given y positions, erase the lines.
     #
-    # y - An Integer y position or an Array of Integer y positions to clear
-    #     (default: nil).
+    # y_indices - An Integer y position or an Array of Integer y positions to
+    #             clear (default: nil).
     #
     # Returns nothing.
-    def clrtoeol(y = nil)
-      if y.nil?
+    def clrtoeol(y_indices = nil)
+      if y_indices.nil?
         @stdscr.clrtoeol
       else
-        old_pos = getyx
-        y = [y] unless y.is_a? Enumerable
-        y.each do |yy|
-          @stdscr.move(yy, 0)
+        old_y, old_x = getyx
+        y_indices = [y_indices] unless y_indices.is_a? Enumerable
+        y_indices.each do |y|
+          @stdscr.move(y, 0)
           @stdscr.clrtoeol
         end
-        @stdscr.move(old_pos[0], old_pos[1])
+        @stdscr.move(old_y, old_x)
       end
     end
 
