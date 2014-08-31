@@ -12,7 +12,7 @@ class ReadBoardMenu < TermApp::Processor
         strs << format('%-12s', x.writer.nickname)
         strs << x.created_at.strftime('%m/%d') # Date
         strs << '????' # View count
-        strs << x.title.unicode_slice(term.columns-32)
+        strs << x.title.unicode_slice(term.columns - 32)
         term.mvaddstr(i + 4, 1, strs.join(' '))
       end
     else
