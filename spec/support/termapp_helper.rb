@@ -10,7 +10,9 @@ module TermAppHelpers
     end
 
     def contain_all?(expected, actual)
-      expected.all? { |e| actual[e].is_a? e.to_s.classify.constantize }
+      expected.all? do |e|
+        actual[e].is_a? "TermApp::#{e.to_s.classify}".constantize
+      end
     end
   end
 
