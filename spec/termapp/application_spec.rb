@@ -1,5 +1,4 @@
 require 'rails_helper'
-require_relative '../../config/environment'
 require 'application'
 
 # Helper methods for login process test of TermApp::Application.
