@@ -1,3 +1,5 @@
+# rubocop:disable Style/AsciiComments
+
 require 'rails_helper'
 require 'core_ext/string'
 require 'terminal'
