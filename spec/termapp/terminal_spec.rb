@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'terminal'
 
 RSpec.describe TermApp::Terminal, type: :termapp do
-  subject { silence_warnings { TermApp::Terminal.new } }
+  subject { silence_warnings { described_class.new } }
   after(:example) do
     subject.terminate
   end
@@ -19,9 +19,6 @@ RSpec.describe TermApp::Terminal, type: :termapp do
   end
 
   describe '.color_<color>' do
-    it do
-      is_expected.to respond_to(
-                       *TermApp::Terminal.const_get(:COLOR_SYMBOLS))
-    end
+    it { is_expected.to respond_to(*described_class.const_get(:COLOR_SYMBOLS)) }
   end
 end
