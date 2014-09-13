@@ -1,5 +1,5 @@
 # Helper methods for login process test of TermApp::Application.
-module LoginHelpers
+module LoginHelper
   def mock_id_input(term, dummy_id)
     mocking = true
     allow(term).to receive(:mvgetnstr).with(

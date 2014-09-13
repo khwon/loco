@@ -3,8 +3,8 @@ require_relative '../../config/environment'
 require 'application'
 
 RSpec.describe TermApp::Application, type: :termapp do
-  include TermAppHelpers
-  include LoginHelpers
+  include TermAppHelper
+  include LoginHelper
 
   describe '.run' do
     subject(:app) { silence_warnings { TermApp::Application.new } }
