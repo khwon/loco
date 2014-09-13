@@ -120,6 +120,10 @@ module TermApp
 
     # Set a random color of Terminal. Delegates to color_<color> method.
     #
+    # args  - Zero or more values to pass to color_<color> method.
+    # block - An optional block that can be used as an sandbox. If it is
+    #         present, color of terminal will be set to previous color after the
+    #         finish of block call.
     #
     # Examples
     #
