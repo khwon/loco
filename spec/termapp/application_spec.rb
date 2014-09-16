@@ -1,45 +1,16 @@
 require 'rails_helper'
 require 'application'
 
-# Helper methods for login process test of TermApp::Application.
-module LoginHelpers
-  def mock_id_input(dummy_id)
-    mocking = true
-    allow(app.term).to receive(:mvgetnstr).with(
-                         20, 40, anything, 20) do |y, x, str, n|
-      if mocking
-        mocking = false
-        str.replace(dummy_id)
-      else
-        original_mvgetnstr.call(y, x, str, n)
-      end
-    end
-  end
-
-  def mock_pw_input(dummy_pw)
-    mocking = true
-    allow(app.term).to receive(:mvgetnstr)
-      .with(21, 40, anything, 20, echo: false) do |y, x, str, n, echo: false|
-      if mocking
-        mocking = false
-        str.replace(dummy_pw)
-      else
-        original_mvgetnstr.call(y, x, str, n, echo: echo)
-      end
-    end
-  end
-end
-
 RSpec.describe TermApp::Application, type: :termapp do
-  include TermAppHelpers
-  include LoginHelpers
+  include TermAppHelper
+  include LoginHelper
 
   describe '.run' do
     subject(:app) { silence_warnings { described_class.new } }
     let!(:original_mvgetnstr) { app.term.method(:mvgetnstr) }
 
     it "processes GoodbyeMenu when get 'off' as id" do
-      mock_id_input('off')
+      mock_id_input(app.term, 'off')
       # GoodbyeMenu
       allow(app.term).to receive(:getch) { Ncurses::KEY_ENTER }
       app.run
@@ -59,8 +30,8 @@ RSpec.describe TermApp::Application, type: :termapp do
       let(:user) { FactoryGirl.create(:user) }
 
       it 'processes WelcomeMenu and LocoMenu' do
-        mock_id_input('johndoe')
-        mock_pw_input('password')
+        mock_id_input(app.term, 'johndoe')
+        mock_pw_input(app.term, 'password')
         allow(User).to receive(:find_by).with(username: user.username)
                                         .and_return(user)
         allow(user).to receive(:try).with(:authenticate, user.password)

@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift(File.expand_path('../../../termapp', __FILE__))
 
 # Custom matchers for TermApp test.
-module TermAppHelpers
+module TermAppHelper
   extend RSpec::Matchers::DSL
 
   matcher :only_have_processors do |expected|
