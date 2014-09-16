@@ -36,7 +36,7 @@ module TermApp
     def process(name, *args)
       processor = @cached_processors[name] ||=
         begin
-          klass = name.to_s.classify.constantize
+          klass = "TermApp::#{name.to_s.classify}".constantize
           klass.new(self)
         rescue NameError
           NotImplementedMenu.new(name, self)
