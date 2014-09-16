@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.5'
+gem 'rails', '4.1.6'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use SCSS for stylesheets
@@ -49,7 +49,7 @@ end
 
 group :development do
   gem 'pry-remote'
-  gem 'rubocop', '~> 0.25.0', require: false
+  gem 'rubocop', '~> 0.26.0', require: false
   gem 'guard', '~> 2.6.1', require: false
   gem 'guard-rspec', '~> 4.3.1', require: false
   gem 'guard-rubocop', '~> 1.1.0', require: false
