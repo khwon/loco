@@ -1,3 +1,5 @@
+# rubocop:disable Style/AsciiComments
+
 # Extend String class of Ruby core.
 class String
   # Calculate the size of the String to print on Ncurses screen.
