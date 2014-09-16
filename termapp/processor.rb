@@ -10,6 +10,16 @@ module TermApp
       @app = app
     end
 
+    # Main process of Processor. Child classes should extend Processor and
+    # implement this method.
+    #
+    # _args - Zero or more values to pass to process as parameters.
+    #
+    # Raises NotImplementedError.
+    def process(*_args)
+      fail NotImplementedError
+    end
+
     # Delegates all missing methods to the application.
     #
     # meth - The Symbol of a missing method.

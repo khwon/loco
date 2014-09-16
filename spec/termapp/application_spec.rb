@@ -1,5 +1,4 @@
 require 'rails_helper'
-require_relative '../../config/environment'
 require 'application'
 
 # Helper methods for login process test of TermApp::Application.
@@ -36,7 +35,7 @@ RSpec.describe TermApp::Application, type: :termapp do
   include LoginHelpers
 
   describe '.run' do
-    subject(:app) { silence_warnings { TermApp::Application.new } }
+    subject(:app) { silence_warnings { described_class.new } }
     let!(:original_mvgetnstr) { app.term.method(:mvgetnstr) }
 
     it "processes GoodbyeMenu when get 'off' as id" do
