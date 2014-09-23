@@ -2,9 +2,9 @@ require 'rails_helper'
 require 'terminal'
 
 RSpec.describe TermApp::Terminal, type: :termapp do
-  subject { silence_warnings { described_class.new } }
+  subject(:term) { silence_warnings { described_class.new } }
   after(:example) do
-    subject.terminate
+    term.terminate
   end
 
   it do
