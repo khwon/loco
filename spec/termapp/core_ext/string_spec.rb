@@ -5,10 +5,10 @@ require 'core_ext/string'
 require 'terminal'
 
 RSpec.describe String, type: :termapp do
-  describe '#size_for_print' do
-    let(:term) { suppress_warnings { TermApp::Terminal.new } }
-    after(:example) { term.terminate }
+  let(:term) { suppress_warnings { TermApp::Terminal.new } }
+  after(:example) { term.terminate }
 
+  describe '#size_for_print' do
     it 'fails on control characters' do
       # TODO: Fails on 0 < ord < 32 || 127 <= ord < 160
       # Use Array#pack('U') instead of Integer#chr because of encoding problem.
