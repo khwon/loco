@@ -6,11 +6,8 @@ require 'terminal'
 
 RSpec.describe String, type: :termapp do
   describe '#size_for_print' do
-    around(:example) do |example|
-      suppress_warnings { @term = TermApp::Terminal.new }
-      example.run
-      @term.terminate
-    end
+    let(:term) { suppress_warnings { TermApp::Terminal.new } }
+    after(:example) { term.terminate }
 
     it 'fails on control characters' do
       # TODO: Fails on 0 < ord < 32 || 127 <= ord < 160
@@ -23,8 +20,8 @@ RSpec.describe String, type: :termapp do
 
     it 'returns the appropriate size for every ASCII characters' do
       [0, *32..126].each do |ascii|
-        @term.mvaddstr(0, 0, ascii.chr)
-        expect([ascii, ascii.chr.size_for_print]).to eq([ascii, @term.getyx[1]])
+        term.mvaddstr(0, 0, ascii.chr)
+        expect([ascii, ascii.chr.size_for_print]).to eq([ascii, term.getyx[1]])
       end
     end
 
@@ -46,8 +43,8 @@ RSpec.describe String, type: :termapp do
         # '★' expectd to be 2, got 1
         # '​' expectd to be 1, got 0
       ].each do |str|
-        @term.mvaddstr(0, 0, str)
-        expect([str, str.size_for_print]).to eq([str, @term.getyx[1]])
+        term.mvaddstr(0, 0, str)
+        expect([str, str.size_for_print]).to eq([str, term.getyx[1]])
       end
     end
   end
