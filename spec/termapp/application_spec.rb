@@ -30,8 +30,8 @@ RSpec.describe TermApp::Application, type: :termapp do
       let(:user) { FactoryGirl.create(:user) }
 
       it 'processes WelcomeMenu and LocoMenu' do
-        mock_id_input(app.term, 'johndoe')
-        mock_pw_input(app.term, 'password')
+        mock_id_input(app.term, user.username)
+        mock_pw_input(app.term, user.password)
         allow(User).to receive(:find_by).with(username: user.username)
                                         .and_return(user)
         allow(user).to receive(:try).with(:authenticate, user.password)
