@@ -2,20 +2,20 @@ require 'rails_helper'
 require 'terminal'
 
 RSpec.describe TermApp::Terminal, type: :termapp do
-  subject { silence_warnings { described_class.new } }
+  subject(:term) { silence_warnings { described_class.new } }
   after(:example) do
-    subject.terminate
+    term.terminate
   end
 
-  it do
-    is_expected.to respond_to(:erase,
-                              :noecho,
-                              :echo,
-                              :beep,
-                              :terminate,
-                              :refresh,
-                              :move,
-                              :getch)
+  it 'responds to forwarded methods' do
+    expect(term).to respond_to(:erase,
+                               :noecho,
+                               :echo,
+                               :beep,
+                               :terminate,
+                               :refresh,
+                               :move,
+                               :getch)
   end
 
   describe '.color_<color>' do
