@@ -10,6 +10,8 @@ class Board < ActiveRecord::Base
 
   has_many :post
 
+  validates :name, presence: true
+
   # Child Board list of parent Board. If parent Board is nil, return root Board
   # list.
   #
