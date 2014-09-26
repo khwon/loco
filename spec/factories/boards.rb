@@ -4,12 +4,12 @@ FactoryGirl.define do
   factory :root_board, class: Board do
     parent_id nil
     is_dir true
-    name 'Korea'
+    sequence(:name) { |n| "continent#{n}" }
   end
 
   factory :child_board, class: Board do
     association :parent, factory: :root_board
     is_dir false
-    name 'loco'
+    sequence(:name) { |n| "country#{n}" }
   end
 end
