@@ -11,6 +11,7 @@ class Board < ActiveRecord::Base
   has_many :post
 
   validates :name, presence: true, uniqueness: { scope: :parent }
+  validates :owner, presence: true, unless: :is_dir
 
   # Child Board list of parent Board. If parent Board is nil, return root Board
   # list.

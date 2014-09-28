@@ -50,4 +50,17 @@ RSpec.describe Board, type: :model do
     expect(another_child_board).to be_valid
     expect(another_child_board.save).to be true
   end
+
+  it 'should be created with an empty owner when it is dir' do
+    root_board.owner = nil
+    expect(root_board).to be_valid
+    expect(root_board.save).to be true
+  end
+
+  it 'should not be created with an empty owner when it is not dir' do
+    root_board.save!
+    child_board.owner = nil
+    expect(child_board).not_to be_valid
+    expect(child_board.errors.keys).to include(:owner)
+  end
 end

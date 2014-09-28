@@ -11,5 +11,6 @@ FactoryGirl.define do
     association :parent, factory: :root_board
     is_dir false
     sequence(:name) { |n| "country#{n}" }
+    association :owner, factory: :user
   end
 end
