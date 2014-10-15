@@ -6,4 +6,10 @@ class Post < ActiveRecord::Base
   belongs_to :writer, class_name: 'User'
   has_many :replies, foreign_key: 'parent_id', class_name: 'Post',
                      inverse_of: :parent
+
+  validates :board, presence: true
+  validates :writer, presence: true
+  validates :num, presence: true, uniqueness: { scope: :board },
+                  numericality: { only_integer: true,
+                                  greater_than_or_equal_to: 1 }
 end
