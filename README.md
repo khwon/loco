@@ -1,5 +1,6 @@
 # Loco
 
+[![Build Status](https://travis-ci.org/khwon/loco.svg?branch=develop)](https://travis-ci.org/khwon/loco)
 [![Code Climate](https://codeclimate.com/github/khwon/loco.png)](https://codeclimate.com/github/khwon/loco)
 [![Inline docs](http://inch-ci.org/github/khwon/loco.png?branch=develop)](http://inch-ci.org/github/khwon/loco)
 
