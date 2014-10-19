@@ -65,7 +65,7 @@ module TermApp
         # TODO : for now, only allow selecting non-dir boards
         term.current_board = @cur_boards.first
         # TODO : for now, return to loco menu
-        return :break, :loco_menu
+        return :break, :loco_menu, :read_board_menu # focus read menu
       when 127, Ncurses::KEY_BACKSPACE
         if @selected.size > 0 && @str == @selected.last.path_name
           @past_boards = @cur_boards

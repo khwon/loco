@@ -61,7 +61,15 @@ module TermApp
     # menu.
     #
     # Returns a Symbol of Processor with its process arguments or nil.
-    def process
+    def process(selected_menu = nil)
+      unless selected_menu.nil?
+        @items.each_with_index do |x, i|
+          if x.menu == selected_menu
+            @cur_menu = i
+          end
+        end
+      end
+
       loop do
         term.noecho
         print_items
