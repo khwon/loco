@@ -52,6 +52,12 @@ module TermApp
       end
     end
 
+    # Process key input for ReadBoardMenu.
+    #
+    # key - A Integer key input which is returned from term.getch.
+    #
+    # Returns nil or a Symbol :beep, :scroll_down, :scroll_up or :break with
+    #   additional arguments.
     def process_key(key)
       case key
       when 27, 113 # ESC, q
@@ -77,6 +83,11 @@ module TermApp
       end
     end
 
+    # Scroll the page of Posts.
+    #
+    # direction - A Symbol indicates direction. It can be :down or :up.
+    #
+    # Returns nothing.
     def scroll(direction)
       cur_board = term.current_board
       case direction

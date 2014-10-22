@@ -60,6 +60,8 @@ module TermApp
     # Main routine of LocoMenu. Show menus. User can navigate menus and select a
     # menu.
     #
+    # selected_menu - The Symbol of Processor to be processed (default: nil).
+    #
     # Returns a Symbol of Processor with its process arguments or nil.
     def process(selected_menu = nil)
       unless selected_menu.nil?
