@@ -5,34 +5,35 @@ module TermApp
     def process
       term.erase_body
       cur_board = term.current_board
+      unless cur_board
+        term.mvaddstr(8, 8, '보드를 먼저 선택해 주세요')
+        term.getch
+        return :loco_menu
+      end
       @cur_index = nil
       @num_lists = term.lines - 5
       term.noecho
+      @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
+      @edge_posts = [cur_board.post.first, cur_board.post.last]
       result = loop do
-        if cur_board
-          posts = cur_board.post.order('num desc').limit(@num_lists)
-          # TODO : implement scrolling
-          if @cur_index.nil? || @cur_index >= @num_lists
-            @cur_index = posts.size - 1
-          end
-          posts.reverse.each_with_index do |x, i|
-            strs = []
-            strs << format('%6d', x.num)
-            strs << format('%-12s', x.writer.nickname)
-            strs << x.created_at.strftime('%m/%d') # Date
-            strs << '????' # View count
-            strs << x.title.unicode_slice(term.columns - 32)
-            if @cur_index == i
-              term.color_black(reverse: true)
-            end
-            term.mvaddstr(i + 4, 0, ' ' + strs.join(' '))
-            term.color_black # reset color
-          end
-          term.mvaddstr(@cur_index + 4, 0, '>')
-        else
-          term.mvaddstr(8, 8, '보드를 먼저 선택해 주세요')
-          break :loco_menu
+        # TODO : redraw only highlighted line when not scrolling
+        if @cur_index.nil? || @cur_index >= @num_lists
+          @cur_index = @num_lists - 1
         end
+        @posts.each_with_index do |x, i|
+          strs = []
+          strs << format('%6d', x.num)
+          strs << format('%-12s', x.writer.nickname)
+          strs << x.created_at.strftime('%m/%d') # Date
+          strs << '????' # View count
+          strs << x.title.unicode_slice(term.columns - 32)
+          if @cur_index == i
+            term.color_black(reverse: true)
+          end
+          term.mvaddstr(i + 4, 0, ' ' + strs.join(' '))
+          term.color_black # reset color
+        end
+        term.mvaddstr(@cur_index + 4, 0, '>')
         term.refresh
         control, *args = process_key(term.getch)
         case control
@@ -40,10 +41,14 @@ module TermApp
           break args
         when :beep
           term.beep
+        when :scroll_down
+          scroll(:down)
+        when :scroll_up
+          scroll(:up)
         end
+        term.echo
+        result
       end
-      term.echo
-      result
     end
 
     def process_key(key)
@@ -54,13 +59,13 @@ module TermApp
         return :break, :loco_menu # FIXME : read post
       when Ncurses::KEY_DOWN, 106 # j
         if @cur_index == @num_lists - 1
-          return :beep # TODO : make it scroll
+          return :scroll_down
         else
           @cur_index += 1
         end
       when Ncurses::KEY_UP, 107 # k
         if @cur_index == 0
-          return :beep # TODO : make it scroll
+          return :scroll_up
         else
           @cur_index -= 1
         end
@@ -68,6 +73,38 @@ module TermApp
         return :beep # TODO : scroll to end of list
       else
         return :beep
+      end
+    end
+
+    def scroll(direction)
+      cur_board = term.current_board
+      case direction
+      when :down
+        pivot = @posts[-1]
+        if pivot.nil? || pivot == @edge_posts[1]
+          term.beep
+        else
+          @cur_index = 0
+          @posts = cur_board.post.order('num asc').limit(@num_lists)
+          .where('num > ?', pivot.num)
+          if @posts.size < @num_lists # reached last
+            @cur_index = @num_lists - @posts.size
+            @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
+          end
+        end
+      when :up
+        pivot = @posts[0]
+        if pivot.nil? || pivot == @edge_posts[0]
+          term.beep
+        else
+          @cur_index = @num_lists - 1
+          @posts = cur_board.post.order('num desc').limit(@num_lists)
+          .where('num < ?', pivot.num).reverse
+          if @posts.size < @num_lists # reached first
+            @cur_index = @posts.size - 1
+            @posts = cur_board.post.order('num asc').limit(@num_lists)
+          end
+        end
       end
     end
   end
