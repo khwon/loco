@@ -20,6 +20,7 @@ module TermApp
         if @cur_index.nil? || @cur_index >= @num_lists
           @cur_index = @num_lists - 1
         end
+        term.erase_body
         @posts.each_with_index do |x, i|
           strs = []
           strs << format('%6d', x.num)
