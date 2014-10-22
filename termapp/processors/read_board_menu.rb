@@ -28,9 +28,7 @@ module TermApp
           strs << x.created_at.strftime('%m/%d') # Date
           strs << '????' # View count
           strs << x.title.unicode_slice(term.columns - 32)
-          if @cur_index == i
-            term.color_black(reverse: true)
-          end
+          term.color_black(reverse: true) if @cur_index == i
           term.mvaddstr(i + 4, 0, ' ' + strs.join(' '))
           term.color_black # reset color
         end
