@@ -98,7 +98,7 @@ module TermApp
         else
           @cur_index = 0
           @posts = cur_board.post.order('num asc').limit(@num_lists)
-          .where('num > ?', pivot.num)
+                            .where('num > ?', pivot.num)
           if @posts.size < @num_lists # reached last
             @cur_index = @num_lists - @posts.size
             @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
@@ -111,7 +111,7 @@ module TermApp
         else
           @cur_index = @num_lists - 1
           @posts = cur_board.post.order('num desc').limit(@num_lists)
-          .where('num < ?', pivot.num).reverse
+                            .where('num < ?', pivot.num).reverse
           if @posts.size < @num_lists # reached first
             @cur_index = @posts.size - 1
             @posts = cur_board.post.order('num asc').limit(@num_lists)
