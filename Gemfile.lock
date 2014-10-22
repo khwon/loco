@@ -33,6 +33,9 @@ GEM
       parser (>= 2.2.0.pre.3, < 3.0)
     bcrypt (3.1.7)
     builder (3.2.2)
+    bullet (4.14.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (>= 1.6.0)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     coderay (1.1.0)
@@ -184,12 +187,14 @@ GEM
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     unicode (0.4.4.1)
+    uniform_notifier (1.6.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   bcrypt (~> 3.1.7)
+  bullet (~> 4.14.0)
   coffee-rails (~> 4.0.0)
   factory_girl_rails (~> 4.4.1)
   guard (~> 2.6.1)
