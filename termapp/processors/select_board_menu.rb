@@ -34,6 +34,8 @@ module TermApp
       end
     end
 
+    private
+
     # Process key input for SelectBoardMenu.
     #
     # key - A Integer key input which is returned from term.getch.
