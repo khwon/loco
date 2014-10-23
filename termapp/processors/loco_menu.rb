@@ -79,6 +79,8 @@ module TermApp
       end
     end
 
+    private
+
     # Process key input for LocoMenu.
     #
     # key - A Integer key input which is returned from term.getch.

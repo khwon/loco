@@ -55,6 +55,8 @@ module TermApp
       result
     end
 
+    private
+
     # Process key input for ReadBoardMenu.
     #
     # key - A Integer key input which is returned from term.getch.
