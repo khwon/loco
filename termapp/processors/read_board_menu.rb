@@ -11,29 +11,34 @@ module TermApp
         return :loco_menu
       end
       @cur_index = nil
+      @past_index = nil
       @num_lists = term.lines - 5
       term.noecho
       @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
       @edge_posts = [cur_board.post.first, cur_board.post.last]
       result = loop do
-        # TODO : redraw only highlighted line when not scrolling
         if @cur_index.nil? || @cur_index >= @num_lists
           @cur_index = @num_lists - 1
         end
-        term.erase_body
-        @posts.each_with_index do |x, i|
-          strs = []
-          strs << format('%6d', x.num)
-          strs << format('%-12s', x.writer.nickname)
-          strs << x.created_at.strftime('%m/%d') # Date
-          strs << '????' # View count
-          strs << x.title.unicode_slice(term.columns - 32)
-          term.color_black(reverse: true) if @cur_index == i
-          term.mvaddstr(i + 4, 0, ' ' + strs.join(' '))
-          term.color_black # reset color
+        if @past_index.nil?
+          term.erase_body
+          @posts.each_with_index do |post, i|
+            term.color_black(reverse: true) if @cur_index == i
+            term.mvaddstr(i + 4, 0,
+                          ' ' + post.format_for_term(term.columns - 32))
+            term.color_black # reset color
+          end
+          term.mvaddstr(@cur_index + 4, 0, '>')
+        elsif @past_index != @cur_index
+          past_line = @posts[@past_index].format_for_term(term.columns - 32)
+          cur_line = @posts[@cur_index].format_for_term(term.columns - 32)
+          term.mvaddstr(@past_index + 4, 0, ' ' + past_line)
+          term.color_black(reverse: true) do
+            term.mvaddstr(@cur_index + 4, 0, '>' + cur_line)
+          end
         end
-        term.mvaddstr(@cur_index + 4, 0, '>')
         term.refresh
+        @past_index = @cur_index
         control, *args = process_key(term.getch)
         case control
         when :break
@@ -94,6 +99,7 @@ module TermApp
         if pivot.nil? || pivot == @edge_posts[1]
           term.beep
         else
+          @past_index = nil
           @cur_index = 0
           @posts = cur_board.post.order('num asc').limit(@num_lists)
                             .where('num > ?', pivot.num)
@@ -107,6 +113,7 @@ module TermApp
         if pivot.nil? || pivot == @edge_posts[0]
           term.beep
         else
+          @past_index = nil
           @cur_index = @num_lists - 1
           @posts = cur_board.post.order('num desc').limit(@num_lists)
                             .where('num < ?', pivot.num).reverse

@@ -12,4 +12,19 @@ class Post < ActiveRecord::Base
   validates :num, presence: true, uniqueness: { scope: :board },
                   numericality: { only_integer: true,
                                   greater_than_or_equal_to: 1 }
+
+  # Format the Post for display on terminal.
+  #
+  # size - The Integer max length of title.
+  #
+  # Returns the String displaying index of post.
+  def format_for_term(size)
+    strs = []
+    strs << format('%6d', num)
+    strs << format('%-12s', writer.nickname)
+    strs << created_at.strftime('%m/%d') # Date
+    strs << '????' # View count
+    strs << title.unicode_slice(size)
+    strs.join(' ')
+  end
 end
