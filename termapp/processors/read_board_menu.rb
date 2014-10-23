@@ -28,9 +28,7 @@ module TermApp
           strs << x.created_at.strftime('%m/%d') # Date
           strs << '????' # View count
           strs << x.title.unicode_slice(term.columns - 32)
-          if @cur_index == i
-            term.color_black(reverse: true)
-          end
+          term.color_black(reverse: true) if @cur_index == i
           term.mvaddstr(i + 4, 0, ' ' + strs.join(' '))
           term.color_black # reset color
         end
@@ -52,6 +50,12 @@ module TermApp
       result
     end
 
+    # Process key input for ReadBoardMenu.
+    #
+    # key - A Integer key input which is returned from term.getch.
+    #
+    # Returns nil or a Symbol :beep, :scroll_down, :scroll_up or :break with
+    #   additional arguments.
     def process_key(key)
       case key
       when 27, 113 # ESC, q
@@ -77,6 +81,11 @@ module TermApp
       end
     end
 
+    # Scroll the page of Posts.
+    #
+    # direction - A Symbol indicates direction. It can be :down or :up.
+    #
+    # Returns nothing.
     def scroll(direction)
       cur_board = term.current_board
       case direction
@@ -87,7 +96,7 @@ module TermApp
         else
           @cur_index = 0
           @posts = cur_board.post.order('num asc').limit(@num_lists)
-          .where('num > ?', pivot.num)
+                            .where('num > ?', pivot.num)
           if @posts.size < @num_lists # reached last
             @cur_index = @num_lists - @posts.size
             @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
@@ -100,7 +109,7 @@ module TermApp
         else
           @cur_index = @num_lists - 1
           @posts = cur_board.post.order('num desc').limit(@num_lists)
-          .where('num < ?', pivot.num).reverse
+                            .where('num < ?', pivot.num).reverse
           if @posts.size < @num_lists # reached first
             @cur_index = @posts.size - 1
             @posts = cur_board.post.order('num asc').limit(@num_lists)
