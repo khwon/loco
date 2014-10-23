@@ -47,9 +47,9 @@ module TermApp
         when :scroll_up
           scroll(:up)
         end
-        term.echo
-        result
       end
+      term.echo
+      result
     end
 
     def process_key(key)
