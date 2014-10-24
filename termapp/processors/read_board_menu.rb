@@ -20,23 +20,7 @@ module TermApp
         if @cur_index.nil? || @cur_index >= @num_lists
           @cur_index = @num_lists - 1
         end
-        if @past_index.nil?
-          term.erase_body
-          @posts.each_with_index do |post, i|
-            term.color_black(reverse: true) if @cur_index == i
-            term.mvaddstr(i + 4, 0,
-                          ' ' + post.format_for_term(term.columns - 32))
-            term.color_black # reset color
-          end
-          term.mvaddstr(@cur_index + 4, 0, '>')
-        elsif @past_index != @cur_index
-          past_line = @posts[@past_index].format_for_term(term.columns - 32)
-          cur_line = @posts[@cur_index].format_for_term(term.columns - 32)
-          term.mvaddstr(@past_index + 4, 0, ' ' + past_line)
-          term.color_black(reverse: true) do
-            term.mvaddstr(@cur_index + 4, 0, '>' + cur_line)
-          end
-        end
+        print_posts
         term.refresh
         @past_index = @cur_index
         control, *args = process_key(term.getch)
@@ -123,6 +107,29 @@ module TermApp
             @cur_index = @posts.size - 1
             @posts = cur_board.post.order('num asc').limit(@num_lists)
           end
+        end
+      end
+    end
+
+    # Print Post list. Current Post is displayed in reversed color. Refresh only
+    # highlighted lines if the list hasn't been scrolled.
+    #
+    # Returns nothing.
+    def print_posts
+      if @past_index.nil?
+        term.erase_body
+        @posts.each_with_index do |post, i|
+          term.color_black(reverse: true) if @cur_index == i
+          term.mvaddstr(i + 4, 0, ' ' + post.format_for_term(term.columns - 32))
+          term.color_black # reset color
+        end
+        term.mvaddstr(@cur_index + 4, 0, '>')
+      elsif @past_index != @cur_index
+        past_line = @posts[@past_index].format_for_term(term.columns - 32)
+        cur_line = @posts[@cur_index].format_for_term(term.columns - 32)
+        term.mvaddstr(@past_index + 4, 0, ' ' + past_line)
+        term.color_black(reverse: true) do
+          term.mvaddstr(@cur_index + 4, 0, '>' + cur_line)
         end
       end
     end

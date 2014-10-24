@@ -2,6 +2,65 @@ module TermApp
   # Process login screen. Processed at first. Terminate the Application when
   # user input 'off' on id field.
   class LoginMenu < Processor
+    LOGO = []
+    LOGO << <<END.freeze
+      =$
+ ~OMMMMM8.
+MMMMMMMMM+
+  ,MMMMMMN
+   ~MMMMMM
+    NMMMMM
+    :MMMMM~
+     MMMMM,
+     IMMMM~
+     =MMMM:
+     .MMMM.
+     :MMMNID.
+     ,MMMMMM$
+     .MMMMZI$.
+     =+.
+END
+    LOGO << <<END.freeze
+           ,=,,
+     :OMMMMMMMMM?
+   ?MMMMMMMMMMMMM
+ .OMMMMMMMMMMMMMM,
+ NMMMMM$:  .   +M+
+.MMM8.        ?MM=
+ MM:.     ,$MMMMM.
+ DMMMMMMMMMMMMMMO
+ .IMMMMMMMMMMMM?.
+    +MMMMMMMMI.
+       .  .
+END
+    LOGO << <<END.freeze
+       =ZMMMMDI.
+   ?MMMD=   =MMMM
+ IMMMM8  $MMMMMMMO
+,MMMMM=  MMMMMMMM7
+$MMMMMZ .DMMMMM8=.
+OMMMMMM    .
+~MMMMMM:       O7
+.MMMMMMM7   .ZMM,
+ ?MMMMMMMMMMMMM.
+   MMMMMMMMMM+.
+     ,.~ ..
+END
+    LOGO << <<END.freeze
+     :ZMMMMMMMMM:
+   ?MMMMMMMMMMMMM
+ .DMMMMMMMMMMMMMM
+ MMMMMM$:    ..OM~
+,MMMO         IMM,
+.MM..     .7MMMMM
+ MMMMMMMMMMMMMMM7
+ .OMMMMMMMMMMMM~
+   .$MMMMMMMM7
+          .
+END
+    LOGO.freeze
+    private_constant :LOGO
+
     def process
       user = nil
       tried = false
@@ -23,8 +82,7 @@ module TermApp
 
     private
 
-    # Draw login page with the logo of Loco. Each character of logo is colored
-    # randomly. If every letter has same color, print 'JACKPOT!!!!' on screen.
+    # Draw login page with the logo of Loco.
     #
     # options - The Hash options used to print login failed message
     #           (default: { failed: false }):
@@ -40,84 +98,10 @@ module TermApp
     # Returns nothing.
     def draw_login(failed: false)
       term.clrtoeol(0..23)
-      logo_colors = []
-      logo_colors << term.color_sample do
-        term.print_block(2, 2, <<END
-      =$
- ~OMMMMM8.
-MMMMMMMMM+
-  ,MMMMMMN
-   ~MMMMMM
-    NMMMMM
-    :MMMMM~
-     MMMMM,
-     IMMMM~
-     =MMMM:
-     .MMMM.
-     :MMMNID.
-     ,MMMMMM$
-     .MMMMZI$.
-     =+.
-END
-        )
-      end
-
-      logo_colors << term.color_sample do
-        term.print_block(5, 15, <<END
-           ,=,,
-     :OMMMMMMMMM?
-   ?MMMMMMMMMMMMM
- .OMMMMMMMMMMMMMM,
- NMMMMM$:  .   +M+
-.MMM8.        ?MM=
- MM:.     ,$MMMMM.
- DMMMMMMMMMMMMMMO
- .IMMMMMMMMMMMM?.
-    +MMMMMMMMI.
-       .  .
-END
-        )
-      end
-
-      logo_colors << term.color_sample do
-        term.print_block(3, 33, <<END
-       =ZMMMMDI.
-   ?MMMD=   =MMMM
- IMMMM8  $MMMMMMMO
-,MMMMM=  MMMMMMMM7
-$MMMMMZ .DMMMMM8=.
-OMMMMMM    .
-~MMMMMM:       O7
-.MMMMMMM7   .ZMM,
- ?MMMMMMMMMMMMM.
-   MMMMMMMMMM+.
-     ,.~ ..
-END
-        )
-      end
-
-      logo_colors << term.color_sample do
-        term.print_block(2, 51, <<END
-     :ZMMMMMMMMM:
-   ?MMMMMMMMMMMMM
- .DMMMMMMMMMMMMMM
- MMMMMM$:    ..OM~
-,MMMO         IMM,
-.MM..     .7MMMMM
- MMMMMMMMMMMMMMM7
- .OMMMMMMMMMMMM~
-   .$MMMMMMMM7
-          .
-END
-        )
-      end
-
+      draw_logo
       term.color_white do
         term.mvaddstr(13, 50, 'managed by GoN security')
         term.mvaddstr(14, 52, 'since 1999')
-      end
-      if logo_colors.uniq.size == 1
-        term.color_red { term.mvaddstr(18, 17, 'JACKPOT!!!!') }
       end
       term.mvaddstr(20, 5, 'total hit: 14520652')
       term.mvaddstr(21, 5, 'today hit: 229')
@@ -133,6 +117,20 @@ END
       )
       term.mvaddstr(22, 35, 'Login failed!') if failed
       term.refresh
+    end
+
+    # Draw logo of Loco. Each character of logo is colored randomly. If every
+    # letter has same color, print 'JACKPOT!!!!' on screen.
+    #
+    # Returns nothing.
+    def draw_logo
+      logo_colors = []
+      [[2, 2], [5, 15], [3, 33], [2, 51]].each_with_index do |point, i|
+        y, x = point
+        logo_colors << term.color_sample { term.print_block(y, x, LOGO[i]) }
+      end
+      return if logo_colors.uniq.size > 1
+      term.color_red { term.mvaddstr(18, 17, 'JACKPOT!!!!') }
     end
   end
 end

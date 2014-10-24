@@ -154,7 +154,7 @@ module TermApp
         @stdscr.clrtoeol
       else
         old_y, old_x = getyx
-        y_indices = [y_indices] unless y_indices.is_a? Enumerable
+        y_indices = [y_indices] unless y_indices.is_a?(Enumerable)
         y_indices.each do |y|
           @stdscr.move(y, 0)
           @stdscr.clrtoeol
