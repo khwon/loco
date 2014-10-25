@@ -83,7 +83,7 @@ module TermApp
         @str = @str[0..-2]
       else
         return unless key < 127
-        matched = @list.select { |x| x.path_name.starts_with? @str + key.chr }
+        matched = @list.select { |x| x.path_name.start_with?(@str + key.chr) }
         return :beep unless matched.size > 0
         @past_boards = @cur_boards
         @cur_boards = matched
