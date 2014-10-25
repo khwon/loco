@@ -109,20 +109,20 @@ module TermApp
       case direction
       when :down
         @past_index = nil
-        @cur_index = 0
+        @cur_index = 1
         @posts = cur_board.post.order('num asc').limit(@num_lists)
-                          .where('num > ?', @posts[-1].num)
+                          .where('num >= ?', @posts[-1].num)
         if @posts.size < @num_lists # reached last
-          @cur_index = @num_lists - @posts.size
+          @cur_index = @num_lists - @posts.size + 1
           @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
         end
       when :up
         @past_index = nil
-        @cur_index = @num_lists - 1
+        @cur_index = @num_lists - 2
         @posts = cur_board.post.order('num desc').limit(@num_lists)
-                          .where('num < ?', @posts[0].num).reverse
+                          .where('num <= ?', @posts[0].num).reverse
         if @posts.size < @num_lists # reached first
-          @cur_index = @posts.size - 1
+          @cur_index = @posts.size - 2
           @posts = cur_board.post.order('num asc').limit(@num_lists)
         end
       end
