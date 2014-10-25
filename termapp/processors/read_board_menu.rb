@@ -136,16 +136,16 @@ module TermApp
         term.erase_body
         @posts.each_with_index do |post, i|
           term.color_black(reverse: true) if @cur_index == i
-          term.mvaddstr(i + 4, 0, ' ' + post.format_for_term(term.columns - 32))
+          term.mvaddstr(i + 4, 0, post.format_for_term(term.columns - 32))
           term.color_black # reset color
         end
       else
         return if @past_index == @cur_index
-        past_line = @posts[@past_index].format_for_term(term.columns - 32)
-        cur_line = @posts[@cur_index].format_for_term(term.columns - 32)
-        term.mvaddstr(@past_index + 4, 0, ' ' + past_line)
+        term.mvaddstr(@past_index + 4, 0,
+                      @posts[@past_index].format_for_term(term.columns - 32))
         term.color_black(reverse: true) do
-          term.mvaddstr(@cur_index + 4, 0, ' ' + cur_line)
+          term.mvaddstr(@cur_index + 4, 0,
+                        @posts[@cur_index].format_for_term(term.columns - 32))
         end
       end
       term.mvaddstr(@cur_index + 4, 0, '>')

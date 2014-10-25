@@ -25,6 +25,6 @@ class Post < ActiveRecord::Base
     strs << created_at.strftime('%m/%d') # Date
     strs << '????' # View count
     strs << title.unicode_slice(size)
-    strs.join(' ')
+    ' ' + strs.join(' ') # Cursor
   end
 end
