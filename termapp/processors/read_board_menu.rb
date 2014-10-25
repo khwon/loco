@@ -19,14 +19,10 @@ module TermApp
         @past_index = @cur_index
         control, *args = process_key(term.getch)
         case control
-        when :break
-          break args
-        when :beep
-          term.beep
-        when :scroll_down
-          scroll(:down, *args)
-        when :scroll_up
-          scroll(:up, *args)
+        when :break       then break args
+        when :beep        then term.beep
+        when :scroll_down then scroll(:down, *args)
+        when :scroll_up   then scroll(:up, *args)
         when :read
           read_post_helper = ReadPostHelper.new(@app, args[0])
           control, *args = read_post_helper.show
@@ -68,17 +64,11 @@ module TermApp
           return :break, :loco_menu
         end
       when Ncurses::KEY_DOWN, 106 # j
-        if @cur_index == @num_lists - 1
-          return :scroll_down
-        else
-          @cur_index += 1
-        end
+        return :scroll_down if @cur_index == @num_lists - 1
+        @cur_index += 1
       when Ncurses::KEY_UP, 107 # k
-        if @cur_index == 0
-          return :scroll_up
-        else
-          @cur_index -= 1
-        end
+        return :scroll_up if @cur_index == 0
+        @cur_index -= 1
       when 74 # J
         return :beep # TODO : scroll to end of list
       when 21, 80 # ctrl+u, P
@@ -117,9 +107,9 @@ module TermApp
         return
       end
       cur_board = term.current_board
+      @past_index = nil
       case direction
       when :down
-        @past_index = nil
         @cur_index = 1 unless preserve_position
         @posts = cur_board.post.order('num asc').limit(@num_lists)
                           .where('num >= ?', @posts[-1].num)
@@ -128,7 +118,6 @@ module TermApp
           @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
         end
       when :up
-        @past_index = nil
         @cur_index = @num_lists - 2 unless preserve_position
         @posts = cur_board.post.order('num desc').limit(@num_lists)
                           .where('num <= ?', @posts[0].num).reverse
