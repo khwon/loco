@@ -4,18 +4,13 @@ module TermApp
   class ReadBoardMenu < Processor
     def process
       term.erase_body
-      cur_board = term.current_board
-      unless cur_board
+      unless term.current_board
         term.mvaddstr(8, 8, '보드를 먼저 선택해 주세요')
         term.getch
         return :loco_menu
       end
-      @cur_index = nil
-      @past_index = nil
-      @num_lists = term.lines - 5
+      process_init
       term.noecho
-      @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
-      @edge_posts = [cur_board.post.first, cur_board.post.last]
       result = loop do
         if @cur_index.nil? || @cur_index >= @num_lists
           @cur_index = @num_lists - 1
@@ -40,6 +35,18 @@ module TermApp
     end
 
     private
+
+    # Initialize instance variables before actual processing.
+    #
+    # Returns nothing.
+    def process_init
+      cur_board = term.current_board
+      @cur_index = nil
+      @past_index = nil
+      @num_lists = term.lines - 5
+      @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
+      @edge_posts = [cur_board.post.first, cur_board.post.last]
+    end
 
     # Process key input for ReadBoardMenu.
     #
@@ -72,41 +79,51 @@ module TermApp
       end
     end
 
+    # Check if the page can be scrolled with given direction.
+    #
+    # direction - A Symbol one of :down or :up.
+    #
+    # Returns a Boolean whether the page can be scrolled.
+    def scrollable?(direction)
+      case direction
+      when :down
+        pivot = @posts[-1]
+        return pivot && pivot != @edge_posts[1]
+      when :up
+        pivot = @posts[0]
+        return pivot && pivot != @edge_posts[0]
+      end
+    end
+
     # Scroll the page of Posts.
     #
     # direction - A Symbol indicates direction. It can be :down or :up.
     #
     # Returns nothing.
     def scroll(direction)
+      unless scrollable?(direction)
+        term.beep
+        return
+      end
       cur_board = term.current_board
       case direction
       when :down
-        pivot = @posts[-1]
-        if pivot.nil? || pivot == @edge_posts[1]
-          term.beep
-        else
-          @past_index = nil
-          @cur_index = 0
-          @posts = cur_board.post.order('num asc').limit(@num_lists)
-                            .where('num > ?', pivot.num)
-          if @posts.size < @num_lists # reached last
-            @cur_index = @num_lists - @posts.size
-            @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
-          end
+        @past_index = nil
+        @cur_index = 0
+        @posts = cur_board.post.order('num asc').limit(@num_lists)
+                          .where('num > ?', @posts[-1].num)
+        if @posts.size < @num_lists # reached last
+          @cur_index = @num_lists - @posts.size
+          @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
         end
       when :up
-        pivot = @posts[0]
-        if pivot.nil? || pivot == @edge_posts[0]
-          term.beep
-        else
-          @past_index = nil
-          @cur_index = @num_lists - 1
-          @posts = cur_board.post.order('num desc').limit(@num_lists)
-                            .where('num < ?', pivot.num).reverse
-          if @posts.size < @num_lists # reached first
-            @cur_index = @posts.size - 1
-            @posts = cur_board.post.order('num asc').limit(@num_lists)
-          end
+        @past_index = nil
+        @cur_index = @num_lists - 1
+        @posts = cur_board.post.order('num desc').limit(@num_lists)
+                          .where('num < ?', @posts[0].num).reverse
+        if @posts.size < @num_lists # reached first
+          @cur_index = @posts.size - 1
+          @posts = cur_board.post.order('num asc').limit(@num_lists)
         end
       end
     end

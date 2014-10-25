@@ -3,11 +3,7 @@ module TermApp
   # User can navigate Boards and select a Board.
   class SelectBoardMenu < Processor
     def process
-      @str = ''
-      @cur_boards = []
-      @past_boards = nil
-      @list = nil
-      @selected = []
+      process_init
       loop do
         # TODO : consider setting start point as locoterm.current_board
         if @str == ''
@@ -35,6 +31,17 @@ module TermApp
     end
 
     private
+
+    # Initialize instance variables before actual processing.
+    #
+    # Returns nothing.
+    def process_init
+      @str = ''
+      @cur_boards = []
+      @past_boards = nil
+      @list = nil
+      @selected = []
+    end
 
     # Process key input for SelectBoardMenu.
     #
@@ -106,13 +113,9 @@ module TermApp
       else
         term.erase_body
         list.each_with_index do |x, i|
-          if x == @cur_boards.first
-            term.color_black(reverse: true) do
-              term.mvaddstr(i + 4, 3, x.path_name)
-            end
-          else
-            term.mvaddstr(i + 4, 3, x.path_name)
-          end
+          term.color_black(reverse: true) if x == @cur_boards.first
+          term.mvaddstr(i + 4, 3, x.path_name)
+          term.color_black # Reset color
         end
         @list = list
       end
