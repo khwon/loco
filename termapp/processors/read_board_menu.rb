@@ -24,9 +24,9 @@ module TermApp
         when :beep
           term.beep
         when :scroll_down
-          scroll(:down)
+          scroll(:down, *args)
         when :scroll_up
-          scroll(:up)
+          scroll(:up, *args)
         end
       end
       term.echo
@@ -73,6 +73,10 @@ module TermApp
         end
       when 74 # J
         return :beep # TODO : scroll to end of list
+      when 21, 80 # ctrl+u, P
+        return :scroll_up, preserve_position: true
+      when 4, 78 # ctrl+d, N
+        return :scroll_down, preserve_position: true
       else
         return :beep
       end
@@ -99,7 +103,7 @@ module TermApp
     # direction - A Symbol indicates direction. It can be :down or :up.
     #
     # Returns nothing.
-    def scroll(direction)
+    def scroll(direction, preserve_position: false)
       unless scrollable?(direction)
         term.beep
         return
@@ -108,20 +112,20 @@ module TermApp
       case direction
       when :down
         @past_index = nil
-        @cur_index = 1
+        @cur_index = 1 unless preserve_position
         @posts = cur_board.post.order('num asc').limit(@num_lists)
                           .where('num >= ?', @posts[-1].num)
         if @posts.size < @num_lists # reached last
-          @cur_index = @num_lists - @posts.size + 1
+          @cur_index = @num_lists - @posts.size + 1 unless preserve_position
           @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
         end
       when :up
         @past_index = nil
-        @cur_index = @num_lists - 2
+        @cur_index = @num_lists - 2 unless preserve_position
         @posts = cur_board.post.order('num desc').limit(@num_lists)
                           .where('num <= ?', @posts[0].num).reverse
         if @posts.size < @num_lists # reached first
-          @cur_index = @posts.size - 2
+          @cur_index = @posts.size - 2 unless preserve_position
           @posts = cur_board.post.order('num asc').limit(@num_lists)
         end
       end
