@@ -106,13 +106,9 @@ module TermApp
       else
         term.erase_body
         list.each_with_index do |x, i|
-          if x == @cur_boards.first
-            term.color_black(reverse: true) do
-              term.mvaddstr(i + 4, 3, x.path_name)
-            end
-          else
-            term.mvaddstr(i + 4, 3, x.path_name)
-          end
+          term.color_black(reverse: true) if x == @cur_boards.first
+          term.mvaddstr(i + 4, 3, x.path_name)
+          term.color_black # Reset color
         end
         @list = list
       end
