@@ -148,6 +148,7 @@ module TermApp
         term.color_black(reverse: true) do
           term.mvaddstr(@cur_index + 4, 0, '>' + cur_line)
         end
+        term.move(@cur_index + 4, 1)
       end
     end
   end
