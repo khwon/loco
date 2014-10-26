@@ -1,10 +1,18 @@
 module TermApp
+  # Helper methods for reading Posts. See ReadBoardMenu.
   class ReadPostHelper
+    # Initialize a ReadPostHelper. It holds an Application instance and a model.
+    #
+    # app   - The Application instance which is now running.
+    # model - A model instance to show.
     def initialize(app, model)
       @app = app
       @model = model
     end
 
+    # Show content of the model to terminal. Currently it shows Post only.
+    #
+    # Returns nil or a Symbol to process.
     def show
       term = @app.term # TODO : just for convinience, not a good design
       return unless @model.is_a?(Post)

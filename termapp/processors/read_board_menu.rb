@@ -99,6 +99,16 @@ module TermApp
     # Scroll the page of Posts.
     #
     # direction - A Symbol indicates direction. It can be :down or :up.
+    # options   - The Hash options used to control position of cursor
+    #             (default: { preserve_position: false }).
+    #             :preserve_position - The Boolean whether to preserve current
+    #                                  position of cursor or not.
+    #
+    # Examples
+    #
+    #   scroll(:down)
+    #
+    #   scroll(:up, preserve_position: true)
     #
     # Returns nothing.
     def scroll(direction, preserve_position: false)
