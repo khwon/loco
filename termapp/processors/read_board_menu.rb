@@ -28,7 +28,7 @@ module TermApp
         when :scroll_up
           scroll(:up, *args)
         when :read
-          read_post_helper = ReadPostHelper.new(@app,args[0])
+          read_post_helper = ReadPostHelper.new(@app, args[0])
           control, *args = read_post_helper.show
           @past_index = nil # redraw list
         end
