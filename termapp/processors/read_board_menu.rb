@@ -23,10 +23,7 @@ module TermApp
         when :beep        then term.beep
         when :scroll_down then scroll(:down, *args)
         when :scroll_up   then scroll(:up, *args)
-        when :read
-          read_post_helper = ReadPostHelper.new(@app, args[0])
-          control, *args = read_post_helper.show
-          @past_index = nil # redraw list
+        when :read        then read_post(args[0])
         end
       end
       term.echo
@@ -58,11 +55,8 @@ module TermApp
       when 27, 113 # ESC, q
         return :break, :loco_menu
       when 10, 32 # enter, space
-        if @posts[@cur_index]
-          return :read, @posts[@cur_index]
-        else
-          return :break, :loco_menu
-        end
+        return :break, :loco_menu unless @posts[@cur_index]
+        return :read, @posts[@cur_index]
       when Ncurses::KEY_DOWN, 106 # j
         return :scroll_down if @cur_index == @num_lists - 1
         @cur_index += 1
@@ -161,6 +155,17 @@ module TermApp
       end
       term.mvaddstr(@cur_index + 4, 0, '>')
       term.refresh
+    end
+
+    # Display a given Post on terminal.
+    #
+    # post - The Post instance to read.
+    #
+    # Returns nothing.
+    def read_post(post)
+      @past_index = nil # redraw list
+      read_post_helper = ReadPostHelper.new(@app, post)
+      _control, *_args = read_post_helper.show
     end
   end
 end
