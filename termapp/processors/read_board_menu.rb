@@ -27,6 +27,10 @@ module TermApp
           scroll(:down, *args)
         when :scroll_up
           scroll(:up, *args)
+        when :read
+          read_post_helper = ReadPostHelper.new(@app,args[0])
+          control, *args = read_post_helper.show
+          @past_index = nil # redraw list
         end
       end
       term.echo
@@ -58,7 +62,11 @@ module TermApp
       when 27, 113 # ESC, q
         return :break, :loco_menu
       when 10, 32 # enter, space
-        return :break, :loco_menu # FIXME : read post
+        if @posts[@cur_index]
+          return :read, @posts[@cur_index]
+        else
+          return :break, :loco_menu
+        end
       when Ncurses::KEY_DOWN, 106 # j
         if @cur_index == @num_lists - 1
           return :scroll_down

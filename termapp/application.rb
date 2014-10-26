@@ -2,6 +2,7 @@ require 'active_support/inflector'
 require_relative 'terminal'
 require_relative 'processor'
 Dir[File.expand_path('../processors/*.rb', __FILE__)].each { |f| require f }
+Dir[File.expand_path('../helpers/*.rb', __FILE__)].each { |f| require f }
 
 # Terminal application of Loco. To run, use Application class.
 #
