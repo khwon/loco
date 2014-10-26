@@ -5,16 +5,13 @@ module TermApp
     def process
       term.erase_body
       unless term.current_board
-        term.mvaddstr(8, 8, '보드를 먼저 선택해 주세요')
-        term.getch
+        print_select_board
         return :loco_menu
       end
       process_init
       term.noecho
       result = loop do
-        if @cur_index.nil? || @cur_index >= @num_lists
-          @cur_index = @num_lists - 1
-        end
+        sanitize_current_index
         print_posts
         @past_index = @cur_index
         control, *args = process_key(term.getch)
@@ -74,6 +71,14 @@ module TermApp
       end
     end
 
+    # Ensure the current index is not out of the range.
+    #
+    # Returns nothing.
+    def sanitize_current_index
+      return unless @cur_index.nil? || @cur_index >= @num_lists
+      @cur_index = @num_lists - 1
+    end
+
     # Check if the page can be scrolled with given direction.
     #
     # direction - A Symbol one of :down or :up.
@@ -115,21 +120,27 @@ module TermApp
       case direction
       when :down
         @cur_index = 1 unless preserve_position
-        @posts = cur_board.post.order('num asc').limit(@num_lists)
-                          .where('num >= ?', @posts[-1].num)
+        @posts = cur_board.posts_from(@posts[-1].num, @num_lists)
         if @posts.size < @num_lists # reached last
           @cur_index = @num_lists - @posts.size + 1 unless preserve_position
           @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
         end
       when :up
         @cur_index = @num_lists - 2 unless preserve_position
-        @posts = cur_board.post.order('num desc').limit(@num_lists)
-                          .where('num <= ?', @posts[0].num).reverse
+        @posts = cur_board.posts_to(@posts[0].num, @num_lists)
         if @posts.size < @num_lists # reached first
           @cur_index = @posts.size - 2 unless preserve_position
           @posts = cur_board.post.order('num asc').limit(@num_lists)
         end
       end
+    end
+
+    # Display message saying select the board first.
+    #
+    # Returns nothing.
+    def print_select_board
+      term.mvaddstr(8, 8, '보드를 먼저 선택해 주세요')
+      term.getch
     end
 
     # Print Post list. Current Post is displayed in reversed color. Refresh only
