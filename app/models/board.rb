@@ -70,4 +70,24 @@ class Board < ActiveRecord::Base
     str = parent.path_name + str if parent
     str
   end
+
+  # List of post having num which is greater than or equal to given num.
+  #
+  # num  - The Integer num which is the lowest value of list.
+  # size - The Integer max size of the list.
+  #
+  # Returns an Array of Post ordered by num.
+  def posts_from(num, size)
+    post.order('num asc').limit(size).where('num >= ?', num)
+  end
+
+  # List of post having num which is smaller than or equal to given num.
+  #
+  # num  - The Integer num wihch is the highest value of list.
+  # size - The Integer max size of the list.
+  #
+  # Returns an Array of Post ordered by num.
+  def posts_to(num, size)
+    post.order('num desc').limit(size).where('num <= ?', num).reverse
+  end
 end
