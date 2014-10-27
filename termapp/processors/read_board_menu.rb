@@ -101,7 +101,7 @@ module TermApp
     # options   - The Hash options used to control position of cursor
     #             (default: { preserve_position: false }).
     #             :preserve_position - The Boolean whether to preserve current
-    #                                  position of cursor or not.
+    #                                  position of cursor or not (optional).
     #
     # Examples
     #
@@ -151,21 +151,29 @@ module TermApp
       if @past_index.nil?
         term.erase_body
         @posts.each_with_index do |post, i|
-          term.color_black(reverse: true) if @cur_index == i
-          term.mvaddstr(i + 4, 0, post.format_for_term(term.columns - 32))
-          term.color_black # reset color
+          print_post(post, i, reverse: @cur_index == i)
         end
       else
         return if @past_index == @cur_index
-        term.mvaddstr(@past_index + 4, 0,
-                      @posts[@past_index].format_for_term(term.columns - 32))
-        term.color_black(reverse: true) do
-          term.mvaddstr(@cur_index + 4, 0,
-                        @posts[@cur_index].format_for_term(term.columns - 32))
-        end
+        print_post(@posts[@past_index], @past_index)
+        print_post(@posts[@cur_index], @cur_index, reverse: true)
       end
       term.mvaddstr(@cur_index + 4, 0, '>')
       term.refresh
+    end
+
+    # Print a given Post to terminal.
+    #
+    # post    - The Post instance to print.
+    # index   - The Integer position of Post in list.
+    # options - The Hash options used to control background color (default:
+    #           { reverse: false }).
+    #           :reverse - The Boolean whether to reverse the foreground and
+    #                      background color or not (optional).
+    def print_post(post, index, reverse: false)
+      term.color_black(reverse: reverse) do
+        term.mvaddstr(index + 4, 0, post.format_for_term(term.columns - 32))
+      end
     end
 
     # Display a given Post on terminal.

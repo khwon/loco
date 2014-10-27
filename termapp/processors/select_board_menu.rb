@@ -123,22 +123,28 @@ module TermApp
       if @list && @list == list
         past_board = @list.index(@past_boards.first)
         cur_board = @list.index(@cur_boards.first)
-        if past_board
-          term.mvaddstr(past_board + 4, 3, @past_boards.first.path_name)
-        end
-        if cur_board
-          term.color_black(reverse: true) do
-            term.mvaddstr(cur_board + 4, 3, @cur_boards.first.path_name)
-          end
-        end
+        print_board(@past_boards.first, past_board) if past_board
+        print_board(@cur_boards.first, cur_board, reverse: true) if cur_board
       else
         term.erase_body
-        list.each_with_index do |x, i|
-          term.color_black(reverse: true) if x == @cur_boards.first
-          term.mvaddstr(i + 4, 3, x.path_name)
-          term.color_black # Reset color
+        list.each_with_index do |board, i|
+          print_board(board, i, reverse: board == @cur_boards.first)
         end
         @list = list
+      end
+    end
+
+    # Print a given Board to terminal.
+    #
+    # board   - The Board instance to print.
+    # index   - The Integer position of Board in list.
+    # options - The Hash options used to control background color (default:
+    #           { reverse: false }).
+    #           :reverse - The Boolean whether to reverse the foreground and
+    #                      background color or not (optional).
+    def print_board(board, index, reverse: false)
+      term.color_black(reverse: reverse) do
+        term.mvaddstr(index + 4, 3, board.path_name)
       end
     end
   end
