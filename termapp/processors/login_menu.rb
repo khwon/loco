@@ -105,16 +105,7 @@ END
       end
       term.mvaddstr(20, 5, 'total hit: 14520652')
       term.mvaddstr(21, 5, 'today hit: 229')
-      term.print_block(17, 32, <<END
-   type 'new' to join
-   there is no guest ID
-┌──────────────────────────────┐
-│  ID :                        │
-│  PW :                        │
-│                              │
-└──────────────────────────────┘
-END
-      )
+      draw_login_form
       term.mvaddstr(22, 35, 'Login failed!') if failed
       term.refresh
     end
@@ -131,6 +122,21 @@ END
       end
       return if logo_colors.uniq.size > 1
       term.color_red { term.mvaddstr(18, 17, 'JACKPOT!!!!') }
+    end
+
+    # Draw login form.
+    #
+    # Returns nothing.
+    def draw_login_form
+      term.print_block(17, 32, <<END.freeze)
+   type 'new' to join
+   there is no guest ID
+┌──────────────────────────────┐
+│  ID :                        │
+│  PW :                        │
+│                              │
+└──────────────────────────────┘
+END
     end
   end
 end

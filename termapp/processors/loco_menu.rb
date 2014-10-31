@@ -123,13 +123,9 @@ module TermApp
       if @past_menu.nil?
         term.erase_body
         @items.each_with_index do |item, i|
-          if i == @cur_menu
-            term.color_black(reverse: true) do
-              term.mvaddstr(i + 4, 3, item.title)
-            end
-          else
-            term.mvaddstr(i + 4, 3, item.title)
-          end
+          term.color_black(reverse: true) if i == @cur_menu
+          term.mvaddstr(i + 4, 3, item.title)
+          term.color_black # Reset color
         end
       else
         term.mvaddstr(@past_menu + 4, 3, @items[@past_menu].title)
