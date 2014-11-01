@@ -71,7 +71,7 @@ module TermApp
         print_items
         term.move(@cur_menu + 4, 3)
         term.refresh
-        control, *args = process_key(term.getch)
+        control, *args = process_key(term.get_wch)
         case control
         when :break
           break args
@@ -83,33 +83,40 @@ module TermApp
 
     # Process key input for LocoMenu.
     #
-    # key - A Integer key input which is returned from term.getch.
+    # key - An array of key input which is returned from term.get_wch.
     #
     # Examples
     #
-    #   process_key(term.getch)
+    #   process_key(term.get_wch)
     #
     #   process_key(10)
     #   # => [:break, :welcome_menu]
     #
     # Returns nil or a Symbol :break with additional arguments.
     def process_key(key)
-      case key
-      when Ncurses::KEY_UP
-        @past_menu = @cur_menu
-        @cur_menu = (@cur_menu - 1) % @items.size
-      when Ncurses::KEY_DOWN
-        @past_menu = @cur_menu
-        @cur_menu = (@cur_menu + 1) % @items.size
-      when Ncurses::KEY_ENTER, 10 # Enter
-        # Erase body after call
-        @past_menu = nil
-        term.echo
-        return :break, @items[@cur_menu].menu
-      else
-        return unless key < 127
+      if key[0] == Ncurses::KEY_CODE_YES
+        case key[1]
+        when Ncurses::KEY_UP
+          @past_menu = @cur_menu
+          @cur_menu = (@cur_menu - 1) % @items.size
+        when Ncurses::KEY_DOWN
+          @past_menu = @cur_menu
+          @cur_menu = (@cur_menu + 1) % @items.size
+        when Ncurses::KEY_ENTER, 10 # Enter
+          # Erase body after call
+          @past_menu = nil
+          term.echo
+          return :break, @items[@cur_menu].menu
+        end
+      elsif key[0] == Ncurses::OK
+        if key[1] == 10 # Enter
+          # Erase body after call
+          @past_menu = nil
+          term.echo
+          return :break, @items[@cur_menu].menu
+        end
         @items.each_with_index do |item, i|
-          next unless key.chr =~ item.shortcut_regex
+          next unless key[2] =~ item.shortcut_regex
           @past_menu = @cur_menu
           @cur_menu = i
         end

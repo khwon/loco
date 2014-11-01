@@ -20,8 +20,8 @@ module TermApp
     # Delegates terminate to Ncurses.endwin.
     def_delegator :Ncurses, :endwin, :terminate
 
-    # Delegates refresh, move, getch to each method of @stdscr.
-    def_delegators :@stdscr, :refresh, :move, :getch
+    # Delegates refresh, move to each method of @stdscr.
+    def_delegators :@stdscr, :refresh, :move
 
     # Returns the Integer number of screen lines.
     attr_reader :lines
@@ -229,6 +229,15 @@ module TermApp
       @stdscr.getmaxyx(lines, columns)
       @lines = lines[0]
       @columns = columns[0]
+    end
+
+    # get one wide-character from terminal
+    #
+    # Returns [status code, character code, character as string if status code is ok].
+    def get_wch
+      result = Ncurses.get_wch
+      result << ((result[0] == Ncurses::OK) ? [result[1]].pack('U') : nil)
+      result
     end
 
     # Print the multi-line String to screen.

@@ -12,11 +12,11 @@ RSpec.describe TermApp::Application, type: :termapp do
     it "processes GoodbyeMenu when get 'off' as id" do
       mock_id_input(app.term, 'off')
       # GoodbyeMenu
-      allow(app.term).to receive(:getch) { Ncurses::KEY_ENTER }
+      allow(app.term).to receive(:get_wch) { [Ncurses::OK, 10] }
       app.run
 
       expect(app.term).to have_received_id.once
-      expect(app.term).to have_received(:getch).with(no_args).once
+      expect(app.term).to have_received(:get_wch).with(no_args).once
 
       cached_processors = app.instance_variable_get(:@cached_processors)
       expect(cached_processors).to only_have_processors(
@@ -37,15 +37,15 @@ RSpec.describe TermApp::Application, type: :termapp do
         allow(user).to receive(:try)
           .with(:authenticate, user.password).and_call_original
         allow(user).to receive(:admin?).and_call_original
-        allow(app.term).to receive(:getch).and_return(
+        allow(app.term).to receive(:get_wch).and_return(
                              # WelcomeMenu
-                             Ncurses::KEY_ENTER,
+                             [Ncurses::OK, 10, "\n"],
                              # g
-                             103,
+                             [Ncurses::OK, 103, 'g'],
                              # LocoMenu
-                             Ncurses::KEY_ENTER,
+                             [Ncurses::OK, 10, "\n"],
                              # GoodbyeMenu
-                             Ncurses::KEY_ENTER
+                             [Ncurses::OK, 10, "\n"]
                            )
 
         app.run
@@ -57,7 +57,7 @@ RSpec.describe TermApp::Application, type: :termapp do
         expect(user).to have_received(:try)
           .with(:authenticate, user.password).once
         expect(user).to have_received(:admin?).with(no_args).once
-        expect(app.term).to have_received(:getch)
+        expect(app.term).to have_received(:get_wch)
           .with(no_args).exactly(4).times
 
         cached_processors = app.instance_variable_get(:@cached_processors)

@@ -6,7 +6,7 @@ module TermApp
       term.erase
       term.mvaddstr(5, 5, 'goodbye!')
       term.refresh
-      term.getch
+      term.get_wch
       nil
     end
   end

@@ -49,6 +49,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'pry'
   gem 'pry-remote'
   gem 'rubocop', '~> 0.27.0', require: false
   gem 'guard', '~> 2.7.0', require: false
