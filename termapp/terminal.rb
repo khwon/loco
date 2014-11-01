@@ -235,7 +235,7 @@ module TermApp
     #
     # Returns an Array of status code, character code, character as string if
     #   status code is Ncurses::OK.
-    def get_wch
+    def get_wch # rubocop:disable Style/AccessorMethodName
       result = Ncurses.get_wch
       result << ((result[0] == Ncurses::OK) ? [result[1]].pack('U') : nil)
       result
