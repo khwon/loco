@@ -231,9 +231,10 @@ module TermApp
       @columns = columns[0]
     end
 
-    # get one wide-character from terminal
+    # Get one wide-character from terminal.
     #
-    # Returns [status code, character code, character as string if status code is ok].
+    # Returns an Array of status code, character code, character as string if
+    #   status code is Ncurses::OK.
     def get_wch
       result = Ncurses.get_wch
       result << ((result[0] == Ncurses::OK) ? [result[1]].pack('U') : nil)
