@@ -24,7 +24,7 @@ module TermApp
                           "#{@model.title.unicode_slice(term.columns - 10)}")
       # FIXME : implement appropriate printing!
       term.mvaddstr(4, 0, @model.content)
-      term.getch
+      term.get_wch
       :loco_menu
     end
   end

@@ -9,7 +9,7 @@ module TermApp
       end
       term.mvaddstr(3, 20, 'Press any key..')
       term.refresh
-      term.getch
+      term.get_wch
       :loco_menu
     end
   end

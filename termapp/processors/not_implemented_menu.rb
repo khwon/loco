@@ -20,7 +20,7 @@ module TermApp
       term.erase_body
       term.mvaddstr(5, 5, "#{@name}: Not supported yet")
       term.refresh
-      term.getch
+      term.get_wch
       :loco_menu
     end
   end

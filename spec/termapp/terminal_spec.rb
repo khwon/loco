@@ -14,8 +14,7 @@ RSpec.describe TermApp::Terminal, type: :termapp do
                                :beep,
                                :terminate,
                                :refresh,
-                               :move,
-                               :getch)
+                               :move)
   end
 
   describe '.color_<color>' do
