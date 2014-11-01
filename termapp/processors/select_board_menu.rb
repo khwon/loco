@@ -43,7 +43,7 @@ module TermApp
 
     # Process key input for SelectBoardMenu.
     #
-    # key - An array of key input which is returned from term.get_wch.
+    # key - An Array of key input which is returned from term.get_wch.
     #
     # Examples
     #

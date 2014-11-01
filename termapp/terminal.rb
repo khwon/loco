@@ -231,10 +231,11 @@ module TermApp
       @columns = columns[0]
     end
 
-    # get one wide-character from terminal
+    # Get one wide-character from terminal.
     #
-    # Returns [status code, character code, character as string if status code is ok].
-    def get_wch
+    # Returns an Array of status code, character code, character as string if
+    #   status code is Ncurses::OK.
+    def get_wch # rubocop:disable Style/AccessorMethodName
       result = Ncurses.get_wch
       result << ((result[0] == Ncurses::OK) ? [result[1]].pack('U') : nil)
       result

@@ -12,7 +12,7 @@ RSpec.describe TermApp::Application, type: :termapp do
     it "processes GoodbyeMenu when get 'off' as id" do
       mock_id_input(app.term, 'off')
       # GoodbyeMenu
-      allow(app.term).to receive(:get_wch) { [Ncurses::OK, 10] }
+      allow(app.term).to receive(:get_wch) { [Ncurses::OK, 10, "\n"] }
       app.run
 
       expect(app.term).to have_received_id.once

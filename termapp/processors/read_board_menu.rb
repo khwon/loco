@@ -43,7 +43,7 @@ module TermApp
 
     # Process key input for ReadBoardMenu.
     #
-    # key - An aray of key input which is returned from term.get_wch.
+    # key - An Array of key input which is returned from term.get_wch.
     #
     # Returns nil or a Symbol :beep, :scroll_down, :scroll_up or :break with
     #   additional arguments.
