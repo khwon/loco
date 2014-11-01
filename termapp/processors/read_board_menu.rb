@@ -48,7 +48,7 @@ module TermApp
     # Returns nil or a Symbol :beep, :scroll_down, :scroll_up or :break with
     #   additional arguments.
     def process_key(key)
-      if key[0] == Ncurse::OK
+      if key[0] == Ncurses::OK
         case key[1]
         when 27, 113 # ESC, q
           return :break, :loco_menu
@@ -67,8 +67,10 @@ module TermApp
         when 107 # k
           return :scroll_up if @cur_index == 0
           @cur_index -= 1
+        else
+          return :beep
         end
-      elsif key[0] == Ncurse::KEY_CODE_YES
+      elsif key[0] == Ncurses::KEY_CODE_YES
         case key[1]
         when Ncurses::KEY_DOWN
           return :scroll_down if @cur_index == @num_lists - 1
@@ -76,9 +78,10 @@ module TermApp
         when Ncurses::KEY_UP
           return :scroll_up if @cur_index == 0
           @cur_index -= 1
+        else
+          return :beep
         end
       end
-      return :beep
     end
 
     # Ensure the current index is not out of the range.

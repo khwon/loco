@@ -60,7 +60,7 @@ module TermApp
     def process_key(key)
       # FIXME : needs cleanup
       if key[0] == Ncurses::OK
-        case key
+        case key[1]
         when 9, 32 # Tab, Space
           return :beep unless selected_completable_board?
           @selected << @cur_boards.first
@@ -80,7 +80,7 @@ module TermApp
           end
           @str = @str[0..-2]
         else
-          return unless key < 127 # only allow english boardnames
+          return unless key[1] < 127 # only allow english boardnames
           return :beep unless matched?(key[2])
         end
       elsif key[0] == Ncurses::KEY_CODE_YES

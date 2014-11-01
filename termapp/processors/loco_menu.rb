@@ -109,6 +109,12 @@ module TermApp
           return :break, @items[@cur_menu].menu
         end
       elsif key[0] == Ncurses::OK
+        if key[1] == 10 # Enter
+          # Erase body after call
+          @past_menu = nil
+          term.echo
+          return :break, @items[@cur_menu].menu
+        end
         @items.each_with_index do |item, i|
           next unless key[2] =~ item.shortcut_regex
           @past_menu = @cur_menu
