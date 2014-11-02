@@ -58,46 +58,27 @@ module TermApp
     # Returns nil or a Symbol which is one of :break or :beep with additional
     #   arguments.
     def process_key(key)
-      # FIXME : needs cleanup
-      if key[0] == Ncurses::OK
-        case key[1]
-        when 9, 32 # Tab, Space
-          return :beep unless selected_completable_board?
-          @selected << @cur_boards.first
-          @str = @selected.last.path_name
-        when 27 # ESC
-          return :break, :loco_menu
-        when 10 # Enter
-          return :beep unless selected_readable_board?
-          # TODO : for now, only allow selecting non-dir boards
-          term.current_board = @cur_boards.first
-          # TODO : for now, return to loco menu
-          return :break, :loco_menu, :read_board_menu # focus read menu
-        when 127 # backspace
-          if @selected.size > 0 && @str == @selected.last.path_name
-            @past_boards = @cur_boards
-            @cur_boards = [@selected.pop]
-          end
-          @str = @str[0..-2]
-        else
-          return unless key[1] < 127 # only allow english boardnames
-          return :beep unless matched?(key[2])
+      case key_symbol(key)
+      when :tab, :space
+        return :beep unless selected_completable_board?
+        @selected << @cur_boards.first
+        @str = @selected.last.path_name
+      when :esc
+        return :break, :loco_menu
+      when :enter
+        return :beep unless selected_readable_board?
+        # TODO : for now, only allow selecting non-dir boards
+        term.current_board = @cur_boards.first
+        # TODO : for now, return to loco menu
+        return :break, :loco_menu, :read_board_menu # focus read menu
+      when :backspace
+        if @selected.size > 0 && @str == @selected.last.path_name
+          @past_boards = @cur_boards
+          @cur_boards = [@selected.pop]
         end
-      elsif key[0] == Ncurses::KEY_CODE_YES
-        case key[1]
-        when Ncurses::KEY_ENTER # Enter
-          return :beep unless selected_readable_board?
-          # TODO : for now, only allow selecting non-dir boards
-          term.current_board = @cur_boards.first
-          # TODO : for now, return to loco menu
-          return :break, :loco_menu, :read_board_menu # focus read menu
-        when Ncurses::KEY_BACKSPACE
-          if @selected.size > 0 && @str == @selected.last.path_name
-            @past_boards = @cur_boards
-            @cur_boards = [@selected.pop]
-          end
-          @str = @str[0..-2]
-        end
+        @str = @str[0..-2]
+      else
+        return :beep if key[0] == Ncurses::OK && !matched?(key[2])
       end
     end
 

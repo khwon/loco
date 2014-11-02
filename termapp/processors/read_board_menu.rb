@@ -48,39 +48,32 @@ module TermApp
     # Returns nil or a Symbol :beep, :scroll_down, :scroll_up or :break with
     #   additional arguments.
     def process_key(key)
-      if key[0] == Ncurses::OK
-        case key[1]
-        when 27, 113 # ESC, q
-          return :break, :loco_menu
-        when 10, 32 # enter, space
-          return :break, :loco_menu unless @posts[@cur_index]
-          return :read, @posts[@cur_index]
-        when 74 # J
-          return :beep # TODO : scroll to end of list
-        when 21, 80 # ctrl+u, P
-          return :scroll_up, preserve_position: true
-        when 4, 78 # ctrl+d, N
-          return :scroll_down, preserve_position: true
-        when 106 # j
-          return :scroll_down if @cur_index == @num_lists - 1
-          @cur_index += 1
-        when 107 # k
-          return :scroll_up if @cur_index == 0
-          @cur_index -= 1
-        else
-          return :beep
-        end
-      elsif key[0] == Ncurses::KEY_CODE_YES
-        case key[1]
-        when Ncurses::KEY_DOWN
-          return :scroll_down if @cur_index == @num_lists - 1
-          @cur_index += 1
-        when Ncurses::KEY_UP
-          return :scroll_up if @cur_index == 0
-          @cur_index -= 1
-        else
-          return :beep
-        end
+      case key_symbol(key)
+      when :esc, :q
+        return :break, :loco_menu
+      when :enter, :space
+        return :break, :loco_menu unless @posts[@cur_index]
+        return :read, @posts[@cur_index]
+      when :J
+        return :beep # TODO : scroll to end of list
+      when :ctrl_u, :P
+        return :scroll_up, preserve_position: true
+      when :ctrl_d, :N
+        return :scroll_down, preserve_position: true
+      when :j
+        return :scroll_down if @cur_index == @num_lists - 1
+        @cur_index += 1
+      when :k
+        return :scroll_up if @cur_index == 0
+        @cur_index -= 1
+      when :down
+        return :scroll_down if @cur_index == @num_lists - 1
+        @cur_index += 1
+      when :up
+        return :scroll_up if @cur_index == 0
+        @cur_index -= 1
+      else
+        return :beep
       end
     end
 
