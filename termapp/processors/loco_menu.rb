@@ -94,32 +94,25 @@ module TermApp
     #
     # Returns nil or a Symbol :break with additional arguments.
     def process_key(key)
-      if key[0] == Ncurses::KEY_CODE_YES
-        case key[1]
-        when Ncurses::KEY_UP
-          @past_menu = @cur_menu
-          @cur_menu = (@cur_menu - 1) % @items.size
-        when Ncurses::KEY_DOWN
-          @past_menu = @cur_menu
-          @cur_menu = (@cur_menu + 1) % @items.size
-        when Ncurses::KEY_ENTER, 10 # Enter
-          # Erase body after call
-          @past_menu = nil
-          term.echo
-          return :break, @items[@cur_menu].menu
-        end
-      elsif key[0] == Ncurses::OK
-        if key[1] == 10 # Enter
-          # Erase body after call
-          @past_menu = nil
-          term.echo
-          return :break, @items[@cur_menu].menu
-        end
-        @items.each_with_index do |item, i|
-          next unless key[2] =~ item.shortcut_regex
-          @past_menu = @cur_menu
-          @cur_menu = i
-        end
+      case key_symbol(key)
+      when :up
+        @past_menu = @cur_menu
+        @cur_menu = (@cur_menu - 1) % @items.size
+      when :down
+        @past_menu = @cur_menu
+        @cur_menu = (@cur_menu + 1) % @items.size
+      when :enter
+        # Erase body after call
+        @past_menu = nil
+        term.echo
+        return :break, @items[@cur_menu].menu
+      end
+
+      return if key[0] != Ncurses::OK
+      @items.each_with_index do |item, i|
+        next unless key[2] =~ item.shortcut_regex
+        @past_menu = @cur_menu
+        @cur_menu = i
       end
     end
 
