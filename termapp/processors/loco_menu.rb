@@ -123,15 +123,25 @@ module TermApp
       if @past_menu.nil?
         term.erase_body
         @items.each_with_index do |item, i|
-          term.color_black(reverse: true) if i == @cur_menu
-          term.mvaddstr(i + 4, 3, item.title)
-          term.color_black # Reset color
+          print_item(item, i, reverse: i == @cur_menu)
         end
       else
-        term.mvaddstr(@past_menu + 4, 3, @items[@past_menu].title)
-        term.color_black(reverse: true) do
-          term.mvaddstr(@cur_menu + 4, 3, @items[@cur_menu].title)
-        end
+        print_item(@items[@past_menu], @past_menu)
+        print_item(@items[@cur_menu], @cur_menu, reverse: true)
+      end
+    end
+
+    # Print a given Item to terminal.
+    #
+    # item    - The Item instance to print.
+    # index   - The Integer position of Item in list.
+    # options - The Hash options used to control background  color (default:
+    #           { reverse: false }).
+    #           :reverse - The Boolean whether to reverse the foreground and
+    #                      background color or not (optional).
+    def print_item(item, index, reverse: false)
+      term.color_black(reverse: reverse) do
+        term.mvaddstr(index + 4, 3, item.title)
       end
     end
   end
