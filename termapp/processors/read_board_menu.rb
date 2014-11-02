@@ -157,29 +157,24 @@ module TermApp
       if @past_index.nil?
         term.erase_body
         @posts.each_with_index do |post, i|
-          print_post(post, i, reverse: @cur_index == i)
+          print_item(post, i, x: 0, reverse: @cur_index == i)
         end
       else
         return if @past_index == @cur_index
-        print_post(@posts[@past_index], @past_index)
-        print_post(@posts[@cur_index], @cur_index, reverse: true)
+        print_item(@posts[@past_index], @past_index, x: 0)
+        print_item(@posts[@cur_index], @cur_index, x: 0, reverse: true)
       end
       term.mvaddstr(@cur_index + 4, 0, '>')
       term.refresh
     end
 
-    # Print a given Post to terminal.
+    # See Processor#item_title.
     #
-    # post    - The Post instance to print.
-    # index   - The Integer position of Post in list.
-    # options - The Hash options used to control background color (default:
-    #           { reverse: false }).
-    #           :reverse - The Boolean whether to reverse the foreground and
-    #                      background color or not (optional).
-    def print_post(post, index, reverse: false)
-      term.color_black(reverse: reverse) do
-        term.mvaddstr(index + 4, 0, post.format_for_term(term.columns - 32))
-      end
+    # post - The Post instance to print.
+    #
+    # Returns the String title of the Post.
+    def item_title(post)
+      post.format_for_term(term.columns - 32)
     end
 
     # Display a given Post on terminal.

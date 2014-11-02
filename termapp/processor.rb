@@ -57,5 +57,30 @@ module TermApp
         end
       end
     end
+
+    # Print a given item to terminal.
+    #
+    # item    - The Object item to print.
+    # index   - The Integer position of item in list.
+    # options - The Hash options used to control background color (default:
+    #           { x: 3, reverse: false}).
+    #           :x       - The Integer x position to print (optional).
+    #           :reverse - The Boolean whether to reverse the foreground and
+    #                      background color or not (optional).
+    def print_item(item, index, x: 3, reverse: false)
+      term.color_black(reverse: reverse) do
+        term.print_block(index + 4, x, item_title(item))
+      end
+    end
+
+    # Title of item for terminal. Child classes using `print_item` should
+    # implement this method.
+    #
+    # _item - The Object item to print.
+    #
+    # Raises NotImplementedError.
+    def item_title(_item)
+      fail NotImplementedError
+    end
   end
 end

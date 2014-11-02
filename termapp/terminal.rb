@@ -250,7 +250,7 @@ module TermApp
     # Returns nothing.
     def print_block(y, x, str)
       str.each_line.with_index do |line, index|
-        mvaddstr(y + index, x + line[/^\s*/].size, line.chomp.lstrip)
+        mvaddstr(y + index, x, line.chomp)
       end
     end
 
