@@ -60,16 +60,10 @@ module TermApp
         return :scroll_up, preserve_position: true
       when :ctrl_d, :N
         return :scroll_down, preserve_position: true
-      when :j
+      when :j, :down
         return :scroll_down if @cur_index == @num_lists - 1
         @cur_index += 1
-      when :k
-        return :scroll_up if @cur_index == 0
-        @cur_index -= 1
-      when :down
-        return :scroll_down if @cur_index == @num_lists - 1
-        @cur_index += 1
-      when :up
+      when :k, :up
         return :scroll_up if @cur_index == 0
         @cur_index -= 1
       else
