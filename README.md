@@ -1,4 +1,5 @@
 # Loco
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/khwon/loco?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![Code Climate](https://codeclimate.com/github/khwon/loco.png)](https://codeclimate.com/github/khwon/loco)
 [![Inline docs](http://inch-ci.org/github/khwon/loco.png?branch=develop)](http://inch-ci.org/github/khwon/loco)
