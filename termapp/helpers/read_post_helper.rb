@@ -1,6 +1,6 @@
 module TermApp
   # Helper methods for reading Posts. See ReadBoardMenu.
-  class ReadPostHelper
+  class ReadPostHelper < TermHelper
     # Initialize a ReadPostHelper. It holds an Application instance and a model.
     #
     # app   - The Application instance which is now running.
@@ -14,7 +14,6 @@ module TermApp
     #
     # Returns nil or a Symbol to process.
     def show
-      term = @app.term # TODO : just for convinience, not a good design
       return unless @model.is_a?(Post)
       term.erase_all
       term.mvaddstr(0, 0, "글쓴이 : #{@model.writer.username} " \
