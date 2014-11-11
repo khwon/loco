@@ -131,18 +131,13 @@ module TermApp
       end
     end
 
-    # Print a given Item to terminal.
+    # See Processor#item_title.
     #
-    # item    - The Item instance to print.
-    # index   - The Integer position of Item in list.
-    # options - The Hash options used to control background  color (default:
-    #           { reverse: false }).
-    #           :reverse - The Boolean whether to reverse the foreground and
-    #                      background color or not (optional).
-    def print_item(item, index, reverse: false)
-      term.color_black(reverse: reverse) do
-        term.mvaddstr(index + 4, 3, item.title)
-      end
+    # item - The Item instance to print.
+    #
+    # Returns the title of the Item.
+    def item_title(item)
+      item.title
     end
   end
 end
