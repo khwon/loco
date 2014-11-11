@@ -242,74 +242,74 @@ module TermApp
       result
     end
 
-    def editline y: nil, x: nil, str: '', n: 80, echo: true
+    def editline(y: nil, x: nil, str: '', n: 80, echo: true)
       # TODO : encoding issues
-      if y and x
-        move(y,x)
+      if y && x
+        move(y, x)
       else
-        y,x = getyx()
+        y, x = getyx
       end
+      Ncurses.noecho
       idx = 0
       ch = nil
-      while str.size < n
+      loop do
         if ch.nil?
-          move(y,x)
-          clrtoeol()
-          mvaddstr(y,x,str)
-          move(y,x+str[0...idx].size_for_print)
+          if echo
+            move(y, x)
+            clrtoeol
+            mvaddstr(y, x, str)
+            move(y, x + str[0...idx].size_for_print)
+          end
           ch = get_wch
         end
         case ch[0]
         when Ncurses::OK
-          if ch[1] < 32 # ctrl+?
-            case ch[1]
-            when ctrl('j')
-              break
-            when ctrl('a')
-              idx = 0
-            when ctrl('b')
-              ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_LEFT]
-              next
-            when ctrl('d')
-              if idx < str.size
-                idx += 1
-                ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
-                next
-              end
-            when ctrl('e')
-              idx = str.size
-            when ctrl('f')
-              ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_RIGHT]
-              next
-            when ctrl('k')
-              str = str[0...idx]
-            when ctrl('u')
-              str = str[idx..-1]
-              idx = 0
-            end
-          else
-            if ch[1] == 127 # backspace
+          case ch[1]
+          when ctrl('j')
+            break
+          when ctrl('a')
+            idx = 0
+          when ctrl('b')
+            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_LEFT]
+            next
+          when ctrl('d')
+            if idx < str.size
+              idx += 1
               ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
               next
             end
-            str.insert(idx,ch[2])
-            idx += 1
+          when ctrl('e')
+            idx = str.size
+          when ctrl('f')
+            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_RIGHT]
+            next
+          when ctrl('k')
+            str = str[0...idx]
+          when ctrl('u')
+            str = str[idx..-1]
+            idx = 0
+          when 127 # backspace
+            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
+            next
+          else
+            if str.size_for_print >= n - 1
+              beep
+            else
+              str.insert(idx, ch[2])
+              idx += 1
+            end
           end
         when Ncurses::KEY_CODE_YES
           case ch[1]
           when Ncurses::KEY_BACKSPACE
-            if str.size > 0 and idx > 0
-              str[(idx-1)..(idx-1)] = ''
+            if str.size > 0 && idx > 0
+              str[(idx - 1)..(idx - 1)] = ''
               idx -= 1
             end
           when Ncurses::KEY_LEFT
-            if idx > 1
-              idx -= 1
-            end
+            idx -= 1 if idx > 1
           when Ncurses::KEY_RIGHT
-            if idx < str.size
-              idx += 1
-            end
+            idx += 1 if idx < str.size
           when Ncurses::KEY_ENTER
             break
           end
@@ -375,10 +375,9 @@ module TermApp
       Ncurses.init_pair(8, Ncurses::COLOR_BLACK, Ncurses::COLOR_WHITE)
     end
 
-    def ctrl chr
+    def ctrl(chr)
       x = chr.codepoints.first
       x & 0x1f
     end
-
   end
 end

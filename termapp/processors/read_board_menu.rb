@@ -190,8 +190,6 @@ module TermApp
     def write_post
       write_helper = WriteHelper.new(@app)
       write_helper.write
-
     end
-
   end
 end

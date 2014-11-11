@@ -5,6 +5,7 @@ module TermApp
     end
 
     protected
+
     def term
       @app.term
     end
