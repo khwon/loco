@@ -54,7 +54,7 @@ module TermApp
         return :break, :loco_menu unless @posts[@cur_index]
         return :read, @posts[@cur_index]
       when :J
-        return :beep # TODO : scroll to end of list
+        return :scroll, :bottom
       when :ctrl_u, :P
         return :scroll, :up, preserve_position: true
       when :ctrl_d, :N
@@ -80,12 +80,12 @@ module TermApp
 
     # Check if the page can be scrolled with given direction.
     #
-    # direction - A Symbol one of :down or :up.
+    # direction - A Symbol one of :bottom, :down or :up.
     #
     # Returns a Boolean whether the page can be scrolled.
     def scrollable?(direction)
       case direction
-      when :down
+      when :bottom, :down
         pivot = @posts[-1]
         return pivot && pivot != @edge_posts[1]
       when :up
@@ -96,7 +96,7 @@ module TermApp
 
     # Scroll the page of Posts.
     #
-    # direction - A Symbol indicates direction. It can be :down or :up.
+    # direction - A Symbol indicates direction. It can be :bottom, :down or :up.
     # options   - The Hash options used to control position of cursor
     #             (default: { preserve_position: false }).
     #             :preserve_position - The Boolean whether to preserve current
@@ -117,6 +117,9 @@ module TermApp
       cur_board = term.current_board
       @past_index = nil
       case direction
+      when :bottom
+        @cur_index = @num_lists - 1
+        @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
       when :down
         @cur_index = 1 unless preserve_position
         @posts = cur_board.posts_from(@posts[-1].num, @num_lists)
