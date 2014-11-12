@@ -16,11 +16,10 @@ module TermApp
         @past_index = @cur_index
         control, *args = process_key(term.get_wch)
         case control
-        when :break       then break args
-        when :beep        then term.beep
-        when :scroll_down then scroll(:down, *args)
-        when :scroll_up   then scroll(:up, *args)
-        when :read        then read_post(args[0])
+        when :break  then break args
+        when :beep   then term.beep
+        when :scroll then scroll(*args)
+        when :read   then read_post(args[0])
         end
       end
       term.echo
@@ -57,14 +56,14 @@ module TermApp
       when :J
         return :beep # TODO : scroll to end of list
       when :ctrl_u, :P
-        return :scroll_up, preserve_position: true
+        return :scroll, :up, preserve_position: true
       when :ctrl_d, :N
-        return :scroll_down, preserve_position: true
+        return :scroll, :down, preserve_position: true
       when :j, :down
-        return :scroll_down if @cur_index == @num_lists - 1
+        return :scroll, :down if @cur_index == @num_lists - 1
         @cur_index += 1
       when :k, :up
-        return :scroll_up if @cur_index == 0
+        return :scroll, :up if @cur_index == 0
         @cur_index -= 1
       else
         return :beep
