@@ -14,14 +14,14 @@ module TermApp
   class Terminal
     extend Forwardable
 
-    # Delegates erase, noecho, echo, beep to each method of Ncurses.
-    delegate [:erase, :noecho, :echo, :beep] => :Ncurses
+    # Delegates noecho, echo, beep to each method of Ncurses.
+    delegate [:noecho, :echo, :beep] => :Ncurses
 
     # Delegates terminate to Ncurses.endwin.
     def_delegator :Ncurses, :endwin, :terminate
 
-    # Delegates refresh, move to each method of @stdscr.
-    def_delegators :@stdscr, :refresh, :move
+    # Delegates refresh, move, erase to each method of @stdscr.
+    def_delegators :@stdscr, :refresh, :move, :erase
 
     # Returns the Integer number of screen lines.
     attr_reader :lines
@@ -107,7 +107,7 @@ module TermApp
     #   Terminal.new
     #
     #   Terminal.new(Encoding::UTF_8)
-    def initialize(encoding = nil)
+    def initialize(encoding: nil, debug: false)
       @encoding = encoding
       @cur_color = 0
       @stdscr = Ncurses.initscr
@@ -116,6 +116,12 @@ module TermApp
       initialize_colors if Ncurses.has_colors?
       getmaxyx
       Ncurses.raw
+      if Rails.env.development? && debug
+        win = Ncurses.newwin(0, @columns / 2, 0, @columns / 2 - 1)
+        win.refresh
+        @stdscr = win
+        @columns = @columns / 2 - 1
+      end
     end
 
     # Set a random color of Terminal. Delegates to color_<color> method.
@@ -181,7 +187,7 @@ module TermApp
     def getyx
       y = []
       x = []
-      Ncurses.getyx(@stdscr, y, x)
+      @stdscr.getyx(y, x)
       [y[0], x[0]]
     end
 
@@ -198,7 +204,7 @@ module TermApp
     # Returns nothing.
     def mvgetnstr(y, x, str, n, echo: true)
       Ncurses.noecho unless echo
-      Ncurses.mvgetnstr(y, x, str, n)
+      @stdscr.mvgetnstr(y, x, str, n)
       str.encode!(@encoding) if @encoding
       Ncurses.echo
     end
@@ -236,7 +242,7 @@ module TermApp
     # Returns an Array of status code, character code, character as string if
     #   status code is Ncurses::OK.
     def get_wch # rubocop:disable Style/AccessorMethodName
-      result = Ncurses.get_wch
+      result = @stdscr.get_wch
       result << ((result[0] == Ncurses::OK) ? [result[1]].pack('U') : nil)
       result
     end
@@ -272,6 +278,13 @@ module TermApp
     def print_footer
       # TODO: design footers
       mvaddstr(@lines - 1, 10, 'sample footer')
+    end
+
+    def call_pry
+      Ncurses.def_prog_mode
+      Ncurses.reset_shell_mode
+      binding.pry
+      Ncurses.reset_prog_mode
     end
 
     private
