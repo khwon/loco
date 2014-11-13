@@ -24,8 +24,8 @@ module TermApp
     attr_reader :term
 
     # Initialize a Application. Initialize a Terminal.
-    def initialize
-      @term = Terminal.new
+    def initialize(debug: false)
+      @term = Terminal.new(debug: debug)
       @cached_processors = {}
     end
 
