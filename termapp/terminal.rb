@@ -286,6 +286,8 @@ module TermApp
           when ctrl('k')
             str = str[0...idx]
           when ctrl('u')
+            # TODO: following previous implementation in eagle bbs,
+            # but actually ctrl-u is undo in emacs binding
             str = str[idx..-1]
             idx = 0
           when 127 # backspace
@@ -317,6 +319,10 @@ module TermApp
         ch = nil
       end
       str
+    end
+
+    def editor(str: '')
+      NanoEditor.new(self).edit(str: str)
     end
 
     # Print the multi-line String to screen.
@@ -352,6 +358,11 @@ module TermApp
       mvaddstr(@lines - 1, 10, 'sample footer')
     end
 
+    def ctrl(chr)
+      x = chr.codepoints.first
+      x & 0x1f
+    end
+
     private
 
     # Initialize color pairs for Ncurses.
@@ -373,11 +384,6 @@ module TermApp
         Ncurses.init_pair(i + 8, pair[1], pair[0])
       end
       Ncurses.init_pair(8, Ncurses::COLOR_BLACK, Ncurses::COLOR_WHITE)
-    end
-
-    def ctrl(chr)
-      x = chr.codepoints.first
-      x & 0x1f
     end
   end
 end
