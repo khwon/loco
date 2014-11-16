@@ -6,7 +6,7 @@ RSpec.describe TermApp::Application, type: :termapp do
   include LoginHelper
 
   describe '.run' do
-    subject(:app) { silence_warnings { described_class.new } }
+    subject(:app) { silence_warnings { described_class.new([]) } }
     let!(:original_mvgetnstr) { app.term.method(:mvgetnstr) }
 
     it "processes GoodbyeMenu when get 'off' as id" do

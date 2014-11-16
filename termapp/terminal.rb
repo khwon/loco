@@ -100,13 +100,19 @@ module TermApp
     # Initialize a Terminal. Set initial Ncurses configurations and start
     # Ncurses screen.
     #
-    # encoding - The Encoding of Terminal.
+    # options - The Hash options used to set additional options (default:
+    #           { encoding: nil, debug: false }).
+    #           :encoding - The Encoding of Termianl (optional).
+    #           :debug    - The Boolean whether to debug terminal or not
+    #                       (optional).
     #
     # Examples
     #
     #   Terminal.new
     #
-    #   Terminal.new(Encoding::UTF_8)
+    #   Terminal.new(encoding: Encoding::UTF_8)
+    #
+    #   Terminal.new(debug: true)
     def initialize(encoding: nil, debug: false)
       @encoding = encoding
       @cur_color = 0
@@ -280,6 +286,9 @@ module TermApp
       mvaddstr(@lines - 1, 10, 'sample footer')
     end
 
+    # Bind Pry for debugging.
+    #
+    # Returns nothing.
     def call_pry
       Ncurses.def_prog_mode
       Ncurses.reset_shell_mode

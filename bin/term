@@ -1,18 +1,5 @@
 #!/usr/bin/env ruby
 require_relative '../config/environment'
 require_relative '../termapp/application'
-require 'optparse'
 
-options = {}
-OptionParser.new do |opts|
-  opts.banner = "Usage: example.rb [options]"
-
-  opts.on("-d", "--debug", "enable debug") do |v|
-    options[:debug] = v
-  end
-end.parse!
-if options[:debug]
-  TermApp::Application.new(debug: true).run
-else
-  TermApp::Application.new.run
-end
+TermApp::Application.new.run
