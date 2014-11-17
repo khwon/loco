@@ -29,20 +29,10 @@ module TermApp
     # Returns the Integer number of screen columns.
     attr_reader :columns
 
-    # The constants for color of Ncurses.
-    COLOR_BLACK = 0
-    COLOR_RED = 1
-    COLOR_GREEN = 2
-    COLOR_YELLOW = 3
-    COLOR_BLUE = 4
-    COLOR_MAGENTA = 5
-    COLOR_CYAN = 6
-    COLOR_WHITE = 7
-    COLORS = [COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW,
-              COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE].freeze
+    # The colors of Ncurses of which the value start from zero.
     COLOR_SYMBOLS = %i(color_black color_red color_green color_yellow
                        color_blue color_magenta color_cyan color_white).freeze
-    private_constant :COLORS, :COLOR_SYMBOLS
+    private_constant :COLOR_SYMBOLS
 
     # Set a color of Terminal. This method will be available for each color
     # initialized on Ncurses.
@@ -75,9 +65,9 @@ module TermApp
     #   color_<color>(reverse: false, &block)
     #
     # color - A color name.
-    COLOR_SYMBOLS.each do |sym|
+    COLOR_SYMBOLS.each_with_index do |sym, i|
       define_method(sym) do |reverse: false, &block|
-        color = Terminal.const_get(sym.upcase)
+        color = i
         color += 8 if reverse
         if block
           @stdscr.attrset(Ncurses.COLOR_PAIR(color))
