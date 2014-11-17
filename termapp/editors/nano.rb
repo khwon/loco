@@ -1,6 +1,8 @@
 module TermApp
   class NanoEditor < Editor
     class Line
+      attr_reader :strs
+
       def initialize(str)
         @strs = str.unicode_split(@@column)
       end
@@ -12,8 +14,7 @@ module TermApp
       def insert(y, char_idx, str)
         @strs[y].insert(char_idx, str)
         if @strs[y].size_for_print > @@column
-          # split
-          @strs = @strs.join('').unicode_split(@@column)
+          resplit
           if char_idx == @@column - 1 && str.size_for_print > 1
             [y + 1, 1]
           elsif char_idx == @@column - 1 || (char_idx == @@column - 2 && str.size_for_print > 1)
@@ -27,6 +28,34 @@ module TermApp
         else
           [y, char_idx + 1]
         end
+        # TODO : needs to be more efficient
+      end
+
+      def delete(y, char_idx)
+        result = nil
+        if char_idx == 0
+          if y == 0
+            fail 'cannot delete at (0,0), merge instead'
+          else
+            @strs[y - 1] = @strs[y - 1][0..-2]
+            result = [y - 1, max_char_idx(y - 1)]
+            resplit
+          end
+        else
+          @strs[y] = @strs[y][0...(char_idx - 1)] + @strs[y][char_idx..-1]
+          result = [y, char_idx - 1]
+          resplit
+        end
+        result
+        # TODO : needs to be more efficient
+      end
+
+      def merge(line)
+        y_idx = lines - 1
+        char_idx = max_char_idx(y_idx)
+        @strs = [@strs.join('') + line.strs.join('')]
+        resplit
+        [y_idx, char_idx]
         # TODO : needs to be more efficient
       end
 
@@ -44,6 +73,10 @@ module TermApp
 
       def max_char_idx(y)
         @strs[y].size
+      end
+
+      def resplit
+        @strs = @strs.join('').unicode_split(@@column)
       end
 
       def split(y_idx, char_idx)
@@ -66,6 +99,7 @@ module TermApp
         @@column = col
       end
     end
+    # end def of class Line
 
     def edit(str: '')
       # TODO : alt key handling (http://stackoverflow.com/a/16248956)
@@ -120,6 +154,7 @@ module TermApp
           when ctrl('k')
             # FIXME
           when ctrl('x')
+            # FIXME
             break
           when 127 # backspace
             ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
@@ -130,7 +165,17 @@ module TermApp
         when Ncurses::KEY_CODE_YES
           case ch[1]
           when Ncurses::KEY_BACKSPACE
-            # FIXME
+            if str_y_idx == 0 && char_idx == 0
+              if str_idx == 0
+                beep
+              else
+                prev_line = strs[str_idx - 1]
+                str_y_idx, char_idx = prev_line.merge(strs.delete_at(str_idx))
+                str_idx -= 1
+              end
+            else
+              str_y_idx, char_idx = strs[str_idx].delete(str_y_idx, char_idx)
+            end
           when Ncurses::KEY_UP
           when Ncurses::KEY_DOWN
           when Ncurses::KEY_LEFT
