@@ -38,8 +38,8 @@ module TermApp
       cur_board = term.current_board
       @cur_index = nil
       @past_index = nil
-      @num_lists = term.lines - 5
-      @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
+      @list_size = term.lines - 5
+      @posts = cur_board.post.order('num desc').limit(@list_size).reverse
       @edge_posts = [cur_board.post.first, cur_board.post.last]
     end
 
@@ -63,7 +63,7 @@ module TermApp
       when :ctrl_d, :N
         return :scroll, :down, preserve_position: true
       when :j, :down
-        return :scroll, :down if @cur_index == @num_lists - 1
+        return :scroll, :down if @cur_index == @list_size - 1
         @cur_index += 1
       when :k, :up
         return :scroll, :up if @cur_index == 0
@@ -79,8 +79,8 @@ module TermApp
     #
     # Returns nothing.
     def sanitize_current_index
-      return unless @cur_index.nil? || @cur_index >= @num_lists
-      @cur_index = @num_lists - 1
+      return unless @cur_index.nil? || @cur_index >= @list_size
+      @cur_index = @list_size - 1
     end
 
     # Check if the page can be scrolled with given direction.
@@ -123,21 +123,21 @@ module TermApp
       @past_index = nil
       case direction
       when :bottom
-        @cur_index = @num_lists - 1
-        @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
+        @cur_index = @list_size - 1
+        @posts = cur_board.post.order('num desc').limit(@list_size).reverse
       when :down
         @cur_index = 1 unless preserve_position
-        @posts = cur_board.posts_from(@posts[-1].num, @num_lists)
-        if @posts.size < @num_lists # reached last
-          @cur_index = @num_lists - @posts.size + 1 unless preserve_position
-          @posts = cur_board.post.order('num desc').limit(@num_lists).reverse
+        @posts = cur_board.posts_from(@posts[-1].num, @list_size)
+        if @posts.size < @list_size # reached last
+          @cur_index = @list_size - @posts.size + 1 unless preserve_position
+          @posts = cur_board.post.order('num desc').limit(@list_size).reverse
         end
       when :up
-        @cur_index = @num_lists - 2 unless preserve_position
-        @posts = cur_board.posts_to(@posts[0].num, @num_lists)
-        if @posts.size < @num_lists # reached first
+        @cur_index = @list_size - 2 unless preserve_position
+        @posts = cur_board.posts_to(@posts[0].num, @list_size)
+        if @posts.size < @list_size # reached first
           @cur_index = @posts.size - 2 unless preserve_position
-          @posts = cur_board.post.order('num asc').limit(@num_lists)
+          @posts = cur_board.post.order('num asc').limit(@list_size)
         end
       end
     end
