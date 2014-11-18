@@ -12,19 +12,15 @@ module TermApp
 
     # Show content of the model to terminal. Currently it shows Post only.
     #
-    # Returns nil or a Symbol to process.
-    def show
+    def read_post
       return unless @model.is_a?(Post)
       term.erase_all
-      term.mvaddstr(0, 0, "글쓴이 : #{@model.writer.username} " \
-                          "(#{@model.writer.nickname})")
-      term.mvaddstr(1, 0, "날  짜 : #{@model.created_at}")
-      term.mvaddstr(2, 0, '제  목 : ' \
-                          "#{@model.title.unicode_slice(term.columns - 10)}")
-      # FIXME : implement appropriate printing!
-      term.mvaddstr(4, 0, @model.content)
-      term.get_wch
-      :loco_menu
+      str = ''
+      str << "글쓴이 : #{@model.writer.username} (#{@model.writer.nickname})\n"
+      str << "날  짜 : #{@model.created_at}\n"
+      str << "제  목 : #{@model.title.unicode_slice(term.columns - 10)}\n\n"
+      str << @model.content
+      term.readonly_editor(str: str)
     end
   end
 end

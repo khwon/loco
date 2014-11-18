@@ -331,6 +331,10 @@ module TermApp
       NanoEditor.new(self).edit(str: str)
     end
 
+    def readonly_editor(str: '')
+      LessEditor.new(self).show(str: str)
+    end
+
     # Print the multi-line String to screen.
     #
     # y   - An Integer y position of top-left corner of str.
