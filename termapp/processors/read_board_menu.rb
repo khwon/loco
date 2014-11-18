@@ -20,6 +20,9 @@ module TermApp
         when :beep   then term.beep
         when :scroll then scroll(*args)
         when :read   then read_post(args[0])
+        when :write
+          write_post(*args)
+          process_init
         end
       end
       term.echo
@@ -65,6 +68,8 @@ module TermApp
       when :k, :up
         return :scroll, :up if @cur_index == 0
         @cur_index -= 1
+      when :ctrl_p
+        return :write
       else
         return :beep
       end
@@ -182,6 +187,11 @@ module TermApp
       @past_index = nil # redraw list
       read_post_helper = ReadPostHelper.new(@app, post)
       _control, *_args = read_post_helper.show
+    end
+
+    def write_post
+      write_helper = WriteHelper.new(@app)
+      write_helper.write
     end
   end
 end

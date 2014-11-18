@@ -27,4 +27,15 @@ class Post < ActiveRecord::Base
     strs << title.unicode_slice(size)
     ' ' + strs.join(' ') # Cursor
   end
+
+  def self.save_new_post(title: '', body: '', user: nil, board: nil)
+    # TODO : handle race condition about num
+    num = board.post.select('max(num) as max_num').first[:max_num] + 1
+    post = Post.new(title: title,
+                    content: body,
+                    num: num)
+    post.board = board
+    post.writer = user
+    post.save!
+  end
 end

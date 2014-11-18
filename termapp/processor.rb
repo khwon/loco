@@ -41,6 +41,7 @@ module TermApp
         when 4   then :ctrl_d
         when 9   then :tab
         when 10  then :enter
+        when 16  then :ctrl_p
         when 21  then :ctrl_u
         when 27  then :esc
         when 32  then :space

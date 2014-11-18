@@ -112,9 +112,13 @@ module TermApp
       initialize_colors if Ncurses.has_colors?
       getmaxyx
       Ncurses.raw
-      if Rails.env.development? && debug
+      @debug = debug
+      if Rails.env.development? && @debug
+        @debugscr = @stdscr
+        @cur_debug_line = 0
         win = Ncurses.newwin(0, @columns / 2, 0, @columns / 2 - 1)
         win.refresh
+        Ncurses.keypad(win, true) # enable arrow keys
         @stdscr = win
         @columns = @columns / 2 - 1
       end
@@ -238,9 +242,93 @@ module TermApp
     # Returns an Array of status code, character code, character as string if
     #   status code is Ncurses::OK.
     def get_wch # rubocop:disable Style/AccessorMethodName
+      # TODO : encoding issues
       result = @stdscr.get_wch
       result << ((result[0] == Ncurses::OK) ? [result[1]].pack('U') : nil)
       result
+    end
+
+    def editline(y: nil, x: nil, str: '', n: 80, echo: true)
+      # TODO : encoding issues
+      if y && x
+        move(y, x)
+      else
+        y, x = getyx
+      end
+      Ncurses.noecho
+      idx = 0
+      ch = nil
+      loop do
+        if ch.nil?
+          if echo
+            move(y, x)
+            clrtoeol
+            mvaddstr(y, x, str)
+            move(y, x + str[0...idx].size_for_print)
+          end
+          ch = get_wch
+        end
+        case ch[0]
+        when Ncurses::OK
+          case ch[1]
+          when ctrl('j')
+            break
+          when ctrl('a')
+            idx = 0
+          when ctrl('b')
+            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_LEFT]
+            next
+          when ctrl('d')
+            if idx < str.size
+              idx += 1
+              ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
+              next
+            end
+          when ctrl('e')
+            idx = str.size
+          when ctrl('f')
+            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_RIGHT]
+            next
+          when ctrl('k')
+            str = str[0...idx]
+          when ctrl('u')
+            # TODO: following previous implementation in eagle bbs,
+            # but actually ctrl-u is undo in emacs binding
+            str = str[idx..-1]
+            idx = 0
+          when 127 # backspace
+            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
+            next
+          else
+            if str.size_for_print >= n - 1
+              beep
+            else
+              str.insert(idx, ch[2])
+              idx += 1
+            end
+          end
+        when Ncurses::KEY_CODE_YES
+          case ch[1]
+          when Ncurses::KEY_BACKSPACE
+            if str.size > 0 && idx > 0
+              str[(idx - 1)..(idx - 1)] = ''
+              idx -= 1
+            end
+          when Ncurses::KEY_LEFT
+            idx -= 1 if idx > 1
+          when Ncurses::KEY_RIGHT
+            idx += 1 if idx < str.size
+          when Ncurses::KEY_ENTER
+            break
+          end
+        end
+        ch = nil
+      end
+      str
+    end
+
+    def editor(str: '')
+      NanoEditor.new(self).edit(str: str)
     end
 
     # Print the multi-line String to screen.
@@ -276,14 +364,38 @@ module TermApp
       mvaddstr(@lines - 1, 10, 'sample footer')
     end
 
+    def press_any_key
+      # TODO : print footer
+      get_wch
+    end
+
+    def ctrl(chr)
+      x = chr.codepoints.first
+      x & 0x1f
+    end
+
     # Bind Pry for debugging.
     #
     # Returns nothing.
     def call_pry
+      return unless Rails.env.development? && @debug
       Ncurses.def_prog_mode
       Ncurses.reset_shell_mode
       binding.pry
       Ncurses.reset_prog_mode
+    end
+
+    def debug_print(str)
+      return unless Rails.env.development? && @debug
+      @debugscr.move(@cur_debug_line, 0)
+      @debugscr.clrtoeol
+      @debugscr.mvaddstr(@cur_debug_line, 0, str)
+      @cur_debug_line = (@cur_debug_line + 1) % @lines
+      @debugscr.refresh
+    end
+
+    def clear_debug_console
+      @debugscr.clrtoeol(0...@lines) if Rails.env.development? && @debug
     end
 
     private

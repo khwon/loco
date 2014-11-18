@@ -25,15 +25,46 @@ class String
   def unicode_slice(length)
     if size_for_print <= length
       self
+    else
+      result = unicode_slice_for_len(length - 2)
+      if result != self
+        result + '..'
+      else
+        result
+      end
+    end
+  end
+
+  def unicode_split(length)
+    arr = []
+    result = unicode_slice_for_len(length)
+    arr << result
+    if result != self
+      arr += self[(result.size)..-1].unicode_split(length)
+    end
+    arr
+  end
+
+  def unicode_slice_for_len(length)
+    if size_for_print <= length
+      self
     elsif ascii_only?
-      self[0...(length - 2)] + '..'
+      self[0...length]
     else
       result = each_char.with_object(str: '', print_size: 0) do |x, hash|
-        break hash if hash[:print_size] >= length - 3
+        break hash if hash[:print_size] >= length - 1
         hash[:str] << x
         hash[:print_size] += x.size_for_print
       end
-      result[:str] + '..'
+      result[:str]
+=begin
+# TODO : implement binary search
+      min = length/2
+      max = length
+      loop do
+
+      end
+=end
     end
   end
 end
