@@ -1,4 +1,5 @@
 module TermApp
+  # Handle each line of Editor.
   class Line
     def initialize(str)
       @strs = str.unicode_split(@@column)
@@ -14,7 +15,8 @@ module TermApp
         resplit
         if char_idx == @@column - 1 && str.size_for_print > 1
           [y + 1, 1]
-        elsif char_idx == @@column - 1 || (char_idx == @@column - 2 && str.size_for_print > 1)
+        elsif char_idx == @@column - 1 ||
+              (char_idx == @@column - 2 && str.size_for_print > 1)
           [y + 1, 0]
         else
           [y, char_idx + 1]
@@ -102,6 +104,7 @@ module TermApp
   end
   # end def of class Line
 
+  # Base editor for terminal.
   class Editor
     def initialize(term)
       @term = term

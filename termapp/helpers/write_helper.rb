@@ -1,4 +1,5 @@
 module TermApp
+  # Helper methods for writing in terminal.
   class WriteHelper < TermHelper
     def write
       term.erase_all

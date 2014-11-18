@@ -1,4 +1,5 @@
 module TermApp
+  # Less editor for terminal. Used for reading posts.
   class LessEditor < Editor
     def show(str: '') # readonly
       # TODO : alt key handling (http://stackoverflow.com/a/16248956)
@@ -49,7 +50,8 @@ module TermApp
               return nil, ch
             end
             @start_y += term_lines - 1
-            @start_y = total_lines - term_lines if @start_y + term_lines >= total_lines
+            @start_y = total_lines - term_lines if @start_y + term_lines >=
+                                                   total_lines
           end
         when Ncurses::KEY_CODE_YES
           case ch[1]

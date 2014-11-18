@@ -385,7 +385,7 @@ module TermApp
       return unless Rails.env.development? && @debug
       Ncurses.def_prog_mode
       Ncurses.reset_shell_mode
-      binding.pry
+      binding.pry # rubocop:disable Lint/Debugger
       Ncurses.reset_prog_mode
     end
 
