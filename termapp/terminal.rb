@@ -368,34 +368,35 @@ module TermApp
       mvaddstr(@lines - 1, 10, 'sample footer')
     end
 
+    def press_any_key
+      # TODO : print footer
+      get_wch
+    end
+
     def ctrl(chr)
       x = chr.codepoints.first
       x & 0x1f
     end
 
     def call_pry
-      if Rails.env.development? && @debug
-        Ncurses.def_prog_mode
-        Ncurses.reset_shell_mode
-        binding.pry
-        Ncurses.reset_prog_mode
-      end
+      return unless Rails.env.development? && @debug
+      Ncurses.def_prog_mode
+      Ncurses.reset_shell_mode
+      binding.pry
+      Ncurses.reset_prog_mode
     end
 
     def debug_print(str)
-      if Rails.env.development? && @debug
-        @debugscr.move(@cur_debug_line, 0)
-        @debugscr.clrtoeol
-        @debugscr.mvaddstr(@cur_debug_line, 0, str)
-        @cur_debug_line = (@cur_debug_line + 1) % @lines
-        @debugscr.refresh
-      end
+      return unless Rails.env.development? && @debug
+      @debugscr.move(@cur_debug_line, 0)
+      @debugscr.clrtoeol
+      @debugscr.mvaddstr(@cur_debug_line, 0, str)
+      @cur_debug_line = (@cur_debug_line + 1) % @lines
+      @debugscr.refresh
     end
 
     def clear_debug_console
-      if Rails.env.development? && @debug
-        @debugscr.clrtoeol(0...@lines)
-      end
+      @debugscr.clrtoeol(0...@lines) if Rails.env.development? && @debug
     end
 
     private

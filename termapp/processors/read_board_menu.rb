@@ -22,7 +22,7 @@ module TermApp
         when :read   then read_post(args[0])
         when :write
           write_post(*args)
-          @past_index = nil # reset printing
+          process_init
         end
       end
       term.echo

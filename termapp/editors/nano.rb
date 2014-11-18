@@ -107,6 +107,7 @@ module TermApp
       # TODO : alt key handling (http://stackoverflow.com/a/16248956)
       erase_all
       Line.set_column(@term.columns)
+      str = "\n" if str == ''
       @lines = str.split("\n", -1).map { |x| Line.new(x) }
       i = 0
       @lines.each do |x|
@@ -161,15 +162,24 @@ module TermApp
           when ctrl('d')
             # FIXME
           when ctrl('e')
-            # FIXME
+            @char_idx = @lines[@str_idx].max_char_idx(@str_y_idx) - 1
           when ctrl('f')
             ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_RIGHT]
             next
           when ctrl('k')
             # FIXME
           when ctrl('x')
-            # FIXME
-            break
+            erase_all
+            mvaddstr(0, 0, '(S)저장 (A)취소 (E)수정? [S] ')
+            ch = get_wch
+            case ch[2]
+            when 'A', 'a'
+              return nil
+            when 'E', 'e'
+              # nothing to do
+            else
+              break
+            end
           when 127 # backspace
             ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
             next
