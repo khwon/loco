@@ -116,9 +116,13 @@ module TermApp
       initialize_colors if Ncurses.has_colors?
       getmaxyx
       Ncurses.raw
-      if Rails.env.development? && debug
+      @debug = debug
+      if Rails.env.development? && @debug
+        @debugscr = @stdscr
+        @cur_debug_line = 0
         win = Ncurses.newwin(0, @columns / 2, 0, @columns / 2 - 1)
         win.refresh
+        Ncurses.keypad(win, true) # enable arrow keys
         @stdscr = win
         @columns = @columns / 2 - 1
       end
@@ -370,10 +374,28 @@ module TermApp
     end
 
     def call_pry
-      Ncurses.def_prog_mode
-      Ncurses.reset_shell_mode
-      binding.pry
-      Ncurses.reset_prog_mode
+      if Rails.env.development? && @debug
+        Ncurses.def_prog_mode
+        Ncurses.reset_shell_mode
+        binding.pry
+        Ncurses.reset_prog_mode
+      end
+    end
+
+    def debug_print(str)
+      if Rails.env.development? && @debug
+        @debugscr.move(@cur_debug_line, 0)
+        @debugscr.clrtoeol
+        @debugscr.mvaddstr(@cur_debug_line, 0, str)
+        @cur_debug_line = (@cur_debug_line + 1) % @lines
+        @debugscr.refresh
+      end
+    end
+
+    def clear_debug_console
+      if Rails.env.development? && @debug
+        @debugscr.clrtoeol(0...@lines)
+      end
     end
 
     private

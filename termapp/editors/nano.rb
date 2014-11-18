@@ -1,14 +1,12 @@
 module TermApp
   class NanoEditor < Editor
     class Line
-      attr_reader :strs
-
       def initialize(str)
         @strs = str.unicode_split(@@column)
       end
 
-      def to_s
-        @strs.join('')
+      def to_s(start_y = 0)
+        @strs[start_y..-1].join('')
       end
 
       def insert(y, char_idx, str)
@@ -53,7 +51,7 @@ module TermApp
       def merge(line)
         y_idx = ymax - 1
         char_idx = max_char_idx(y_idx)
-        @strs = [@strs.join('') + line.strs.join('')]
+        @strs = [@strs.join('') + line.to_s]
         resplit
         [y_idx, char_idx]
         # TODO : needs to be more efficient
@@ -118,9 +116,10 @@ module TermApp
       end
       move(0, 0)
       Ncurses.noecho
-      str_idx = 0
-      char_idx = 0
-      str_y_idx = 0
+      @start_y = 0
+      @str_idx = 0
+      @char_idx = 0
+      @str_y_idx = 0
       ch = nil
       @screen_x = nil
       @navigating = false
@@ -132,13 +131,20 @@ module TermApp
           erase_all
           i = 0
           @lines.each do |x|
-            mvaddstr(i, 0, x.to_s)
-            i = getyx[0] + 1
-            break if i >= @term.lines
+            if i < @start_y
+              if i + x.ymax <= @start_y
+                i += x.ymax
+                next
+              else
+                mvaddstr(0, 0, x.to_s(@start_y - i))
+              end
+            else
+              mvaddstr(i - @start_y, 0, x.to_s)
+            end
+            i = getyx[0] + 1 + @start_y
+            break if i >= @start_y + @term.lines
           end
-          y = @lines[0...str_idx].map(&:ymax).inject(:+) || 0
-          y += str_y_idx
-          move(y, @lines[str_idx].x_pos(str_y_idx, char_idx))
+          move(gety, @lines[@str_idx].x_pos(@str_y_idx, @char_idx))
           ch = get_wch
         end
         case ch[0]
@@ -148,7 +154,7 @@ module TermApp
             ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_ENTER]
             next
           when ctrl('a')
-            char_idx = 0
+            @char_idx = 0
           when ctrl('b')
             ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_LEFT]
             next
@@ -168,67 +174,77 @@ module TermApp
             ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
             next
           else
-            str_y_idx, char_idx = @lines[str_idx].insert(str_y_idx, char_idx, ch[2])
+            @str_y_idx, @char_idx = @lines[@str_idx].insert(@str_y_idx, @char_idx, ch[2])
           end
         when Ncurses::KEY_CODE_YES
           case ch[1]
           when Ncurses::KEY_BACKSPACE
-            if str_y_idx == 0 && char_idx == 0
-              if str_idx == 0
+            if @str_y_idx == 0 && @char_idx == 0
+              if @str_idx == 0
                 beep
               else
-                prev_line = @lines[str_idx - 1]
-                str_y_idx, char_idx = prev_line.merge(@lines.delete_at(str_idx))
-                str_idx -= 1
+                prev_line = @lines[@str_idx - 1]
+                @str_y_idx, @char_idx = prev_line.merge(@lines.delete_at(@str_idx))
+                @str_idx -= 1
               end
             else
-              str_y_idx, char_idx = @lines[str_idx].delete(str_y_idx, char_idx)
+              @str_y_idx, @char_idx = @lines[@str_idx].delete(@str_y_idx, @char_idx)
             end
           when Ncurses::KEY_UP
             @navigating = true
-            @screen_x = @lines[str_idx]
-                        .get_size_for_screen(str_y_idx, char_idx) unless @screen_x
-            if str_y_idx == 0
-              if str_idx == 0
+            @screen_x = @lines[@str_idx]
+                        .get_size_for_screen(@str_y_idx, @char_idx) unless @screen_x
+            if @str_y_idx == 0
+              if @str_idx == 0
                 beep
               else
-                str_idx -= 1
-                str_y_idx = @lines[str_idx].ymax - 1
+                @start_y -= 1 if gety == 0
+                @str_idx -= 1
+                @str_y_idx = @lines[@str_idx].ymax - 1
               end
             else
-              str_y_idx -= 1
+              @start_y -= 1 if gety == 0
+              @str_y_idx -= 1
             end
-            char_idx = @lines[str_idx].nearest_char_idx(str_y_idx, @screen_x)
+            @char_idx = @lines[@str_idx].nearest_char_idx(@str_y_idx, @screen_x)
           when Ncurses::KEY_DOWN
             @navigating = true
-            @screen_x = @lines[str_idx]
-                        .get_size_for_screen(str_y_idx, char_idx) unless @screen_x
-            if str_y_idx == @lines[str_idx].ymax - 1
-              if str_idx == @lines.size - 1
+            @screen_x = @lines[@str_idx]
+                        .get_size_for_screen(@str_y_idx, @char_idx) unless @screen_x
+            if @str_y_idx == @lines[@str_idx].ymax - 1
+              if @str_idx == @lines.size - 1
                 beep
               else
-                str_idx += 1
-                str_y_idx = 0
+                @start_y += 1 if gety == @term.lines - 1
+                @str_idx += 1
+                @str_y_idx = 0
               end
             else
-              str_y_idx += 1
+              @start_y += 1 if gety == @term.lines - 1
+              @str_y_idx += 1
             end
-            char_idx = @lines[str_idx].nearest_char_idx(str_y_idx, @screen_x)
+            @char_idx = @lines[@str_idx].nearest_char_idx(@str_y_idx, @screen_x)
           when Ncurses::KEY_LEFT
-            char_idx -= 1 if char_idx > 0
+            @char_idx -= 1 if @char_idx > 0
           when Ncurses::KEY_RIGHT
-            char_idx += 1 if char_idx < @lines[str_idx].max_char_idx(str_y_idx)
+            @char_idx += 1 if @char_idx < @lines[@str_idx].max_char_idx(@str_y_idx)
           when Ncurses::KEY_ENTER
-            @lines[str_idx] = @lines[str_idx].split(str_y_idx, char_idx)
+            @lines[@str_idx] = @lines[@str_idx].split(@str_y_idx, @char_idx)
             @lines.flatten!
-            str_idx += 1
-            str_y_idx = 0
-            char_idx = 0
+            @str_idx += 1
+            @str_y_idx = 0
+            @char_idx = 0
           end
         end
         ch = nil
       end
       @lines.join("\n")
     end
+    # end of def method edit
+
+    def gety
+      (@lines[0...@str_idx].map(&:ymax).inject(:+) || 0) + @str_y_idx - @start_y
+    end
   end
+  # end of def Class NanoEditor
 end
