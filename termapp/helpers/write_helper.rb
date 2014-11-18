@@ -1,5 +1,6 @@
 module TermApp
-  class WriteHelper < TermHelper
+  # Helper methods for writing in terminal.
+  class WriteHelper < Helper
     def write
       term.erase_all
       term.mvaddstr(2, 0, '제 목 : ')

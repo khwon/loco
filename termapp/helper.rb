@@ -1,5 +1,6 @@
 module TermApp
-  class TermHelper
+  # Helper methods for TermApp.
+  class Helper
     def initialize(app)
       @app = app
     end

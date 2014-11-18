@@ -1,6 +1,6 @@
 module TermApp
   # Helper methods for reading Posts. See ReadBoardMenu.
-  class ReadPostHelper < TermHelper
+  class ReadPostHelper < Helper
     # Initialize a ReadPostHelper. It holds an Application instance and a model.
     #
     # app   - The Application instance which is now running.

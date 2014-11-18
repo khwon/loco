@@ -1,4 +1,5 @@
 module TermApp
+  # Nano editor for terminal. Used for writing posts. Handle Emacs shortcuts.
   class NanoEditor < Editor
     def edit(str: '')
       # TODO : alt key handling (http://stackoverflow.com/a/16248956)
@@ -81,7 +82,8 @@ module TermApp
             ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
             next
           else
-            @str_y_idx, @char_idx = @lines[@str_idx].insert(@str_y_idx, @char_idx, ch[2])
+            @str_y_idx, @char_idx = @lines[@str_idx]
+                                    .insert(@str_y_idx, @char_idx, ch[2])
           end
         when Ncurses::KEY_CODE_YES
           case ch[1]
@@ -91,16 +93,20 @@ module TermApp
                 beep
               else
                 prev_line = @lines[@str_idx - 1]
-                @str_y_idx, @char_idx = prev_line.merge(@lines.delete_at(@str_idx))
+                @str_y_idx, @char_idx = prev_line
+                                        .merge(@lines.delete_at(@str_idx))
                 @str_idx -= 1
               end
             else
-              @str_y_idx, @char_idx = @lines[@str_idx].delete(@str_y_idx, @char_idx)
+              @str_y_idx, @char_idx = @lines[@str_idx]
+                                      .delete(@str_y_idx, @char_idx)
             end
           when Ncurses::KEY_UP
             @navigating = true
-            @screen_x = @lines[@str_idx]
-                        .get_size_for_screen(@str_y_idx, @char_idx) unless @screen_x
+            unless @screen_x
+              @screen_x = @lines[@str_idx]
+                          .get_size_for_screen(@str_y_idx, @char_idx)
+            end
             if @str_y_idx == 0
               if @str_idx == 0
                 beep
@@ -116,8 +122,10 @@ module TermApp
             @char_idx = @lines[@str_idx].nearest_char_idx(@str_y_idx, @screen_x)
           when Ncurses::KEY_DOWN
             @navigating = true
-            @screen_x = @lines[@str_idx]
-                        .get_size_for_screen(@str_y_idx, @char_idx) unless @screen_x
+            unless @screen_x
+              @screen_x = @lines[@str_idx]
+                          .get_size_for_screen(@str_y_idx, @char_idx)
+            end
             if @str_y_idx == @lines[@str_idx].ymax - 1
               if @str_idx == @lines.size - 1
                 beep
@@ -134,7 +142,8 @@ module TermApp
           when Ncurses::KEY_LEFT
             @char_idx -= 1 if @char_idx > 0
           when Ncurses::KEY_RIGHT
-            @char_idx += 1 if @char_idx < @lines[@str_idx].max_char_idx(@str_y_idx)
+            @char_idx += 1 if @char_idx <
+                              @lines[@str_idx].max_char_idx(@str_y_idx)
           when Ncurses::KEY_ENTER
             @lines[@str_idx] = @lines[@str_idx].split(@str_y_idx, @char_idx)
             @lines.flatten!
