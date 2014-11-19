@@ -3,9 +3,7 @@ require 'terminal'
 
 RSpec.describe TermApp::Terminal, type: :termapp do
   subject(:term) { silence_warnings { described_class.new } }
-  after(:example) do
-    term.terminate
-  end
+  after(:example) { term.terminate }
 
   it 'responds to forwarded methods' do
     expect(term).to respond_to(:erase,
