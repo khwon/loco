@@ -10,7 +10,7 @@ module TermApp
       Ncurses.noecho
       @start_y = 0
       key = nil
-      total_lines = @lines.map(&:ymax).inject(:+) || 0
+      total_lines = @lines.map(&:ymax).reduce(:+) || 0
       term_lines = @term.lines - 1
       loop do
         if key.nil?
@@ -62,7 +62,7 @@ module TermApp
     # end of def method show
 
     def gety
-      (@lines[0...@str_idx].map(&:ymax).inject(:+) || 0) + @str_y_idx - @start_y
+      (@lines[0...@str_idx].map(&:ymax).reduce(:+) || 0) + @str_y_idx - @start_y
     end
   end
   # end of def Class LessEditor

@@ -143,7 +143,7 @@ module TermApp
     # end of def method edit
 
     def gety
-      (@lines[0...@str_idx].map(&:ymax).inject(:+) || 0) + @str_y_idx - @start_y
+      (@lines[0...@str_idx].map(&:ymax).reduce(:+) || 0) + @str_y_idx - @start_y
     end
   end
   # end of def Class NanoEditor
