@@ -60,5 +60,3 @@ end
 
 # for checking string width in terminal
 gem 'unicode'
-
-gem 'setlocale'
