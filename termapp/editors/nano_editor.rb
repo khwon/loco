@@ -19,13 +19,13 @@ module TermApp
       @str_idx = 0
       @char_idx = 0
       @str_y_idx = 0
-      ch = nil
+      key = nil
       @screen_x = nil
       @navigating = false
       loop do
         @screen_x = nil unless @navigating
         @navigating = false
-        if ch.nil?
+        if key.nil?
           # FIXME : be more efficient
           erase_all
           i = 0
@@ -44,115 +44,99 @@ module TermApp
             break if i >= @start_y + @term.lines
           end
           move(gety, @lines[@str_idx].x_pos(@str_y_idx, @char_idx))
-          ch = get_wch
+          key = get_wch
         end
-        case ch[0]
-        when Ncurses::OK
-          case ch[1]
-          when ctrl('j')
-            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_ENTER]
-            next
-          when ctrl('a')
-            @char_idx = 0
-          when ctrl('b')
-            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_LEFT]
-            next
-          when ctrl('d')
-            # FIXME
-          when ctrl('e')
-            @char_idx = @lines[@str_idx].max_char_idx(@str_y_idx) - 1
-          when ctrl('f')
-            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_RIGHT]
-            next
-          when ctrl('k')
-            # FIXME
-          when ctrl('x')
-            erase_all
-            mvaddstr(0, 0, '(S)저장 (A)취소 (E)수정? [S] ')
-            ch = get_wch
-            case ch[2]
-            when 'A', 'a'
-              return nil
-            when 'E', 'e'
-              # nothing to do
+        case KeyHelper.key_symbol(key)
+        when :ctrl_j, :enter
+          @lines[@str_idx] = @lines[@str_idx].split(@str_y_idx, @char_idx)
+          @lines.flatten!
+          @str_idx += 1
+          @str_y_idx = 0
+          @char_idx = 0
+        when :ctrl_a
+          @char_idx = 0
+        when :ctrl_b, :left
+          @char_idx -= 1 if @char_idx > 0
+        when :ctrl_d
+          # FIXME
+        when :ctrl_e
+          @char_idx = @lines[@str_idx].max_char_idx(@str_y_idx) - 1
+        when :ctrl_f, :right
+          @char_idx += 1 if @char_idx <
+                            @lines[@str_idx].max_char_idx(@str_y_idx)
+        when :ctrl_k
+          # FIXME
+        when :ctrl_x
+          erase_all
+          mvaddstr(0, 0, '(S)저장 (A)취소 (E)수정? [S] ')
+          key = get_wch
+          case key[2]
+          when 'A', 'a'
+            return nil
+          when 'E', 'e'
+            # nothing to do
+          else
+            break
+          end
+        when :backspace
+          if @str_y_idx == 0 && @char_idx == 0
+            if @str_idx == 0
+              beep
             else
-              break
+              prev_line = @lines[@str_idx - 1]
+              @str_y_idx, @char_idx = prev_line
+                                      .merge(@lines.delete_at(@str_idx))
+              @str_idx -= 1
             end
-          when 127 # backspace
-            ch = [Ncurses::KEY_CODE_YES, Ncurses::KEY_BACKSPACE]
-            next
           else
             @str_y_idx, @char_idx = @lines[@str_idx]
-                                    .insert(@str_y_idx, @char_idx, ch[2])
+                                    .delete(@str_y_idx, @char_idx)
           end
-        when Ncurses::KEY_CODE_YES
-          case ch[1]
-          when Ncurses::KEY_BACKSPACE
-            if @str_y_idx == 0 && @char_idx == 0
-              if @str_idx == 0
-                beep
-              else
-                prev_line = @lines[@str_idx - 1]
-                @str_y_idx, @char_idx = prev_line
-                                        .merge(@lines.delete_at(@str_idx))
-                @str_idx -= 1
-              end
-            else
-              @str_y_idx, @char_idx = @lines[@str_idx]
-                                      .delete(@str_y_idx, @char_idx)
-            end
-          when Ncurses::KEY_UP
-            @navigating = true
-            unless @screen_x
-              @screen_x = @lines[@str_idx]
-                          .get_size_for_screen(@str_y_idx, @char_idx)
-            end
-            if @str_y_idx == 0
-              if @str_idx == 0
-                beep
-              else
-                @start_y -= 1 if gety == 0
-                @str_idx -= 1
-                @str_y_idx = @lines[@str_idx].ymax - 1
-              end
+        when :up
+          @navigating = true
+          unless @screen_x
+            @screen_x = @lines[@str_idx]
+                        .get_size_for_screen(@str_y_idx, @char_idx)
+          end
+          if @str_y_idx == 0
+            if @str_idx == 0
+              beep
             else
               @start_y -= 1 if gety == 0
-              @str_y_idx -= 1
+              @str_idx -= 1
+              @str_y_idx = @lines[@str_idx].ymax - 1
             end
-            @char_idx = @lines[@str_idx].nearest_char_idx(@str_y_idx, @screen_x)
-          when Ncurses::KEY_DOWN
-            @navigating = true
-            unless @screen_x
-              @screen_x = @lines[@str_idx]
-                          .get_size_for_screen(@str_y_idx, @char_idx)
-            end
-            if @str_y_idx == @lines[@str_idx].ymax - 1
-              if @str_idx == @lines.size - 1
-                beep
-              else
-                @start_y += 1 if gety == @term.lines - 1
-                @str_idx += 1
-                @str_y_idx = 0
-              end
+          else
+            @start_y -= 1 if gety == 0
+            @str_y_idx -= 1
+          end
+          @char_idx = @lines[@str_idx].nearest_char_idx(@str_y_idx, @screen_x)
+        when :down
+          @navigating = true
+          unless @screen_x
+            @screen_x = @lines[@str_idx]
+                        .get_size_for_screen(@str_y_idx, @char_idx)
+          end
+          if @str_y_idx == @lines[@str_idx].ymax - 1
+            if @str_idx == @lines.size - 1
+              beep
             else
               @start_y += 1 if gety == @term.lines - 1
-              @str_y_idx += 1
+              @str_idx += 1
+              @str_y_idx = 0
             end
-            @char_idx = @lines[@str_idx].nearest_char_idx(@str_y_idx, @screen_x)
-          when Ncurses::KEY_LEFT
-            @char_idx -= 1 if @char_idx > 0
-          when Ncurses::KEY_RIGHT
-            @char_idx += 1 if @char_idx <
-                              @lines[@str_idx].max_char_idx(@str_y_idx)
-          when Ncurses::KEY_ENTER
-            @lines[@str_idx] = @lines[@str_idx].split(@str_y_idx, @char_idx)
-            @lines.flatten!
-            @str_idx += 1
-            @str_y_idx = 0
-            @char_idx = 0
+          else
+            @start_y += 1 if gety == @term.lines - 1
+            @str_y_idx += 1
+          end
+          @char_idx = @lines[@str_idx].nearest_char_idx(@str_y_idx, @screen_x)
+        else
+          if key[0] == Ncurses::OK
+            @str_y_idx, @char_idx = @lines[@str_idx]
+                                    .insert(@str_y_idx, @char_idx, key[2])
           end
         end
-        ch = nil
+        key = nil
       end
       @lines.join("\n")
     end
