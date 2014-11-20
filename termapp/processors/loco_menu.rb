@@ -94,7 +94,7 @@ module TermApp
     #
     # Returns nil or a Symbol :break with additional arguments.
     def process_key(key)
-      case key_symbol(key)
+      case KeyHelper.key_symbol(key)
       when :up
         @past_menu = @cur_menu
         @cur_menu = (@cur_menu - 1) % @items.size

@@ -50,7 +50,7 @@ module TermApp
     # Returns nil or a Symbol :beep, :scroll_down, :scroll_up or :break with
     #   additional arguments.
     def process_key(key)
-      case key_symbol(key)
+      case KeyHelper.key_symbol(key)
       when :esc, :q
         return :break, :loco_menu
       when :enter, :space

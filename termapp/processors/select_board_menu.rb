@@ -58,7 +58,7 @@ module TermApp
     # Returns nil or a Symbol which is one of :break or :beep with additional
     #   arguments.
     def process_key(key)
-      case key_symbol(key)
+      case KeyHelper.key_symbol(key)
       when :tab, :space
         return :beep unless selected_completable_board?
         @selected << @cur_boards.first
