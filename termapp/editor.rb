@@ -41,7 +41,7 @@ module TermApp
           resplit
         end
       else
-        @strs[y] = @strs[y][0...(char_idx - 1)] + @strs[y][char_idx..-1]
+        @strs[y].slice!(char_idx - 1)
         result = [y, char_idx - 1]
         resplit
       end

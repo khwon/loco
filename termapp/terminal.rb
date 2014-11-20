@@ -294,7 +294,7 @@ module TermApp
           idx = 0
         when :backspace
           if str.size > 0 && idx > 0
-            str[(idx - 1)..(idx - 1)] = ''
+            str.slice!(idx - 1)
             idx -= 1
           end
         else
