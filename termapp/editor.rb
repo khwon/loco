@@ -6,7 +6,7 @@ module TermApp
     end
 
     def to_s(start_y = 0)
-      @strs[start_y..-1].join('')
+      @strs[start_y..-1].join
     end
 
     def insert(y, char_idx, str)
@@ -41,7 +41,7 @@ module TermApp
           resplit
         end
       else
-        @strs[y] = @strs[y][0...(char_idx - 1)] + @strs[y][char_idx..-1]
+        @strs[y].slice!(char_idx - 1)
         result = [y, char_idx - 1]
         resplit
       end
@@ -52,7 +52,7 @@ module TermApp
     def merge(line)
       y_idx = ymax - 1
       char_idx = max_char_idx(y_idx)
-      @strs = [@strs.join('') + line.to_s]
+      @strs = [@strs.join + line.to_s]
       resplit
       [y_idx, char_idx]
       # TODO : needs to be more efficient
@@ -79,7 +79,7 @@ module TermApp
     end
 
     def resplit
-      @strs = @strs.join('').unicode_split(@@column)
+      @strs = @strs.join.unicode_split(@@column)
     end
 
     def split(y_idx, char_idx)
@@ -95,7 +95,7 @@ module TermApp
           arr2 << x
         end
       end
-      [Line.new(arr1.join('')), Line.new(arr2.join(''))]
+      [Line.new(arr1.join), Line.new(arr2.join)]
     end
 
     def self.set_column(col)
