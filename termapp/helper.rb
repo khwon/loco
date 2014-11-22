@@ -5,7 +5,7 @@ module TermApp
       @app = app
     end
 
-    protected
+    private
 
     def term
       @app.term
