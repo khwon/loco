@@ -27,7 +27,7 @@ module TermApp
       else
         [y, char_idx + 1]
       end
-      # TODO : needs to be more efficient
+      # OPTIMIZE: Needs to be more efficient.
     end
 
     def delete(y, char_idx)
@@ -46,7 +46,7 @@ module TermApp
         resplit
       end
       result
-      # TODO : needs to be more efficient
+      # OPTIMIZE: Needs to be more efficient.
     end
 
     def merge(line)
@@ -55,7 +55,7 @@ module TermApp
       @strs = [@strs.join + line.to_s]
       resplit
       [y_idx, char_idx]
-      # TODO : needs to be more efficient
+      # OPTIMIZE: Needs to be more efficient.
     end
 
     def ymax

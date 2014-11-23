@@ -5,7 +5,7 @@ module TermApp
     def process
       process_init
       loop do
-        # TODO : consider setting start point as locoterm.current_board
+        # TODO: Consider setting start point as locoterm.current_board.
         if @str == ''
           @past_boards = @cur_boards
           @cur_boards = []
@@ -67,9 +67,9 @@ module TermApp
         return :break, :loco_menu
       when :enter
         return :beep unless selected_readable_board?
-        # TODO : for now, only allow selecting non-dir boards
+        # TODO: For now, only allow selecting non-dir boards.
         term.current_board = @cur_boards.first
-        # TODO : for now, return to loco menu
+        # TODO: For now, return to loco menu.
         return :break, :loco_menu, :read_board_menu # focus read menu
       when :backspace
         if @selected.size > 0 && @str == @selected.last.path_name

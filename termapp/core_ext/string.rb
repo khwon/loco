@@ -58,7 +58,7 @@ class String
       end
       result[:str]
 =begin
-# TODO : implement binary search
+# TODO: Implement binary search.
       min = length/2
       max = length
       loop do

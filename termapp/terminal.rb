@@ -242,14 +242,14 @@ module TermApp
     # Returns an Array of status code, character code, character as string if
     #   status code is Ncurses::OK.
     def get_wch # rubocop:disable Style/AccessorMethodName
-      # TODO : encoding issues
+      # TODO: Encoding issues.
       result = @stdscr.get_wch
       result << ((result[0] == Ncurses::OK) ? [result[1]].pack('U') : nil)
       result
     end
 
     def editline(y: nil, x: nil, str: '', n: 80, echo: true)
-      # TODO : encoding issues
+      # TODO: Encoding issues.
       if y && x
         move(y, x)
       else
@@ -288,8 +288,8 @@ module TermApp
         when :ctrl_k
           str = str[0...idx]
         when :ctrl_u
-          # TODO: following previous implementation in eagle bbs,
-          # but actually ctrl-u is undo in emacs binding
+          # TODO: Following previous implementation in Eagles BBS,
+          #   but actually ctrl-u is undo in Emacs binding.
           str = str[idx..-1]
           idx = 0
         when :backspace
@@ -337,7 +337,7 @@ module TermApp
     #
     # Returns nothing.
     def print_header
-      # TODO: design headers
+      # TODO: Design headers.
       str = '[새편지없음]'
       offset = @columns - str.size_for_print - 2
       mvaddstr(0, 0, '[NEWLOCO]')
@@ -349,12 +349,12 @@ module TermApp
     #
     # Returns nothing.
     def print_footer
-      # TODO: design footers
+      # TODO: Design footers.
       mvaddstr(@lines - 1, 10, 'sample footer')
     end
 
     def press_any_key
-      # TODO : print footer
+      # TODO: Print footer.
       get_wch
     end
 

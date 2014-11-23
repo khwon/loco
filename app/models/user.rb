@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   #
   # Returns a Boolean whether the User is admin or not.
   def admin?
-    # FIXME : implement admin? function
+    # FIXME: Implement admin? function.
     username == 'a'
   end
 end
