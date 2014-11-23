@@ -57,14 +57,12 @@ class String
         hash[:print_size] += x.size_for_print
       end
       result[:str]
-=begin
-# TODO: Implement binary search.
-      min = length/2
-      max = length
-      loop do
-
-      end
-=end
+      # TODO: Implement binary search.
+      # min = length/2
+      # max = length
+      # loop do
+      #
+      # end
     end
   end
 end

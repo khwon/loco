@@ -102,7 +102,7 @@ module TermApp
       @@column = col
     end
   end
-  # end def of class Line
+  # End def of class Line.
 
   # Base editor for terminal.
   class Editor

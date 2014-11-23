@@ -107,8 +107,8 @@ module TermApp
       @encoding = encoding
       @cur_color = 0
       @stdscr = Ncurses.initscr
-      Ncurses.keypad(@stdscr, true) # enable arrow keys
-      Ncurses.ESCDELAY = 25 # wait only 10ms for esc
+      Ncurses.keypad(@stdscr, true) # Enable arrow keys.
+      Ncurses.ESCDELAY = 25 # Wait only 10ms for ESC.
       initialize_colors if Ncurses.has_colors?
       getmaxyx
       Ncurses.raw
@@ -118,7 +118,7 @@ module TermApp
         @cur_debug_line = 0
         win = Ncurses.newwin(0, @columns / 2, 0, @columns / 2 - 1)
         win.refresh
-        Ncurses.keypad(win, true) # enable arrow keys
+        Ncurses.keypad(win, true) # Enable arrow keys.
         @stdscr = win
         @columns = @columns / 2 - 1
       end

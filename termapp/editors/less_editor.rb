@@ -59,11 +59,11 @@ module TermApp
         key = nil
       end
     end
-    # end of def method show
+    # End of def method show.
 
     def gety
       (@lines[0...@str_idx].map(&:ymax).reduce(:+) || 0) + @str_y_idx - @start_y
     end
   end
-  # end of def Class LessEditor
+  # End of def class LessEditor.
 end

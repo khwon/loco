@@ -184,7 +184,7 @@ module TermApp
     #
     # Returns nothing.
     def read_post(post)
-      @past_index = nil # redraw list
+      @past_index = nil # Redraw list.
       read_post_helper = ReadPostHelper.new(@app, post)
       _control, *_args = read_post_helper.read_post
     end

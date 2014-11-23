@@ -74,7 +74,7 @@ module TermApp
           when 'A', 'a'
             return nil
           when 'E', 'e'
-            # nothing to do
+            # Nothing to do.
           else
             break
           end
@@ -140,11 +140,11 @@ module TermApp
       end
       @lines.join("\n")
     end
-    # end of def method edit
+    # End of def method edit.
 
     def gety
       (@lines[0...@str_idx].map(&:ymax).reduce(:+) || 0) + @str_y_idx - @start_y
     end
   end
-  # end of def Class NanoEditor
+  # End of def class NanoEditor.
 end
