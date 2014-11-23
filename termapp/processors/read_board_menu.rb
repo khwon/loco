@@ -189,6 +189,9 @@ module TermApp
       _control, *_args = read_post_helper.read_post
     end
 
+    # Write a new Post through terminal.
+    #
+    # Returns nothing.
     def write_post
       write_helper = WriteHelper.new(@app)
       write_helper.write

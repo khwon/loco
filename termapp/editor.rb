@@ -106,10 +106,17 @@ module TermApp
 
   # Base editor for terminal.
   class Editor
+    # Initialize a Editor. It holds the Terminal instance.
+    #
+    # term - The Terminal instance to bind.
     def initialize(term)
       @term = term
     end
 
+    # Delegates all missing methods to the terminal.
+    #
+    # meth - The Symbol of a missing method.
+    # args - Zero or more values to pass to method as parameters.
     def method_missing(meth, *args)
       @term.send(meth, *args)
     end

@@ -199,7 +199,8 @@ module TermApp
     # n       - The Integer size of str.
     # options - The Hash options used to control screen output
     #           (default: { echo: true }).
-    #           :echo - The Boolean whether to echo input to screen or not.
+    #           :echo - The Boolean whether to echo input to screen or not
+    #                   (optional).
     #
     # Returns nothing.
     def mvgetnstr(y, x, str, n, echo: true)
@@ -248,6 +249,18 @@ module TermApp
       result
     end
 
+    # Handle editing a line.
+    #
+    # options - The Hash options to handle line
+    #           (default: { y: nil, x: nil, str: '', n: 80, echo: true }).
+    #           :y    - An Integer y position (optional).
+    #           :x    - An Integer x position (optional).
+    #           :str  - A String initial value of line (optional).
+    #           :n    - An Integer max size of line (optional).
+    #           :echo - The Boolean whether to echo input to screen or not
+    #                   (optional).
+    #
+    # Returns the String result after editing.
     def editline(y: nil, x: nil, str: '', n: 80, echo: true)
       # TODO: Encoding issues.
       if y && x
@@ -312,10 +325,22 @@ module TermApp
       str
     end
 
+    # Simulate NanoEditor to edit given String.
+    #
+    # options - The Hash options to pass to NanoEditor (default: { str: '' }).
+    #           :str - The String to edit (optional).
+    #
+    # Returns the String result after editing with NanoEditor.
     def editor(str: '')
       NanoEditor.new(self).edit(str: str)
     end
 
+    # Simulate LessEditor to read given String.
+    #
+    # options - The Hash options to pass to LessEditor (default: { str: '' }).
+    #           :str - The String to read (optional).
+    #
+    # Returns nothing.
     def readonly_editor(str: '')
       LessEditor.new(self).show(str: str)
     end
@@ -353,6 +378,10 @@ module TermApp
       mvaddstr(@lines - 1, 10, 'sample footer')
     end
 
+    # Process 'Press any key' task.
+    #
+    # Returns an Array of status code, character code, character as string if
+    #   status code is Ncurses::OK. See #get_wch.
     def press_any_key
       # TODO: Print footer.
       get_wch
@@ -369,6 +398,11 @@ module TermApp
       Ncurses.reset_prog_mode
     end
 
+    # Print String on debug screen. Only works for debug environment.
+    #
+    # str - The String to print.
+    #
+    # Returns nothing.
     def debug_print(str)
       return unless Rails.env.development? && @debug
       @debugscr.move(@cur_debug_line, 0)
@@ -378,6 +412,9 @@ module TermApp
       @debugscr.refresh
     end
 
+    # Clear debug screen. Only works for debug environment.
+    #
+    # Returns nothing.
     def clear_debug_console
       @debugscr.clrtoeol(0...@lines) if Rails.env.development? && @debug
     end
