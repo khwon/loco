@@ -28,7 +28,7 @@ module TermApp
       @app.send(meth, *args)
     end
 
-    protected
+    private
 
     # Print a given item to terminal.
     #
