@@ -2,4 +2,7 @@
 require_relative '../config/environment'
 require_relative '../termapp/application'
 
+# TODO : set timezone according to remote ip
+Time.zone = 'Asia/Seoul'
+
 TermApp::Application.new.run
