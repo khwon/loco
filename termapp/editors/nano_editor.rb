@@ -95,8 +95,7 @@ module TermApp
         when :up
           @navigating = true
           unless @screen_x
-            @screen_x = @lines[@str_idx]
-                        .get_size_for_screen(@str_y_idx, @char_idx)
+            @screen_x = @term.getyx[1]
           end
           if @str_y_idx == 0
             if @str_idx == 0
@@ -114,8 +113,7 @@ module TermApp
         when :down
           @navigating = true
           unless @screen_x
-            @screen_x = @lines[@str_idx]
-                        .get_size_for_screen(@str_y_idx, @char_idx)
+            @screen_x = @term.getyx[1]
           end
           if @str_y_idx == @lines[@str_idx].ymax - 1
             if @str_idx == @lines.size - 1
@@ -133,7 +131,8 @@ module TermApp
         else
           if key[0] == Ncurses::OK
             @str_y_idx, @char_idx = @lines[@str_idx]
-                                    .insert(@str_y_idx, @char_idx, key[2])
+                                    .insert(@str_y_idx, @char_idx, key[2],
+                                            getyx[1])
           end
         end
         key = nil

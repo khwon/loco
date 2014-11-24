@@ -9,19 +9,21 @@ module TermApp
       @strs[start_y..-1].join
     end
 
-    def insert(y, char_idx, str)
+    def insert(y, char_idx, str, screen_x)
       @strs[y].insert(char_idx, str)
       if @strs[y].size_for_print > @@column
         resplit
-        if char_idx == @@column - 1 && str.size_for_print > 1
+        if screen_x == @@column - 1 && str.size_for_print > 1
           [y + 1, 1]
-        elsif char_idx == @@column - 1 ||
-              (char_idx == @@column - 2 && str.size_for_print > 1)
+        elsif screen_x == @@column - 1 ||
+              (screen_x == @@column - 2 && str.size_for_print > 1)
           [y + 1, 0]
         else
           [y, char_idx + 1]
         end
-      elsif @strs[y].size_for_print == @@column && char_idx == @@column - 1
+      elsif @strs[y].size_for_print == @@column &&
+            (screen_x == @@column - 1 ||
+             (screen_x == @@column - 2 && str.size_for_print > 1))
         @strs.insert(y + 1, '')
         [y + 1, 0]
       else
