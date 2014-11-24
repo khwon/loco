@@ -34,6 +34,8 @@ module TermApp
           key = get_wch
         end
         case KeyHelper.key_symbol(key)
+        when *@exit_on
+          return key
         when :j, :down
           if @start_y + term_lines >= total_lines
             beep
@@ -50,7 +52,7 @@ module TermApp
           return nil, key
         when :space
           if @start_y + term_lines >= total_lines
-            return nil, key
+            return key
           end
           @start_y += term_lines - 1
           @start_y = total_lines - term_lines if @start_y + term_lines >=

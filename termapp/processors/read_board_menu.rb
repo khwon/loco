@@ -15,15 +15,49 @@ module TermApp
         print_posts
         @past_index = @cur_index
         control, *args = process_key(term.get_wch)
-        case control
-        when :break  then break args
-        when :beep   then term.beep
-        when :scroll then scroll(*args)
-        when :read   then read_post(args[0])
-        when :write
-          write_post(*args)
-          process_init
+        while control
+          control, *args =
+            case control
+            when :break  then break args
+            when :beep
+              term.beep
+              nil
+            when :scroll
+              scroll(*args)
+              nil
+            when :read
+              read_post(args[0])
+            when :write
+              write_post(*args)
+              process_init
+              nil
+            when :read_next
+              if @cur_index == @list_size - 1 && !scrollable?(:down)
+                nil
+              else
+                if @cur_index == @list_size - 1
+                  scroll :down
+                else
+                  @cur_index += 1
+                end
+                [:read, @posts[@cur_index]]
+              end
+            when :read_prev
+              if @cur_index == 0 && !scrollable?(:up)
+                nil
+              else
+                if @cur_index == 0
+                  scroll :up
+                else
+                  @cur_index -= 1
+                end
+                [:read, @posts[@cur_index]]
+              end
+            else
+              nil
+            end
         end
+        break args if control == :break
       end
       term.echo
       result
@@ -186,7 +220,15 @@ module TermApp
     def read_post(post)
       @past_index = nil # Redraw list.
       read_post_helper = ReadPostHelper.new(@app, post)
-      _control, *_args = read_post_helper.read_post
+      key = read_post_helper.read_post
+      case KeyHelper.key_symbol(key)
+      when :n
+        :read_next
+      when :p
+        :read_prev
+      else
+        nil
+      end
     end
 
     # Write a new Post through terminal.

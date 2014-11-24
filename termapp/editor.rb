@@ -111,8 +111,10 @@ module TermApp
     # Initialize a Editor. It holds the Terminal instance.
     #
     # term - The Terminal instance to bind.
+    attr_accessor :exit_on
     def initialize(term)
       @term = term
+      @exit_on = []
     end
 
     # Delegates all missing methods to the terminal.
