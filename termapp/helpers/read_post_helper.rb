@@ -21,7 +21,8 @@ module TermApp
       str << "날  짜 : #{@model.created_at}\n"
       str << "제  목 : #{@model.title.unicode_slice(term.columns - 10)}\n\n"
       str << @model.content
-      term.readonly_editor(str: str)
+      editor = term.readonly_editor.new(term)
+      editor.show(str: str)
     end
   end
 end

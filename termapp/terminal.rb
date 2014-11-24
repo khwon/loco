@@ -325,24 +325,12 @@ module TermApp
       str
     end
 
-    # Simulate NanoEditor to edit given String.
-    #
-    # options - The Hash options to pass to NanoEditor (default: { str: '' }).
-    #           :str - The String to edit (optional).
-    #
-    # Returns the String result after editing with NanoEditor.
-    def editor(str: '')
-      NanoEditor.new(self).edit(str: str)
+    def editor
+      NanoEditor
     end
 
-    # Simulate LessEditor to read given String.
-    #
-    # options - The Hash options to pass to LessEditor (default: { str: '' }).
-    #           :str - The String to read (optional).
-    #
-    # Returns nothing.
-    def readonly_editor(str: '')
-      LessEditor.new(self).show(str: str)
+    def readonly_editor
+      LessEditor
     end
 
     # Print the multi-line String to screen.
