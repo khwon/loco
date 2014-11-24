@@ -48,7 +48,7 @@ module TermApp
           end
         when :q, :Q
           return nil, key
-        when :' '
+        when :space
           if @start_y + term_lines >= total_lines
             return nil, key
           end
