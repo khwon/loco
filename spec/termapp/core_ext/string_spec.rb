@@ -10,7 +10,7 @@ RSpec.describe String, type: :termapp do
 
   describe '#size_for_print' do
     it 'fails on control characters' do
-      # TODO: Fails on 0 < ord < 32 || 127 <= ord < 160
+      # TODO: Fails on 0 < ord < 32 || 127 <= ord < 160.
       # Use Array#pack('U') instead of Integer#chr because of encoding problem.
       pending 'Not yet implemented'
       [*1..31, *127..159].each do |ch|
@@ -38,10 +38,9 @@ RSpec.describe String, type: :termapp do
         '가あ',
         '單語',
         '　',
-        # FIXME
-        # 'å∫ç' expectd to be 4, got 3
-        # '★' expectd to be 2, got 1
-        # '​' expectd to be 1, got 0
+        # FIXME: 'å∫ç' expectd to be 4, got 3.
+        #   '★' expectd to be 2, got 1.
+        #   '​' expectd to be 1, got 0.
       ].each do |str|
         term.mvaddstr(0, 0, str)
         expect([str, str.size_for_print]).to eq([str, term.getyx[1]])

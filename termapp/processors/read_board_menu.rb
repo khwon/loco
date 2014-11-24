@@ -184,11 +184,14 @@ module TermApp
     #
     # Returns nothing.
     def read_post(post)
-      @past_index = nil # redraw list
+      @past_index = nil # Redraw list.
       read_post_helper = ReadPostHelper.new(@app, post)
       _control, *_args = read_post_helper.read_post
     end
 
+    # Write a new Post through terminal.
+    #
+    # Returns nothing.
     def write_post
       write_helper = WriteHelper.new(@app)
       write_helper.write

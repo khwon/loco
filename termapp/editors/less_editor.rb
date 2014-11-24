@@ -2,7 +2,7 @@ module TermApp
   # Less editor for terminal. Used for reading posts.
   class LessEditor < Editor
     def show(str: '') # readonly
-      # TODO : alt key handling (http://stackoverflow.com/a/16248956)
+      # TODO: alt key handling (http://stackoverflow.com/a/16248956).
       erase_all
       Line.set_column(@term.columns)
       str = "\n" if str == ''
@@ -14,7 +14,7 @@ module TermApp
       term_lines = @term.lines - 1
       loop do
         if key.nil?
-          # TODO : print footer and do not erase footer
+          # TODO: Print footer and do not erase footer.
           erase_all
           i = 0
           @lines.each do |x|
@@ -59,11 +59,11 @@ module TermApp
         key = nil
       end
     end
-    # end of def method show
+    # End of def method show.
 
     def gety
       (@lines[0...@str_idx].map(&:ymax).reduce(:+) || 0) + @str_y_idx - @start_y
     end
   end
-  # end of def Class LessEditor
+  # End of def class LessEditor.
 end

@@ -12,6 +12,7 @@ module TermApp
 
     # Show content of the model to terminal. Currently it shows Post only.
     #
+    # Returns nothing.
     def read_post
       return unless @model.is_a?(Post)
       term.erase_all

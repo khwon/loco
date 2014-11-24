@@ -2,7 +2,7 @@ module TermApp
   # Nano editor for terminal. Used for writing posts. Handle Emacs shortcuts.
   class NanoEditor < Editor
     def edit(str: '')
-      # TODO : alt key handling (http://stackoverflow.com/a/16248956)
+      # TODO: alt key handling (http://stackoverflow.com/a/16248956).
       erase_all
       Line.set_column(@term.columns)
       str = "\n" if str == ''
@@ -26,7 +26,7 @@ module TermApp
         @screen_x = nil unless @navigating
         @navigating = false
         if key.nil?
-          # FIXME : be more efficient
+          # OPTIMIZE: Be more efficient.
           erase_all
           i = 0
           @lines.each do |x|
@@ -74,7 +74,7 @@ module TermApp
           when 'A', 'a'
             return nil
           when 'E', 'e'
-            # nothing to do
+            # Nothing to do.
           else
             break
           end
@@ -140,11 +140,11 @@ module TermApp
       end
       @lines.join("\n")
     end
-    # end of def method edit
+    # End of def method edit.
 
     def gety
       (@lines[0...@str_idx].map(&:ymax).reduce(:+) || 0) + @str_y_idx - @start_y
     end
   end
-  # end of def Class NanoEditor
+  # End of def class NanoEditor.
 end

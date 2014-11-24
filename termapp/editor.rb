@@ -27,7 +27,7 @@ module TermApp
       else
         [y, char_idx + 1]
       end
-      # TODO : needs to be more efficient
+      # OPTIMIZE: Needs to be more efficient.
     end
 
     def delete(y, char_idx)
@@ -46,7 +46,7 @@ module TermApp
         resplit
       end
       result
-      # TODO : needs to be more efficient
+      # OPTIMIZE: Needs to be more efficient.
     end
 
     def merge(line)
@@ -55,7 +55,7 @@ module TermApp
       @strs = [@strs.join + line.to_s]
       resplit
       [y_idx, char_idx]
-      # TODO : needs to be more efficient
+      # OPTIMIZE: Needs to be more efficient.
     end
 
     def ymax
@@ -102,14 +102,21 @@ module TermApp
       @@column = col
     end
   end
-  # end def of class Line
+  # End def of class Line.
 
   # Base editor for terminal.
   class Editor
+    # Initialize a Editor. It holds the Terminal instance.
+    #
+    # term - The Terminal instance to bind.
     def initialize(term)
       @term = term
     end
 
+    # Delegates all missing methods to the terminal.
+    #
+    # meth - The Symbol of a missing method.
+    # args - Zero or more values to pass to method as parameters.
     def method_missing(meth, *args)
       @term.send(meth, *args)
     end
