@@ -31,6 +31,8 @@ module TermApp
       @options, *_paths = Options.new.parse(args)
       @term = Terminal.new(debug: @options[:debug])
       @cached_processors = {}
+      # TODO: Set timezone according to remote IP.
+      Time.zone = 'Asia/Seoul'
     end
 
     # Run process of a passed Processors. Get the name of a Processor and
