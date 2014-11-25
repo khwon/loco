@@ -18,7 +18,7 @@ module TermApp
         while control
           control, *args =
             case control
-            when :break  then break args
+            when :break then break args
             when :beep
               term.beep
               nil
@@ -216,18 +216,15 @@ module TermApp
     #
     # post - The Post instance to read.
     #
-    # Returns nothing.
+    # Returns nil or a Symbol of control to process next.
     def read_post(post)
       @past_index = nil # Redraw list.
       read_post_helper = ReadPostHelper.new(@app, post)
       key = read_post_helper.read_post
       case KeyHelper.key_symbol(key)
-      when :n
-        :read_next
-      when :p
-        :read_prev
-      else
-        nil
+      when :n then :read_next
+      when :p then :read_prev
+      else nil
       end
     end
 

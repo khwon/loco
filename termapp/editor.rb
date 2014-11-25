@@ -108,10 +108,12 @@ module TermApp
 
   # Base editor for terminal.
   class Editor
+    # Gets/Sets the Array of Symbol indicating keys for exit.
+    attr_accessor :exit_on
+
     # Initialize a Editor. It holds the Terminal instance.
     #
     # term - The Terminal instance to bind.
-    attr_accessor :exit_on
     def initialize(term)
       @term = term
       @exit_on = []

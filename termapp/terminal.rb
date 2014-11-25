@@ -325,10 +325,16 @@ module TermApp
       str
     end
 
+    # Gets writable Editor.
+    #
+    # Returns NanoEditor class.
     def editor
       NanoEditor
     end
 
+    # Gets readable Editor.
+    #
+    # Returns LessEditor class.
     def readonly_editor
       LessEditor
     end
