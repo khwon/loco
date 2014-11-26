@@ -11,10 +11,10 @@ class User < ActiveRecord::Base
     username == 'a'
   end
 
-  def auth pw
+  def auth(pw)
     if old_crypt_password
       if pw.crypt(old_crypt_password[0..1]) ==
-        old_crypt_password
+         old_crypt_password
         self.password = pw
         self.old_crypt_password = nil
         save!
@@ -26,5 +26,4 @@ class User < ActiveRecord::Base
       authenticate(pw)
     end
   end
-
 end
