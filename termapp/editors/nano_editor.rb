@@ -4,7 +4,7 @@ module TermApp
     def edit(str: '')
       # TODO: alt key handling (http://stackoverflow.com/a/16248956).
       erase_all
-      Line.set_column(@term.columns)
+      Line.column = @term.columns
       str = "\n" if str == ''
       @lines = str.split("\n", -1).map { |x| Line.new(x) }
       i = 0

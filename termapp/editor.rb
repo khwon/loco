@@ -100,7 +100,7 @@ module TermApp
       [Line.new(arr1.join), Line.new(arr2.join)]
     end
 
-    def self.set_column(col)
+    def self.column=(col)
       @@column = col
     end
   end
