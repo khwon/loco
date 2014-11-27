@@ -28,6 +28,16 @@ class Post < ActiveRecord::Base
     ' ' + strs.join(' ') # Cursor
   end
 
+  # Save a new Post.
+  #
+  # options - The Hash option for creating a Post (default:
+  #           { title: '', body: '', user: nil, board: nil }).
+  #           :title - A String title of the Post (optional).
+  #           :body  - A String content of the Post (optional).
+  #           :user  - The User who wrote the Post.
+  #           :board - The Board to write.
+  #
+  # Returns nothing.
   def self.save_new_post(title: '', body: '', user: nil, board: nil)
     # TODO: Handle race condition about num.
     num = board.post.select('max(num) as max_num').first[:max_num] + 1

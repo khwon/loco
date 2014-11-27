@@ -11,6 +11,11 @@ class User < ActiveRecord::Base
     username == 'a'
   end
 
+  # Authenticate with password. Crypt old style password.
+  #
+  # pw - A String password that user inputted.
+  #
+  # Returns a User for correct password, false otherwise.
   def auth(pw)
     if old_crypt_password
       if pw.crypt(old_crypt_password[0..1]) ==
