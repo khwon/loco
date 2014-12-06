@@ -71,6 +71,15 @@ class Board < ActiveRecord::Base
     str
   end
 
+  def find_by_path(str)
+    arr = str.split('/')
+    b = Board.where(name: arr[0], parent_id: nil).first
+    arr[1..-1].each do |x|
+      b = b.children.where(name: x) if b
+    end
+    b
+  end
+
   # List of post having num which is greater than or equal to given num.
   #
   # num  - The Integer num which is the lowest value of list.
