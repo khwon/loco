@@ -53,6 +53,15 @@ class Board < ActiveRecord::Base
     end
   end
 
+  def self.find_by_path(str)
+    arr = str.split('/')
+    b = Board.find_by(name: arr[0], parent_id: nil)
+    arr[1..-1].each do |x|
+      b = b.children.find_by(name: x) if b
+    end
+    b
+  end
+
   # Full path name of the Board. It has suffix '/' if the Board is directory.
   #
   # Examples
@@ -69,15 +78,6 @@ class Board < ActiveRecord::Base
     str += '/' if is_dir
     str = parent.path_name + str if parent
     str
-  end
-
-  def self.find_by_path(str)
-    arr = str.split('/')
-    b = Board.find_by(name: arr[0], parent_id: nil)
-    arr[1..-1].each do |x|
-      b = b.children.find_by(name: x) if b
-    end
-    b
   end
 
   # List of post having num which is greater than or equal to given num.
