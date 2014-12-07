@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141207095737) do
+ActiveRecord::Schema.define(version: 20141207194314) do
 
   create_table "boards", force: true do |t|
     t.integer  "owner_id"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20141207095737) do
     t.string   "title"
     t.integer  "board_id"
     t.integer  "parent_id"
-    t.text     "content"
+    t.text     "content",    limit: 4294967295
     t.integer  "writer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
