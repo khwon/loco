@@ -61,4 +61,55 @@ RSpec.describe Board, type: :model do
     expect(child_board).not_to be_valid
     expect(child_board.errors.keys).to include(:owner)
   end
+
+  describe '.get_list' do
+    context 'with no Boards' do
+      it 'returns an empty array' do
+        expect(Board.get_list).to match_array([])
+        expect(Board.get_list(parent_board: nil)).to match_array([])
+      end
+    end
+
+    context 'with root Boards having no child Boards' do
+      let!(:boards) { create_list(:root_board, 3) }
+
+      it 'returns root Boards when :parent_board is nil' do
+        list = Board.get_list
+        expect(list.size).to eq(3)
+        expect(list).to match_array(boards)
+
+        list = Board.get_list(parent_board: nil)
+        expect(list.size).to eq(3)
+        expect(list).to match_array(boards)
+      end
+
+      it 'returns an empty array when :parent_board is a Board' do
+        boards.each do |parent|
+          expect(Board.get_list(parent_board: parent)).to match_array([])
+        end
+      end
+    end
+
+    context 'with root Boards having child Boards' do
+      let!(:boards) { create_list(:board_with_children, 3, child_count: 5) }
+
+      it 'returns root Boards when :parent_board is nil' do
+        list = Board.get_list
+        expect(list.size).to eq(3)
+        expect(list).to match_array(boards)
+
+        list = Board.get_list(parent_board: nil)
+        expect(list.size).to eq(3)
+        expect(list).to match_array(boards)
+      end
+
+      it 'returns child Boards when :parent_board is a Board' do
+        boards.each do |parent|
+          list = Board.get_list(parent_board: parent)
+          expect(list.size).to eq(5)
+          expect(list).to match_array(parent.children)
+        end
+      end
+    end
+  end
 end
