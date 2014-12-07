@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141207071236) do
+ActiveRecord::Schema.define(version: 20141207095737) do
 
   create_table "boards", force: true do |t|
     t.integer  "owner_id"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20141207071236) do
     t.string   "sex"
     t.string   "email"
     t.string   "old_crypt_password"
+    t.boolean  "is_active",          default: true
   end
 
 end

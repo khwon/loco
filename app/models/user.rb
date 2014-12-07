@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   # Returns a Boolean whether the User is admin or not.
   def admin?
     # FIXME: Implement admin? function.
-    username == 'a'
+    username == 'SYSOP'
   end
 
   # Authenticate with password. Crypt old style password.
@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   #
   # Returns a User for correct password, false otherwise.
   def auth(pw)
+    return nil unless is_active
     if old_crypt_password
       if pw.crypt(old_crypt_password[0..1]) == old_crypt_password
         self.password = pw
