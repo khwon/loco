@@ -8,6 +8,7 @@ matrix:
 before_install:
   - sudo apt-get update
   - sudo apt-get install libncursesw5-dev
+  - sudo apt-get install libmysqlclient-dev
   - gem update --system
 before_script:
   - cp config/database.yml.sample config/database.yml
