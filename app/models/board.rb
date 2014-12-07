@@ -71,11 +71,11 @@ class Board < ActiveRecord::Base
     str
   end
 
-  def find_by_path(str)
+  def self.find_by_path(str)
     arr = str.split('/')
-    b = Board.where(name: arr[0], parent_id: nil).first
+    b = Board.find_by(name: arr[0], parent_id: nil)
     arr[1..-1].each do |x|
-      b = b.children.where(name: x) if b
+      b = b.children.find_by(name: x) if b
     end
     b
   end
