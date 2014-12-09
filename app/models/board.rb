@@ -83,14 +83,13 @@ class Board < ActiveRecord::Base
     str
   end
 
-
   def leaves
-    result = children.where(:is_dir => false).to_a
-    arr = children.where(:is_dir => true).to_a
+    result = children.where(is_dir: false).to_a
+    arr = children.where(is_dir: true).to_a
     while arr.size > 0
       child = arr.pop
-      arr += child.children.where(:is_dir => true)
-      result += child.children.where(:is_dir => false)
+      arr += child.children.where(is_dir: true)
+      result += child.children.where(is_dir: false)
     end
     result
   end

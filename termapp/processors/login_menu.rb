@@ -73,7 +73,8 @@ END
         return :goodbye_menu if id == 'off'
         term.mvgetnstr(21, 40, pw, 20, echo: false)
         if id != 'new'
-          user = User.find_by(username: id).auth(pw)
+          user = User.find_by(username: id)
+          user = user.auth(pw) if user
         end
       end
       term.current_user = user
