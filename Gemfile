@@ -53,7 +53,7 @@ group :development do
   gem 'pry-remote'
   gem 'pry-stack_explorer'
   gem 'rubocop', '~> 0.27.0', require: false
-  gem 'guard', '~> 2.7.0', require: false
+  gem 'guard', '~> 2.10.0', require: false
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
 end

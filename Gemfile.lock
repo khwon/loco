@@ -59,7 +59,7 @@ GEM
       railties (>= 3.0.0)
     ffi (1.9.6)
     formatador (0.2.5)
-    guard (2.7.3)
+    guard (2.10.2)
       formatador (>= 0.2.4)
       listen (~> 2.7)
       lumberjack (~> 1.0)
@@ -211,7 +211,7 @@ DEPENDENCIES
   bullet (~> 4.14.0)
   coffee-rails (~> 4.1.0)
   factory_girl_rails (~> 4.5.0)
-  guard (~> 2.7.0)
+  guard (~> 2.10.0)
   guard-rspec
   guard-rubocop
   jbuilder (~> 2.0)
