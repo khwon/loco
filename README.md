@@ -24,6 +24,16 @@ LOCO BBS system for KAIST
         brew doctor
         brew link --force ncurses
         ```
+* MySQL (MariaDB)
+    * Ubuntu
+        ``` sh
+        sudo apt-get install libmysqlclient-dev
+        ```
+
+    * Mac OS X
+        ``` sh
+        brew install mariadb
+        ```
 * For required gems, see [Gemfile](/Gemfile)
 
 ## How to run
