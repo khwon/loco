@@ -83,6 +83,10 @@ class Board < ActiveRecord::Base
     str
   end
 
+  # Search every non-directory child Boards.
+  #
+  # Returns an Array of child Boards which is not a directory, including
+  #   children of child Boards.
   def leaves
     result = children.where(is_dir: false).to_a
     dirs = children.where(is_dir: true).to_a

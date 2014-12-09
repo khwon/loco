@@ -190,6 +190,10 @@ module TermApp
       term.get_wch
     end
 
+    # Display message saying there is no post and some introduction to write a
+    # new Post.
+    #
+    # Returns nothing.
     def print_no_post
       term.mvaddstr(10, 12, '* 현재 이 게시판에는 글이 없습니다.')
       term.mvaddstr(11, 14, '글을 쓰시려면 아무키나 누르신 후')
@@ -198,6 +202,10 @@ module TermApp
       term.get_wch
     end
 
+    # Display the header of ReadBoardMenu. Contains labels for each section of
+    # Post and the information of the Board.
+    #
+    # Returns nothing.
     def print_header
       header_str = ' 번호   글쓴이        날짜 조회수     제목' \
                    '        관리자 : '
