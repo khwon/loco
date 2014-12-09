@@ -21,8 +21,10 @@ class Post < ActiveRecord::Base
   def format_for_term(size)
     strs = []
     strs << format('%6d', num)
-    strs << format('%-12s', writer.nickname)
-    strs << created_at.strftime('%m/%d') # Date
+    name = writer.username.unicode_slice(12)
+    name += ' ' * (12 - name.size_for_print)
+    strs << name
+    strs << created_at.strftime('%_m/%d') # Date
     strs << '????' # View count
     strs << title.unicode_slice(size)
     ' ' + strs.join(' ') # Cursor
