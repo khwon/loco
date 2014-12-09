@@ -10,6 +10,11 @@ module TermApp
       end
       process_init
       term.noecho
+      if @posts.size == 0
+        print_no_post
+        term.echo
+        return :loco_menu
+      end
       result = loop do
         sanitize_current_index
         print_posts
@@ -181,6 +186,14 @@ module TermApp
     # Returns nothing.
     def print_select_board
       term.mvaddstr(8, 8, '보드를 먼저 선택해 주세요')
+      term.get_wch
+    end
+
+    def print_no_post
+      term.mvaddstr(10, 12, '* 현재 이 게시판에는 글이 없습니다.')
+      term.mvaddstr(11, 14, '글을 쓰시려면 아무키나 누르신 후')
+      term.mvaddstr(13, 14, 'P를 눌러 Post 메뉴를 선택하셔서')
+      term.mvaddstr(14, 14, '글을 써주시기 바랍니다.')
       term.get_wch
     end
 
