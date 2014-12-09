@@ -57,7 +57,8 @@ class Board < ActiveRecord::Base
   #
   # Returns the Board specified by its path, nil if there is no such Board.
   def self.find_by_path(str)
-    arr = str.split('/')
+    return nil if str.nil? || str.empty?
+    arr = str.split('/', -1)
     b = Board.find_by(name: arr[0], parent_id: nil)
     arr[1..-1].each do |x|
       b = b.children.find_by(name: x) if b

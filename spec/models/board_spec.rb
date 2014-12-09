@@ -112,4 +112,54 @@ RSpec.describe Board, type: :model do
       end
     end
   end
+
+  describe '.find_by_path' do
+    context 'when the path is empty' do
+      it 'returns nil' do
+        expect(Board.find_by_path(nil)).to be_nil
+        expect(Board.find_by_path('')).to be_nil
+      end
+    end
+
+    context "when the path starts with or ends with '/' character" do
+      it 'returns nil' do
+        root_board = create(:root_board, name: 'continent')
+        create(:child_board, parent: root_board, name: 'country')
+        expect(Board.find_by_path('/')).to be_nil
+        expect(Board.find_by_path('/continent')).to be_nil
+        expect(Board.find_by_path('/continent/country')).to be_nil
+        expect(Board.find_by_path('continent/')).to be_nil
+        expect(Board.find_by_path('continent/country/')).to be_nil
+        expect(Board.find_by_path('//')).to be_nil
+        expect(Board.find_by_path('/continent/')).to be_nil
+        expect(Board.find_by_path('/continent/country/')).to be_nil
+      end
+    end
+
+    context 'when there is no Board having the given path' do
+      it 'returns nil for root Boards' do
+        expect(Board.find_by_path('continent')).to be_nil
+      end
+
+      it 'returns nil for child Boards' do
+        create(:root_board, name: 'continent')
+        expect(Board.find_by_path('continent/country')).to be_nil
+      end
+
+      it 'returns nil for nested child Boards' do
+        root_board = create(:root_board, name: 'continent')
+        create(:child_board, parent: root_board, name: 'country')
+        expect(Board.find_by_path('continent/country/region')).to be_nil
+      end
+    end
+
+    context 'when there is a Board having the given path' do
+      it 'returns the Board' do
+        continent = create(:root_board, name: 'continent')
+        country = create(:child_board, parent: continent, name: 'country')
+        region = create(:child_board, parent: country, name: 'region')
+        expect(Board.find_by_path('continent/country/region')).to eq(region)
+      end
+    end
+  end
 end
