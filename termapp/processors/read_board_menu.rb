@@ -199,10 +199,10 @@ module TermApp
     end
 
     def print_header
-      header_str = ' 번호   글쓴이        날짜 조회수     제목'
-      header_str += '        관리자 : '
+      header_str = ' 번호   글쓴이        날짜 조회수     제목' \
+                   '        관리자 : '
       name = term.current_board.owner.username.unicode_slice(12)
-      header_str += name + ' ' * (12 - name.size_for_print)
+      header_str << name + ' ' * (12 - name.size_for_print)
       term.color_black(reverse: true) do
         term.mvaddstr(3, 0, header_str)
       end

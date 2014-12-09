@@ -78,7 +78,7 @@ class Board < ActiveRecord::Base
   # Returns the String full path of the Board.
   def path_name
     str = name
-    str += '/' if is_dir
+    str << '/' if is_dir
     str = parent.path_name + str if parent
     str
   end
@@ -88,8 +88,8 @@ class Board < ActiveRecord::Base
     arr = children.where(is_dir: true).to_a
     while arr.size > 0
       child = arr.pop
-      arr += child.children.where(is_dir: true)
-      result += child.children.where(is_dir: false)
+      arr << child.children.where(is_dir: true)
+      result << child.children.where(is_dir: false)
     end
     result
   end
