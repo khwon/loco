@@ -22,7 +22,7 @@ class Post < ActiveRecord::Base
     strs = []
     strs << format('%6d', num)
     name = writer.username.unicode_slice(12)
-    name += ' ' * (12 - name.size_for_print)
+    name << ' ' * (12 - name.size_for_print)
     strs << name
     strs << created_at.strftime('%_m/%d') # Date
     strs << format('%4d', 22) # View count

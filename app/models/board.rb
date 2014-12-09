@@ -79,18 +79,22 @@ class Board < ActiveRecord::Base
   # Returns the String full path of the Board.
   def path_name
     str = name
-    str += '/' if is_dir
+    str << '/' if is_dir
     str = parent.path_name + str if parent
     str
   end
 
+  # Search every non-directory child Boards.
+  #
+  # Returns an Array of child Boards which is not a directory, including
+  #   children of child Boards.
   def leaves
     result = children.where(is_dir: false).to_a
-    arr = children.where(is_dir: true).to_a
-    while arr.size > 0
-      child = arr.pop
-      arr += child.children.where(is_dir: true)
-      result += child.children.where(is_dir: false)
+    dirs = children.where(is_dir: true).to_a
+    while dirs.size > 0
+      child = dirs.pop
+      dirs << child.children.where(is_dir: true)
+      result << child.children.where(is_dir: false)
     end
     result
   end

@@ -1,9 +1,9 @@
 # Loco
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/khwon/loco?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![Build Status](https://travis-ci.org/khwon/loco.svg?branch=develop)](https://travis-ci.org/khwon/loco)
 [![Code Climate](https://codeclimate.com/github/khwon/loco.png)](https://codeclimate.com/github/khwon/loco)
 [![Inline docs](http://inch-ci.org/github/khwon/loco.png?branch=develop)](http://inch-ci.org/github/khwon/loco)
-[![Build Status](https://travis-ci.org/khwon/loco.svg?branch=develop)](https://travis-ci.org/khwon/loco)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/khwon/loco?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 LOCO BBS system for KAIST
 
@@ -23,6 +23,16 @@ LOCO BBS system for KAIST
         brew install homebrew/dupes/ncurses
         brew doctor
         brew link --force ncurses
+        ```
+* MySQL (MariaDB)
+    * Ubuntu
+        ``` sh
+        sudo apt-get install libmysqlclient-dev
+        ```
+
+    * Mac OS X
+        ``` sh
+        brew install mariadb
         ```
 * For required gems, see [Gemfile](/Gemfile)
 
