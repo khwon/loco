@@ -25,7 +25,7 @@ class Post < ActiveRecord::Base
     name += ' ' * (12 - name.size_for_print)
     strs << name
     strs << created_at.strftime('%_m/%d') # Date
-    strs << '????' # View count
+    strs << format('%4d', 22) # View count
     strs << title.unicode_slice(size)
     ' ' + strs.join(' ') # Cursor
   end
