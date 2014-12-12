@@ -78,7 +78,7 @@ class Board < ActiveRecord::Base
   #
   # Returns the String full path of the Board.
   def path_name
-    str = name
+    str = name.dup
     str << '/' if is_dir
     str = parent.path_name + str if parent
     str
