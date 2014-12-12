@@ -90,13 +90,19 @@ module TermApp
     # Returns nil or a Symbol :beep, :scroll_down, :scroll_up or :break with
     #   additional arguments.
     def process_key(key)
+      tmp_num = @num || ''
+      @num = ''
       case KeyHelper.key_symbol(key)
       when :esc, :q
         return :break, :loco_menu
-      when :enter, :space
+      when :space
         return :break, :loco_menu unless @posts[@cur_index]
         return :read, @posts[@cur_index]
-      when :J
+      when :enter
+        @pivot = term.current_board.post.find_by_num(tmp_num.to_i)
+        return :scroll, :around if @pivot
+        return :beep
+      when :J, :'$'
         return :scroll, :bottom
       when :ctrl_u, :P
         return :scroll, :up, preserve_position: true
@@ -110,6 +116,10 @@ module TermApp
         @cur_index -= 1
       when :ctrl_p
         return :write
+      when *(0..9).map(&:to_s).map(&:to_sym)
+        @num = tmp_num
+        @num += key[2]
+        return :nothing
       else
         return :beep
       end
@@ -136,6 +146,8 @@ module TermApp
       when :up
         pivot = @posts[0]
         return pivot && pivot != @edge_posts[0]
+      when :around
+        return true
       end
     end
 
@@ -156,7 +168,14 @@ module TermApp
     # Returns nothing.
     def scroll(direction, preserve_position: false)
       unless scrollable?(direction)
-        term.beep
+        case direction
+        when :bottom, :down
+          @cur_index = @list_size - 1
+        when :up
+          @cur_index = 0
+        else
+          term.beep
+        end
         return
       end
       cur_board = term.current_board
@@ -178,6 +197,22 @@ module TermApp
         if @posts.size < @list_size # reached first
           @cur_index = @posts.size - 2 unless preserve_position
           @posts = cur_board.post.order('num asc').limit(@list_size)
+        end
+      when :around
+        if cur_board.post.where('num <= ?', @pivot.num).count <= @list_size / 2
+          # goto first page
+          @posts = cur_board.post.order('num asc').limit(@list_size)
+          @cur_index = @posts.index(@pivot)
+        elsif cur_board.post.where('num >= ?', @pivot.num).count <=
+              @list_size / 2
+          # goto last page
+          @posts = cur_board.post.order('num desc').limit(@list_size).reverse
+          @cur_index = @posts.index(@pivot)
+        else
+          @posts = cur_board.posts_to(@pivot.num, @list_size / 2)
+          @posts += cur_board.post.order('num asc').where('num > ?', @pivot.num)
+                    .limit(@list_size - @posts.size)
+          @cur_index = @posts.index(@pivot)
         end
       end
     end
