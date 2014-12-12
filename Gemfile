@@ -59,7 +59,7 @@ group :development do
 end
 
 group :bbs do
-  gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
+  gem 'sentry-raven', git: 'https://github.com/getsentry/raven-ruby.git'
 end
 
 # for checking string width in terminal
