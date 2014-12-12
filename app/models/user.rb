@@ -1,7 +1,7 @@
 # User information of Loco.
 class User < ActiveRecord::Base
   has_secure_password validations: false
-  validates :username, uniqueness: true
+  validates :username, uniqueness: true, length: { minimum: 1 }
 
   # Check if the User is admin.
   #
