@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/getsentry/raven-ruby.git
+  revision: 10fb936eb3440781bf25b3ff7d0c4436e0d26b1d
+  specs:
+    sentry-raven (0.12.1)
+      faraday (>= 0.7.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -57,6 +64,8 @@ GEM
     factory_girl_rails (4.5.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
     ffi (1.9.6)
     formatador (0.2.5)
     guard (2.10.2)
@@ -95,6 +104,7 @@ GEM
     mime-types (2.4.3)
     minitest (5.4.3)
     multi_json (1.10.1)
+    multipart-post (2.0.0)
     mysql2 (0.3.17)
     ncursesw (1.4.9)
     parser (2.2.0.pre.8)
@@ -226,6 +236,7 @@ DEPENDENCIES
   rubocop (~> 0.27.0)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
+  sentry-raven!
   spring
   sqlite3
   therubyracer

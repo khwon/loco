@@ -58,6 +58,10 @@ group :development do
   gem 'guard-rubocop', require: false
 end
 
+group :bbs do
+  gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
+end
+
 # for checking string width in terminal
 gem 'unicode'
 
