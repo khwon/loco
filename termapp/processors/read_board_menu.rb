@@ -96,7 +96,7 @@ module TermApp
       tmp_num = @num || ''
       @num = ''
       case KeyHelper.key_symbol(key)
-      when :esc, :q
+      when :esc, :q, :e
         return :break, :loco_menu
       when :space
         return :break, :loco_menu unless @posts[@cur_index]
@@ -111,10 +111,10 @@ module TermApp
         return :scroll, :up, preserve_position: true
       when :ctrl_d, :N
         return :scroll, :down, preserve_position: true
-      when :j, :down
+      when :j, :down, :n
         return :scroll, :down if @cur_index == @list_size - 1
         @cur_index += 1
-      when :k, :up
+      when :k, :up, :p
         return :scroll, :up if @cur_index == 0
         @cur_index -= 1
       when :ctrl_p
