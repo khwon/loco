@@ -66,6 +66,10 @@ class Board < ActiveRecord::Base
     b
   end
 
+  # Every Posts belongs to the Board. If the Board is an alias, get Posts from
+  # the actual Board.
+  #
+  # Returns an Array of Posts of the actual Board.
   def post
     if alias_board
       alias_board.post_direct
@@ -74,6 +78,9 @@ class Board < ActiveRecord::Base
     end
   end
 
+  # Set the Board of a Post. If the Board is an alias, use the actual Board.
+  #
+  # Returns nothing.
   def add_post(post)
     if alias_board
       alias_board.add_post post
