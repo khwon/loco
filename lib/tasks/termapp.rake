@@ -38,7 +38,7 @@ namespace :termapp do
       puts 'Generating Post data...'
       Board.where(is_dir: false).each do |b|
         100.times do |i|
-          post = Post.new(title: ["title_#{i}", "제목_#{i}"].sample * 50,
+          post = Post.new(title: ["title_#{i}", "제목_#{i}"].sample * 20,
                           content:
                           '1234567890가나다라마바사' * 50 + "content_#{i}\n한글\n" * 20,
                           num: i + 1)
