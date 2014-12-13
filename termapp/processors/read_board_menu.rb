@@ -80,6 +80,9 @@ module TermApp
       @past_index = nil
       @list_size = term.lines - 5
       @posts = cur_board.post.order('num desc').limit(@list_size).reverse
+      if @posts.size < @list_size
+        @list_size = @posts.size
+      end
       @edge_posts = [cur_board.post.first, cur_board.post.last]
     end
 
