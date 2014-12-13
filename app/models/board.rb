@@ -8,7 +8,7 @@ class Board < ActiveRecord::Base
   has_many :children, foreign_key: 'parent_id', class_name: 'Board',
                       inverse_of: :parent
 
-  has_many :post
+  has_many :post_direct, foreign_key: 'board_id', class_name: 'Post'
 
   validates :name, presence: true, uniqueness: { scope: :parent }
   validates :owner, presence: true, unless: :is_dir
@@ -64,6 +64,22 @@ class Board < ActiveRecord::Base
       b = b.children.find_by(name: x) if b
     end
     b
+  end
+
+  def post
+    if alias_board
+      alias_board.post_direct
+    else
+      post_direct
+    end
+  end
+
+  def add_post(post)
+    if alias_board
+      alias_board.add_post post
+    else
+      post.board = self
+    end
   end
 
   # Full path name of the Board. It has suffix '/' if the Board is directory.
