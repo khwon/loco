@@ -96,7 +96,7 @@ module TermApp
       tmp_num = @num || ''
       @num = ''
       case KeyHelper.key_symbol(key)
-      when :esc, :q
+      when :esc, :q, :e
         return :break, :loco_menu
       when :space
         return :break, :loco_menu unless @posts[@cur_index]
