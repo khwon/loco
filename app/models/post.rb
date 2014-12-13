@@ -46,7 +46,7 @@ class Post < ActiveRecord::Base
     post = Post.new(title: title,
                     content: body,
                     num: num)
-    post.board = board
+    board.add_post(post)
     post.writer = user
     post.save!
   end
