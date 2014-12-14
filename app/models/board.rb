@@ -116,8 +116,8 @@ class Board < ActiveRecord::Base
     dirs = children.where(is_dir: true).to_a
     while dirs.size > 0
       child = dirs.pop
-      dirs << child.children.where(is_dir: true)
-      result << child.children.where(is_dir: false)
+      dirs += child.children.where(is_dir: true)
+      result += child.children.where(is_dir: false)
     end
     result
   end
