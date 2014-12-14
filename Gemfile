@@ -66,3 +66,5 @@ end
 gem 'unicode'
 
 gem 'mysql2'
+
+gem 'pg'

@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20141207194314) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "boards", force: true do |t|
     t.integer  "owner_id"
     t.string   "title"
@@ -25,26 +28,26 @@ ActiveRecord::Schema.define(version: 20141207194314) do
     t.string   "name"
   end
 
-  add_index "boards", ["alias_board_id"], name: "index_boards_on_alias_board_id"
-  add_index "boards", ["linked_board_id"], name: "index_boards_on_linked_board_id"
-  add_index "boards", ["name"], name: "index_boards_on_name"
-  add_index "boards", ["owner_id"], name: "index_boards_on_owner_id"
-  add_index "boards", ["parent_id"], name: "index_boards_on_parent_id"
+  add_index "boards", ["alias_board_id"], name: "index_boards_on_alias_board_id", using: :btree
+  add_index "boards", ["linked_board_id"], name: "index_boards_on_linked_board_id", using: :btree
+  add_index "boards", ["name"], name: "index_boards_on_name", using: :btree
+  add_index "boards", ["owner_id"], name: "index_boards_on_owner_id", using: :btree
+  add_index "boards", ["parent_id"], name: "index_boards_on_parent_id", using: :btree
 
   create_table "posts", force: true do |t|
     t.string   "title"
     t.integer  "board_id"
     t.integer  "parent_id"
-    t.text     "content",    limit: 4294967295
+    t.text     "content"
     t.integer  "writer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "num"
   end
 
-  add_index "posts", ["board_id"], name: "index_posts_on_board_id"
-  add_index "posts", ["parent_id"], name: "index_posts_on_parent_id"
-  add_index "posts", ["writer_id"], name: "index_posts_on_writer_id"
+  add_index "posts", ["board_id"], name: "index_posts_on_board_id", using: :btree
+  add_index "posts", ["parent_id"], name: "index_posts_on_parent_id", using: :btree
+  add_index "posts", ["writer_id"], name: "index_posts_on_writer_id", using: :btree
 
   create_table "users", force: true do |t|
     t.datetime "created_at"
