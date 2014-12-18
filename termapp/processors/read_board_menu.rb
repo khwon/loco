@@ -61,6 +61,10 @@ module TermApp
               end
             when :toggle_highlighted
               toggle_highlighted(@posts[@cur_index])
+            when :find_next_highlighted
+              find_next_highlighted
+            when :find_prev_highlighted
+              find_prev_highlighted
             else
               nil
             end
@@ -107,7 +111,7 @@ module TermApp
         @pivot = term.current_board.post.find_by_num(tmp_num.to_i)
         return :scroll, :around if @pivot
         return :beep
-      when :J, :'$'
+      when :'$'
         return :scroll, :bottom
       when :ctrl_u, :P
         return :scroll, :up, preserve_position: true
@@ -123,6 +127,10 @@ module TermApp
         return :toggle_highlighted
       when :ctrl_p
         return :write
+      when :J
+        return :find_next_highlighted
+      when :K
+        return :find_prev_highlighted
       when *(0..9).map(&:to_s).map(&:to_sym)
         @num = tmp_num
         @num += key[2]
@@ -231,6 +239,32 @@ module TermApp
         print_item(@posts[@cur_index], @cur_index, x: 0, reverse: true)
         term.mvaddstr(@cur_index + 4, 0, '>')
         term.refresh
+      end
+    end
+
+    def find_next_highlighted
+      cur_board = term.current_board
+      num = @posts[@cur_index].num
+      @pivot = cur_board.post.where('num > ?', num)
+               .where(highlighted: true)
+               .order('num asc').limit(1).first
+      if @pivot
+        return :scroll, :around
+      else
+        term.beep
+      end
+    end
+
+    def find_prev_highlighted
+      cur_board = term.current_board
+      num = @posts[@cur_index].num
+      @pivot = cur_board.post.where('num < ?', num)
+               .where(highlighted: true)
+               .order('num desc').limit(1).first
+      if @pivot
+        return :scroll, :around
+      else
+        term.beep
       end
     end
 
