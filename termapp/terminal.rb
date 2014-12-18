@@ -413,6 +413,14 @@ module TermApp
       @debugscr.clrtoeol(0...@lines) if Rails.env.development? && @debug
     end
 
+    def bold(&block)
+      if block
+        Ncurses.attron(Ncurses::A_BOLD)
+        yield
+        Ncurses.attroff(Ncurses::A_BOLD)
+      end
+    end
+
     private
 
     # Initialize color pairs for Ncurses.

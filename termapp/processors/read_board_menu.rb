@@ -59,6 +59,8 @@ module TermApp
                 end
                 [:read, @posts[@cur_index]]
               end
+            when :toggle_highlighted
+              toggle_highlighted(@posts[@cur_index])
             else
               nil
             end
@@ -117,6 +119,8 @@ module TermApp
       when :k, :up, :p
         return :scroll, :up if @cur_index == 0
         @cur_index -= 1
+      when :o
+        return :toggle_highlighted
       when :ctrl_p
         return :write
       when *(0..9).map(&:to_s).map(&:to_sym)
@@ -220,6 +224,16 @@ module TermApp
       end
     end
 
+    def toggle_highlighted(post)
+      if post
+        post.highlighted = !post.highlighted
+        post.save!
+        print_item(@posts[@cur_index], @cur_index, x: 0, reverse: true)
+        term.mvaddstr(@cur_index + 4, 0, '>')
+        term.refresh
+      end
+    end
+
     # Display message saying select the board first.
     #
     # Returns nothing.
@@ -281,6 +295,16 @@ module TermApp
     # Returns the String title of the Post.
     def item_title(post)
       post.format_for_term(term.columns - 32)
+    end
+
+    def item_block(item, &block)
+      if item.highlighted
+        term.bold do
+          block.yield
+        end
+      else
+        block.yield
+      end
     end
 
     # Display a given Post on terminal.
