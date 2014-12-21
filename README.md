@@ -24,15 +24,16 @@ LOCO BBS system for KAIST
         brew doctor
         brew link --force ncurses
         ```
-* MySQL (MariaDB)
+* PostgreSQL
     * Ubuntu
         ``` sh
-        sudo apt-get install libmysqlclient-dev
+        sudo apt-get install libpq-dev
         ```
 
     * Mac OS X
         ``` sh
-        brew install mariadb
+        brew install postgresql
+        ARCHFLAGS="-arch x86_64" gem install pg # optional
         ```
 * For required gems, see [Gemfile](/Gemfile)
 
