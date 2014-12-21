@@ -41,7 +41,9 @@ module TermApp
     #                      background color or not (optional).
     def print_item(item, index, x: 3, reverse: false)
       term.color_black(reverse: reverse) do
-        term.print_block(index + 4, x, item_title(item))
+        item_block(item) do
+          term.print_block(index + 4, x, item_title(item))
+        end
       end
     end
 
@@ -53,6 +55,17 @@ module TermApp
     # Raises NotImplementedError.
     def item_title(_item)
       fail NotImplementedError
+    end
+
+    # Proxy for setting custom attributes befor print.
+    # If child class requires custom action for each item,
+    # it can implment this method.
+    #
+    # _item - The Object item to print
+    #
+    # Defaults: do nothing
+    def item_block(_item, &block)
+      block.yield
     end
   end
 end

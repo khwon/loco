@@ -20,7 +20,7 @@ class Post < ActiveRecord::Base
   # Returns the String displaying index of post.
   def format_for_term(size)
     strs = []
-    strs << format('%6d', num)
+    strs << format('%6d', num) + ' '
     name = writer.username.unicode_slice(12)
     name << ' ' * (12 - name.size_for_print)
     strs << name
