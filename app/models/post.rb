@@ -45,7 +45,7 @@ class Post < ActiveRecord::Base
   # Returns nothing.
   def self.save_new_post(title: '', body: '', user: nil, board: nil)
     # TODO: Handle race condition about num.
-    num = (board.post.select('max(num) as max_num').first[:max_num] || 0) + 1
+    num = (board.post.select('max(num) as max_num')[0][:max_num] || 0) + 1
     post = Post.new(title: title,
                     content: body,
                     num: num)
