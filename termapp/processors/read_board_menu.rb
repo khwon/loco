@@ -89,6 +89,7 @@ module TermApp
       if @posts.size < @list_size
         @list_size = @posts.size
       end
+      cache_read_status
       @edge_posts = [cur_board.post.first, cur_board.post.last]
     end
 
@@ -137,6 +138,29 @@ module TermApp
         return :nothing
       else
         return :beep
+      end
+    end
+
+    def cache_read_status
+      board = term.current_board
+      board = board.alias_board while board.alias_board
+
+      if @posts.size > 0
+        read_status = BoardRead.where('user_id = ? and board_id = ?',
+                                      term.current_user.id, board.id)
+                      .where('posts && int4range(?,?)',
+                             @posts.first.num, @posts.last.num + 1)
+        @posts.each do |post|
+          st = read_status.find do |x|
+            x.posts.include? post.num
+          end
+          next unless st
+          if st[:status] == 'R'
+            post.read_status = ' '
+          else
+            post.read_status = st[:status]
+          end
+        end
       end
     end
 
@@ -199,6 +223,7 @@ module TermApp
       when :bottom
         @cur_index = @list_size - 1
         @posts = cur_board.post.order('num desc').limit(@list_size).reverse
+        cache_read_status
       when :down
         @cur_index = 1 unless preserve_position
         @posts = cur_board.posts_from(@posts[-1].num, @list_size)
@@ -206,6 +231,7 @@ module TermApp
           @cur_index = @list_size - @posts.size + 1 unless preserve_position
           @posts = cur_board.post.order('num desc').limit(@list_size).reverse
         end
+        cache_read_status
       when :up
         @cur_index = @list_size - 2 unless preserve_position
         @posts = cur_board.posts_to(@posts[0].num, @list_size)
@@ -213,6 +239,7 @@ module TermApp
           @cur_index = @posts.size - 2 unless preserve_position
           @posts = cur_board.post.order('num asc').limit(@list_size)
         end
+        cache_read_status
       when :around
         if cur_board.post.where('num <= ?', @pivot.num).count <= @list_size / 2
           # goto first page
@@ -229,6 +256,7 @@ module TermApp
                     .limit(@list_size - @posts.size)
           @cur_index = @posts.index(@pivot)
         end
+        cache_read_status
       end
     end
 

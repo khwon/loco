@@ -11,10 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141215060346) do
+ActiveRecord::Schema.define(version: 20141222062223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+# Could not dump table "board_reads" because of following StandardError
+#   Unknown type 'board_reads_status' for column 'status'
 
   create_table "boards", force: true do |t|
     t.integer  "owner_id"

@@ -13,6 +13,8 @@ class Post < ActiveRecord::Base
                   numericality: { only_integer: true,
                                   greater_than_or_equal_to: 1 }
 
+  attr_accessor :read_status
+
   # Format the Post for display on terminal.
   #
   # size - The Integer max length of title.
@@ -20,7 +22,8 @@ class Post < ActiveRecord::Base
   # Returns the String displaying index of post.
   def format_for_term(size)
     strs = []
-    strs << format('%6d', num) + ' '
+    strs << format('%6d', num)
+    strs << (@read_status || 'N')
     name = writer.username.unicode_slice(12)
     name << ' ' * (12 - name.size_for_print)
     strs << name
