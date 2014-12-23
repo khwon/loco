@@ -28,9 +28,6 @@ module TermApp
     #
     # args - An Array of Strings user passed.
     def initialize(args = ARGV)
-      # Temporary fix to prevent warning message
-      BoardRead.first
-
       @options, *_paths = Options.new.parse(args)
       @term = Terminal.new(debug: @options[:debug])
       @cached_processors = {}
