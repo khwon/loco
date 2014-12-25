@@ -32,8 +32,11 @@ module TermApp
               scroll(*args)
               nil
             when :read
-              read_post(args[0])
-              cache_read_status
+              result = read_post(args[0])
+              @posts[@cur_index].read_status = 'R'
+              result
+            when :visit
+              visit_post(args[0])
             when :write
               write_post(*args)
               process_init
@@ -109,6 +112,8 @@ module TermApp
       when :space
         return :break, :loco_menu unless @posts[@cur_index]
         return :read, @posts[@cur_index]
+      when :v
+        return :visit, @posts[@cur_index]
       when :enter
         @pivot = term.current_board.post.find_by_num(tmp_num.to_i)
         return :scroll, :around if @pivot
@@ -331,12 +336,16 @@ module TermApp
     # highlighted lines if the list hasn't been scrolled.
     #
     # Returns nothing.
-    def print_posts
+    def print_posts(range: nil)
       if @past_index.nil?
         term.erase_body
         print_header
         @posts.each_with_index do |post, i|
           print_item(post, i, x: 0, reverse: @cur_index == i)
+        end
+      elsif range
+        range.each do |i|
+          print_item(@posts[i], i, x: 0, reverse: @cur_index == i)
         end
       else
         return if @past_index == @cur_index
@@ -380,6 +389,12 @@ module TermApp
       when :p then :read_prev
       else nil
       end
+    end
+
+    def visit_post(post)
+      BoardRead.mark_visit(term.current_user, post, post.board)
+      post.read_status = 'V' if post.read_status.nil?
+      print_posts(range: [@cur_index])
     end
 
     # Write a new Post through terminal.
