@@ -89,6 +89,14 @@ class Board < ActiveRecord::Base
     end
   end
 
+  def max_num
+    board = self
+    board = board.alias_board while board.alias_board
+    # Using .first instead of [0] modifies query, resulting errors in pgsql.
+    # Specifically, .first appends 'ORDER BY posts.id LIMIT 1'
+    board.post.select('max(num) as max_num')[0][:max_num] || 0
+  end
+
   # Full path name of the Board. It has suffix '/' if the Board is directory.
   #
   # Examples
