@@ -33,6 +33,7 @@ module TermApp
               nil
             when :read
               read_post(args[0])
+              cache_read_status
             when :write
               write_post(*args)
               process_init
@@ -155,11 +156,7 @@ module TermApp
             x.posts.include? post.num
           end
           next unless st
-          if st[:status] == 'R'
-            post.read_status = ' '
-          else
-            post.read_status = st[:status]
-          end
+          post.read_status = st[:status]
         end
       end
     end

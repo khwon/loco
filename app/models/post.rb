@@ -23,7 +23,11 @@ class Post < ActiveRecord::Base
   def format_for_term(size)
     strs = []
     strs << format('%6d', num)
-    strs << (@read_status || 'N')
+    if @read_status
+      strs << (@read_status == 'R' ? ' ' : @read_status)
+    else
+      strs << 'N'
+    end
     name = writer.username.unicode_slice(12)
     name << ' ' * (12 - name.size_for_print)
     strs << name
