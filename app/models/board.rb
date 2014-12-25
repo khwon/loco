@@ -130,6 +130,23 @@ class Board < ActiveRecord::Base
     result
   end
 
+  def self.each_leaves(root = nil, &block)
+    arr = []
+    if root
+      arr = root.children.to_a
+    else
+      arr = Board.where(parent_id: nil).to_a
+    end
+    while arr.size > 0
+      b = arr.shift
+      if b.is_dir
+        arr += b.children
+      else
+        block.call(b)
+      end
+    end
+  end
+
   # List of post having num which is greater than or equal to given num.
   #
   # num  - The Integer num which is the lowest value of list.

@@ -399,6 +399,7 @@ module TermApp
     # Returns nothing.
     def debug_print(str)
       return unless Rails.env.development? && @debug
+      str = str.inspect unless str.instance_of? String
       @debugscr.move(@cur_debug_line, 0)
       @debugscr.clrtoeol
       @debugscr.mvaddstr(@cur_debug_line, 0, str)
