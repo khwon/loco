@@ -4,6 +4,7 @@ module TermApp
     def process
       term.noecho
       st = Time.now.to_i
+      flash = nil
       Board.each_leaves do |b|
         next if b.zapped_by? term.current_user
         orig_board = b
@@ -32,12 +33,20 @@ module TermApp
           strs.each_with_index do |x, i|
             term.mvaddstr(2 + i, 0, x)
           end
+          term.mvaddstr(11, 0, flash) if flash
+          flash = nil
           key = term.get_wch
           control, *args = process_key(key)
           case control
           when :quit
             term.echo
             return args
+          when :zap
+            flash = 'Zap is currently not supported'
+            # disable zap for now
+            # (because unzap is not implemented)
+            # ZapBoard.zap(orig_board,term.current_user)
+            break
           when :break then break args
           when :beep  then term.beep
           end
@@ -58,6 +67,8 @@ module TermApp
         return :quit, :loco_menu
       when :s
         return :break
+      when :z
+        return :zap
       end
     end
   end
