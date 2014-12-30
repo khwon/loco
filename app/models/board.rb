@@ -147,6 +147,16 @@ class Board < ActiveRecord::Base
     end
   end
 
+  def zapped_by?(user)
+    b = self
+    boards = [b]
+    while b.parent
+      b = b.parent
+      boards << b
+    end
+    ZapBoard.where(board: boards).where(user: user).count > 0
+  end
+
   # List of post having num which is greater than or equal to given num.
   #
   # num  - The Integer num which is the lowest value of list.

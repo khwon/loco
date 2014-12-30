@@ -5,6 +5,7 @@ module TermApp
       term.noecho
       st = Time.now.to_i
       Board.each_leaves do |b|
+        next if b.zapped_by? term.current_user
         orig_board = b
         b = b.alias_board while b.alias_board
         list = BoardRead.where(user: term.current_user)

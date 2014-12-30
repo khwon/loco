@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141222062223) do
+ActiveRecord::Schema.define(version: 20141226053011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20141222062223) do
 # Could not dump table "board_reads" because of following StandardError
 #   Unknown type 'board_reads_status' for column 'status'
 
-  create_table "boards", force: true do |t|
+  create_table "boards", force: :cascade do |t|
     t.integer  "owner_id"
     t.string   "title"
     t.integer  "linked_board_id"
@@ -37,7 +37,14 @@ ActiveRecord::Schema.define(version: 20141222062223) do
   add_index "boards", ["owner_id"], name: "index_boards_on_owner_id", using: :btree
   add_index "boards", ["parent_id"], name: "index_boards_on_parent_id", using: :btree
 
-  create_table "posts", force: true do |t|
+  create_table "fav_boards", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "board_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "posts", force: :cascade do |t|
     t.string   "title"
     t.integer  "board_id"
     t.integer  "parent_id"
@@ -53,7 +60,7 @@ ActiveRecord::Schema.define(version: 20141222062223) do
   add_index "posts", ["parent_id"], name: "index_posts_on_parent_id", using: :btree
   add_index "posts", ["writer_id"], name: "index_posts_on_writer_id", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
@@ -64,6 +71,13 @@ ActiveRecord::Schema.define(version: 20141222062223) do
     t.string   "email"
     t.string   "old_crypt_password"
     t.boolean  "is_active",          default: true
+  end
+
+  create_table "zap_boards", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "board_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
