@@ -4,6 +4,7 @@ class BoardRead < ActiveRecord::Base
 
   def self.mark_read(user, post, board = nil)
     board = post.board unless board
+    board = board.alias_board while board.alias_board
     num = post.num
     around_models = BoardRead.where('user_id = ? and board_id = ?',
                                     user.id, board.id)
@@ -69,6 +70,7 @@ class BoardRead < ActiveRecord::Base
 
   def self.mark_visit(user, post, board = nil)
     board = post.board unless board
+    board = board.alias_board while board.alias_board
     num = post.num
     around_models = BoardRead.where('user_id = ? and board_id = ?',
                                     user.id, board.id)

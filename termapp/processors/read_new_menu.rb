@@ -47,10 +47,21 @@ module TermApp
             # (because unzap is not implemented)
             # ZapBoard.zap(orig_board,term.current_user)
             break
+          when :visit_all
+            flash = 'Mark visit on board is currently not supported'
+          when :visit
+            BoardRead.mark_visit(term.current_user, post, b)
+            num += 1
+          when :read
+            case read_post(post)
+            when :quit
+              term.echo
+              return :loco_menu
+            end
+            num += 1
           when :break then break args
           when :beep  then term.beep
           end
-          num += 1
         end
       end
       dur = Time.now.to_i - st
@@ -69,6 +80,20 @@ module TermApp
         return :break
       when :z
         return :zap
+      when :v
+        return :visit
+      when :space, :enter, :n, :j
+        return :read
+      end
+    end
+
+    def read_post(post)
+      post.read_status = nil
+      read_post_helper = ReadPostHelper.new(@app, post)
+      result = read_post_helper.read_post
+      case KeyHelper.key_symbol(result[1])
+      when :q then :quit
+      else nil
       end
     end
   end
