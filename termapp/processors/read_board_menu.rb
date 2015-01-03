@@ -32,7 +32,11 @@ module TermApp
               scroll(*args)
               nil
             when :read
-              read_post(args[0])
+              result = read_post(args[0])
+              @posts[@cur_index].read_status = 'R'
+              result
+            when :visit
+              visit_post(args[0])
             when :write
               write_post(*args)
               process_init
@@ -89,6 +93,7 @@ module TermApp
       if @posts.size < @list_size
         @list_size = @posts.size
       end
+      cache_read_status
       @edge_posts = [cur_board.post.first, cur_board.post.last]
     end
 
@@ -107,6 +112,8 @@ module TermApp
       when :space
         return :break, :loco_menu unless @posts[@cur_index]
         return :read, @posts[@cur_index]
+      when :v
+        return :visit, @posts[@cur_index]
       when :enter
         @pivot = term.current_board.post.find_by_num(tmp_num.to_i)
         return :scroll, :around if @pivot
@@ -137,6 +144,25 @@ module TermApp
         return :nothing
       else
         return :beep
+      end
+    end
+
+    def cache_read_status
+      board = term.current_board
+      board = board.alias_board while board.alias_board
+
+      if @posts.size > 0
+        read_status = BoardRead.where('user_id = ? and board_id = ?',
+                                      term.current_user.id, board.id)
+                      .where('posts && int4range(?,?)',
+                             @posts.first.num, @posts.last.num + 1)
+        @posts.each do |post|
+          st = read_status.find do |x|
+            x.posts.include? post.num
+          end
+          next unless st
+          post.read_status = st[:status]
+        end
       end
     end
 
@@ -199,6 +225,7 @@ module TermApp
       when :bottom
         @cur_index = @list_size - 1
         @posts = cur_board.post.order('num desc').limit(@list_size).reverse
+        cache_read_status
       when :down
         @cur_index = 1 unless preserve_position
         @posts = cur_board.posts_from(@posts[-1].num, @list_size)
@@ -206,6 +233,7 @@ module TermApp
           @cur_index = @list_size - @posts.size + 1 unless preserve_position
           @posts = cur_board.post.order('num desc').limit(@list_size).reverse
         end
+        cache_read_status
       when :up
         @cur_index = @list_size - 2 unless preserve_position
         @posts = cur_board.posts_to(@posts[0].num, @list_size)
@@ -213,6 +241,7 @@ module TermApp
           @cur_index = @posts.size - 2 unless preserve_position
           @posts = cur_board.post.order('num asc').limit(@list_size)
         end
+        cache_read_status
       when :around
         if cur_board.post.where('num <= ?', @pivot.num).count <= @list_size / 2
           # goto first page
@@ -229,6 +258,7 @@ module TermApp
                     .limit(@list_size - @posts.size)
           @cur_index = @posts.index(@pivot)
         end
+        cache_read_status
       end
     end
 
@@ -306,12 +336,16 @@ module TermApp
     # highlighted lines if the list hasn't been scrolled.
     #
     # Returns nothing.
-    def print_posts
+    def print_posts(range: nil)
       if @past_index.nil?
         term.erase_body
         print_header
         @posts.each_with_index do |post, i|
           print_item(post, i, x: 0, reverse: @cur_index == i)
+        end
+      elsif range
+        range.each do |i|
+          print_item(@posts[i], i, x: 0, reverse: @cur_index == i)
         end
       else
         return if @past_index == @cur_index
@@ -355,6 +389,12 @@ module TermApp
       when :p then :read_prev
       else nil
       end
+    end
+
+    def visit_post(post)
+      BoardRead.mark_visit(term.current_user, post, post.board)
+      post.read_status = 'V' if post.read_status.nil?
+      print_posts(range: [@cur_index])
     end
 
     # Write a new Post through terminal.

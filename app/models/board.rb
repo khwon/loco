@@ -89,6 +89,14 @@ class Board < ActiveRecord::Base
     end
   end
 
+  def max_num
+    board = self
+    board = board.alias_board while board.alias_board
+    # Using .first instead of [0] modifies query, resulting errors in pgsql.
+    # Specifically, .first appends 'ORDER BY posts.id LIMIT 1'
+    board.post.select('max(num) as max_num')[0][:max_num] || 0
+  end
+
   # Full path name of the Board. It has suffix '/' if the Board is directory.
   #
   # Examples
@@ -120,6 +128,33 @@ class Board < ActiveRecord::Base
       result += child.children.where(is_dir: false)
     end
     result
+  end
+
+  def self.each_leaves(root = nil, &block)
+    arr = []
+    if root
+      arr = root.children.to_a
+    else
+      arr = Board.where(parent_id: nil).to_a
+    end
+    while arr.size > 0
+      b = arr.shift
+      if b.is_dir
+        arr += b.children
+      else
+        block.call(b)
+      end
+    end
+  end
+
+  def zapped_by?(user)
+    b = self
+    boards = [b]
+    while b.parent
+      b = b.parent
+      boards << b
+    end
+    ZapBoard.where(board: boards).where(user: user).count > 0
   end
 
   # List of post having num which is greater than or equal to given num.
