@@ -1,3 +1,8 @@
+# User can read, visit or mark a Post of Boards. This model holds that
+# information. Belongs to a User and a Board. The status is the one of the
+# characters 'V', 'R', 'M' which means visited, read, marked respectively. Also
+# each record holds the range of posts having same status. This uses int4range
+# of PostgreSQL.
 class BoardRead < ActiveRecord::Base
   belongs_to :user
   belongs_to :board
