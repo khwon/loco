@@ -3,16 +3,39 @@ module TermApp
   class ReadNewMenu < Processor
     def process
       term.noecho
-      st = Time.now.to_i
       flash = nil
-      Board.each_leaves do |b|
-        next if b.zapped_by? term.current_user
+      leaves = Board.each_leaves_for_newread(term.current_user)
+      vr_max_cache = {}
+      VisitreadMax.where(board_id: leaves.map(&:id)).each do |x|
+        vr_max_cache[x.board_id] = x.num
+      end
+      max_num_cache = {}
+      Post.select('board_id, max(num) as max_num').group(:board_id)
+        .having(board_id: leaves.map(&:id)).each do |x|
+        max_num_cache[x[:board_id]] = x[:max_num]
+      end
+      leaves.each do |b|
+        # next if b.zapped_by? term.current_user
         orig_board = b
         b = b.alias_board while b.alias_board
+        # max_num = max_num_cache[b.id] || b.max_num
+        max_num = max_num_cache[b.id] || 0
+        # max_num = b.max_num
+        vr_max = nil
+        if vr_max_cache.key? orig_board.id
+          if max_num == vr_max_cache[orig_board.id]
+            next
+          else
+            vr_max = VisitreadMax.find_by(user_id: term.current_user.id,
+                                          board_id: orig_board.id)
+          end
+        else
+          vr_max = VisitreadMax.create!(user: term.current_user,
+                                        board: orig_board)
+        end
         list = BoardRead.where(user: term.current_user)
                .where(board: b).order('lower(posts)').to_a
         num = 1
-        max_num = b.max_num
         while num <= max_num
           if !list.empty? && list[0].posts.cover?(num)
             num = list[0].posts.max + 1
@@ -63,10 +86,10 @@ module TermApp
           when :beep  then term.beep
           end
         end
+        vr_max.num = num - 1
+        vr_max.save!
       end
-      dur = Time.now.to_i - st
       term.erase_body
-      term.mvaddstr(5, 5, "took #{dur} seconds")
       term.get_wch
       term.echo
       :loco_menu

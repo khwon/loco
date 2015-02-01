@@ -147,6 +147,33 @@ class Board < ActiveRecord::Base
     end
   end
 
+  def self.each_leaves_for_newread(user, root = nil, &block)
+    zaps = Set.new(ZapBoard.where(user_id: user.id).map(&:board_id))
+    arr = []
+    result = []
+    if root
+      if zaps.include? root.id
+        return []
+      else
+        arr = root.children.to_a
+      end
+    else
+      arr = Board.where(parent_id: nil).to_a
+    end
+    arr.reject! { |x| zaps.include? x.id }
+    while arr.size > 0
+      b = arr.shift
+      next if zaps.include? b.id
+      if b.is_dir
+        arr += b.children
+      else
+        result << b
+        block.call(b) if block_given?
+      end
+    end
+    result
+  end
+
   def zapped_by?(user)
     b = self
     boards = [b]

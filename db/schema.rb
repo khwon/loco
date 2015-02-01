@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141230144628) do
+ActiveRecord::Schema.define(version: 20150201102439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20141230144628) do
   end
 
   add_index "fav_boards", ["board_id"], name: "index_fav_boards_on_board_id", using: :btree
-  add_index "fav_boards", ["user_id"], name: "index_fav_boards_on_user_id", using: :btree
+  add_index "fav_boards", ["user_id", "board_id"], name: "index_fav_boards_on_user_id_and_board_id", using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.string   "title"
@@ -76,6 +76,16 @@ ActiveRecord::Schema.define(version: 20141230144628) do
     t.boolean  "is_active",          default: true
   end
 
+  create_table "visitread_maxes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "board_id"
+    t.integer  "num"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "visitread_maxes", ["user_id", "board_id"], name: "index_visitread_maxes_on_user_id_and_board_id", using: :btree
+
   create_table "zap_boards", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "board_id"
@@ -84,6 +94,6 @@ ActiveRecord::Schema.define(version: 20141230144628) do
   end
 
   add_index "zap_boards", ["board_id"], name: "index_zap_boards_on_board_id", using: :btree
-  add_index "zap_boards", ["user_id"], name: "index_zap_boards_on_user_id", using: :btree
+  add_index "zap_boards", ["user_id", "board_id"], name: "index_zap_boards_on_user_id_and_board_id", using: :btree
 
 end
