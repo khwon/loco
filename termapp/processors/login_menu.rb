@@ -62,20 +62,28 @@ END
     private_constant :LOGO
 
     def process
+      @empty_id_cnt = 0
+      @failed_cnt = 0
       user = nil
       tried = false
       until user
         id = ''
         pw = ''
         draw_login(failed: tried)
-        tried = true
         term.mvgetnstr(20, 40, id, 20)
         return :goodbye_menu if id == 'off'
+        if id == ''
+          tried = false
+          @empty_id_cnt += 1
+          next
+        end
+        tried = true
         term.mvgetnstr(21, 40, pw, 20, echo: false)
         if id != 'new'
           user = User.find_by(username: id)
           user = user.auth(pw) if user
         end
+        @failed_cnt += 1
       end
       term.current_user = user
       :welcome_menu
@@ -107,7 +115,17 @@ END
       term.mvaddstr(20, 5, 'total hit: 14520652')
       term.mvaddstr(21, 5, 'today hit: 229')
       draw_login_form
-      term.mvaddstr(22, 35, 'Login failed!') if failed
+      if @empty_id_cnt >= 11
+        term.mvaddstr(22, 35, '들어올거에요? 말거에요?')
+        term.get_wch
+        exit
+      elsif @failed_cnt >= 4
+        term.mvaddstr(22, 35, '잘 생각해서 다시 시도해보세요')
+        term.get_wch
+        exit
+      elsif failed
+        term.mvaddstr(22, 35, 'Login failed!')
+      end
       term.refresh
     end
 
@@ -132,11 +150,11 @@ END
       term.print_block(17, 32, <<END.freeze)
    type 'new' to join
    there is no guest ID
-┌──────────────────────────────┐
-│  ID :                        │
-│  PW :                        │
-│                              │
-└──────────────────────────────┘
+┌─────────────────────────────────┐
+│  ID :                           │
+│  PW :                           │
+│                                 │
+└─────────────────────────────────┘
 END
     end
   end
