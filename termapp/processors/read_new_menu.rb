@@ -55,7 +55,7 @@ module TermApp
             # ZapBoard.zap(orig_board,term.current_user)
             break
           when :visit_all
-            flash = 'Mark visit on board is currently not supported'
+            num = max_num + 1
           when :visit
             BoardRead.mark_visit(term.current_user, post, b)
             num += 1

@@ -150,6 +150,9 @@ module TermApp
     def cache_read_status
       board = term.current_board
       board = board.alias_board while board.alias_board
+      vr_max = VisitreadMax.find_by(user_id: term.current_user.id,
+                                 board_id: board.id)
+      vr_max_num = vr_max ? vr_max.num : 0
 
       if @posts.size > 0
         read_status = BoardRead.where('user_id = ? and board_id = ?',
@@ -160,8 +163,11 @@ module TermApp
           st = read_status.find do |x|
             x.posts.include? post.num
           end
-          next unless st
-          post.read_status = st[:status]
+          if st
+            post.read_status = st[:status]
+          elsif post.num <= vr_max_num
+            post.read_status = 'V'
+          end
         end
       end
     end
