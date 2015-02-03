@@ -11,10 +11,10 @@ module TermApp
         orig_board = b
         b = b.alias_board while b.alias_board
         max_num = @max_num_cache[b.id] || 0
-        next if max_num == (@vr_max_cache[orig_board.id] || 0)
+        next if max_num == (@vr_max_cache[b.id] || 0)
         @checked_board_cnt += 1
         vr_max = VisitreadMax.find_or_create_by!(user_id: term.current_user.id,
-                                                 board_id: orig_board.id)
+                                                 board_id: b.id)
         list = BoardRead.where(user: term.current_user)
                .where(board: b).order('lower(posts)').to_a
         num = 1
