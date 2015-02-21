@@ -17,7 +17,7 @@ module TermApp
                                                  board_id: b.id)
         list = BoardRead.where(user: term.current_user)
                .where(board: b).order('lower(posts)').to_a
-        num = 1
+        num = (@vr_max_cache[b.id] + 1) || 1
         while num <= max_num
           if !list.empty? && list[0].posts.cover?(num)
             num = list[0].posts.max + 1
@@ -110,7 +110,9 @@ module TermApp
       @checked_board_cnt = 0
       @leaves = Board.each_leaves_for_newread(term.current_user)
       @vr_max_cache = {}
-      VisitreadMax.where(board_id: @leaves.map(&:id)).each do |x|
+      VisitreadMax.where(user_id: term.current_user.id,
+                         board_id: @leaves.map(&:id))
+        .each do |x|
         @vr_max_cache[x.board_id] = x.num
       end
       @max_num_cache = {}

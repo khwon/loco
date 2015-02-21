@@ -151,7 +151,7 @@ module TermApp
       board = term.current_board
       board = board.alias_board while board.alias_board
       vr_max = VisitreadMax.find_by(user_id: term.current_user.id,
-                                 board_id: board.id)
+                                    board_id: board.id)
       vr_max_num = vr_max ? vr_max.num : 0
 
       if @posts.size > 0
