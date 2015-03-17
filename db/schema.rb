@@ -11,12 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141215060346) do
+ActiveRecord::Schema.define(version: 20150201102439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "boards", force: true do |t|
+# Could not dump table "board_reads" because of following StandardError
+#   Unknown type 'board_reads_status' for column 'status'
+
+  create_table "boards", force: :cascade do |t|
     t.integer  "owner_id"
     t.string   "title"
     t.integer  "linked_board_id"
@@ -34,7 +37,17 @@ ActiveRecord::Schema.define(version: 20141215060346) do
   add_index "boards", ["owner_id"], name: "index_boards_on_owner_id", using: :btree
   add_index "boards", ["parent_id"], name: "index_boards_on_parent_id", using: :btree
 
-  create_table "posts", force: true do |t|
+  create_table "fav_boards", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "board_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "fav_boards", ["board_id"], name: "index_fav_boards_on_board_id", using: :btree
+  add_index "fav_boards", ["user_id", "board_id"], name: "index_fav_boards_on_user_id_and_board_id", using: :btree
+
+  create_table "posts", force: :cascade do |t|
     t.string   "title"
     t.integer  "board_id"
     t.integer  "parent_id"
@@ -46,11 +59,11 @@ ActiveRecord::Schema.define(version: 20141215060346) do
     t.boolean  "highlighted", default: false
   end
 
-  add_index "posts", ["board_id"], name: "index_posts_on_board_id", using: :btree
+  add_index "posts", ["board_id", "num"], name: "index_posts_on_board_id_and_num", unique: true, using: :btree
   add_index "posts", ["parent_id"], name: "index_posts_on_parent_id", using: :btree
   add_index "posts", ["writer_id"], name: "index_posts_on_writer_id", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
@@ -62,5 +75,25 @@ ActiveRecord::Schema.define(version: 20141215060346) do
     t.string   "old_crypt_password"
     t.boolean  "is_active",          default: true
   end
+
+  create_table "visitread_maxes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "board_id"
+    t.integer  "num"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "visitread_maxes", ["user_id", "board_id"], name: "index_visitread_maxes_on_user_id_and_board_id", using: :btree
+
+  create_table "zap_boards", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "board_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "zap_boards", ["board_id"], name: "index_zap_boards_on_board_id", using: :btree
+  add_index "zap_boards", ["user_id", "board_id"], name: "index_zap_boards_on_user_id_and_board_id", using: :btree
 
 end

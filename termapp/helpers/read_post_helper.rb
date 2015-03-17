@@ -15,6 +15,9 @@ module TermApp
     # Returns nothing.
     def read_post
       return unless @model.is_a?(Post)
+      if @model.read_status != 'R'
+        BoardRead.mark_read(term.current_user, @model, @model.board)
+      end
       term.erase_all
       str = ''
       str << "글쓴이 : #{@model.writer.username} (#{@model.writer.nickname})\n"

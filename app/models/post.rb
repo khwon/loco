@@ -13,6 +13,8 @@ class Post < ActiveRecord::Base
                   numericality: { only_integer: true,
                                   greater_than_or_equal_to: 1 }
 
+  attr_accessor :read_status
+
   # Format the Post for display on terminal.
   #
   # size - The Integer max length of title.
@@ -20,7 +22,12 @@ class Post < ActiveRecord::Base
   # Returns the String displaying index of post.
   def format_for_term(size)
     strs = []
-    strs << format('%6d', num) + ' '
+    strs << format('%6d', num)
+    if @read_status
+      strs << (@read_status == 'R' ? ' ' : @read_status)
+    else
+      strs << 'N'
+    end
     name = writer.username.unicode_slice(12)
     name << ' ' * (12 - name.size_for_print)
     strs << name
@@ -42,7 +49,7 @@ class Post < ActiveRecord::Base
   # Returns nothing.
   def self.save_new_post(title: '', body: '', user: nil, board: nil)
     # TODO: Handle race condition about num.
-    num = (board.post.select('max(num) as max_num')[0][:max_num] || 0) + 1
+    num = board.max_num + 1
     post = Post.new(title: title,
                     content: body,
                     num: num)

@@ -42,6 +42,7 @@ module TermApp
     def print_item(item, index, x: 3, reverse: false)
       term.color_black(reverse: reverse) do
         item_block(item) do
+          term.clrtoeol(index + 4)
           term.print_block(index + 4, x, item_title(item))
         end
       end
