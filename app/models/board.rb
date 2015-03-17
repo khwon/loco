@@ -161,11 +161,12 @@ class Board < ActiveRecord::Base
       arr = Board.where(parent_id: nil).to_a
     end
     arr.reject! { |x| zaps.include? x.id }
+    arr.reverse!
     while arr.size > 0
-      b = arr.shift
+      b = arr.pop
       next if zaps.include? b.id
       if b.is_dir
-        arr += b.children
+        arr += b.children.reverse
       else
         result << b
         block.call(b) if block_given?
