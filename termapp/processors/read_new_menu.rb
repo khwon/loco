@@ -17,7 +17,7 @@ module TermApp
                                                  board_id: b.id)
         list = BoardRead.where(user: term.current_user)
                .where(board: b).order('lower(posts)').to_a
-        num = (@vr_max_cache[b.id] + 1) || 1
+        num = (@vr_max_cache[b.id] || 0) + 1
         while num <= max_num
           if !list.empty? && list[0].posts.cover?(num)
             num = list[0].posts.max + 1
