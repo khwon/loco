@@ -69,7 +69,9 @@ module TermApp
         when :ctrl_x
           erase_all
           mvaddstr(0, 0, '(S)저장 (A)취소 (E)수정? [S] ')
+          echo
           key = get_wch
+          noecho
           case key[2]
           when 'A', 'a'
             return nil
