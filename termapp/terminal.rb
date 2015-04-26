@@ -181,6 +181,16 @@ module TermApp
       @stdscr.mvaddstr(y, x, str)
     end
 
+    # add a String to screen.
+    #
+    # str - A String to add to screen.
+    #
+    # Returns nothing.
+    def addstr(str)
+      str.encode!(@encoding) if @encoding
+      @stdscr.addstr(str)
+    end
+
     # Get the position of current cursor.
     #
     # Returns an Array of Integer consists of y position and x position.

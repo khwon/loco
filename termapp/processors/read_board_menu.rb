@@ -38,7 +38,11 @@ module TermApp
             when :visit
               visit_post(args[0])
             when :write
-              write_post(*args)
+              write_post
+              process_init
+              nil
+            when :reply
+              write_post(args[0])
               process_init
               nil
             when :read_next
@@ -109,9 +113,11 @@ module TermApp
       case KeyHelper.key_symbol(key)
       when :esc, :q, :e
         return :break, :loco_menu
-      when :space
+      when :space, :r
         return :break, :loco_menu unless @posts[@cur_index]
         return :read, @posts[@cur_index]
+      when :R
+        return :reply, @posts[@cur_index]
       when :v
         return :visit, @posts[@cur_index]
       when :enter
@@ -393,6 +399,7 @@ module TermApp
       case KeyHelper.key_symbol(key)
       when :n then :read_next
       when :p then :read_prev
+      when :r,:R then [:reply, post]
       else nil
       end
     end
@@ -403,12 +410,13 @@ module TermApp
       print_posts(range: [@cur_index])
     end
 
-    # Write a new Post through terminal.
+    # Write a new Post or reply to parent_post
+    # through terminal.
     #
     # Returns nothing.
-    def write_post
+    def write_post(parent_post)
       write_helper = WriteHelper.new(@app)
-      write_helper.write
+      write_helper.write(parent: parent_post)
     end
   end
 end

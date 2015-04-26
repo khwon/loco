@@ -47,7 +47,7 @@ class Post < ActiveRecord::Base
   #           :board - The Board to write.
   #
   # Returns nothing.
-  def self.save_new_post(title: '', body: '', user: nil, board: nil)
+  def self.save_new_post(title: '', body: '', user: nil, board: nil, parent: nil)
     # TODO: Handle race condition about num.
     num = board.max_num + 1
     post = Post.new(title: title,
@@ -55,6 +55,7 @@ class Post < ActiveRecord::Base
                     num: num)
     board.add_post(post)
     post.writer = user
+    post.parent = parent
     post.save!
   end
 end

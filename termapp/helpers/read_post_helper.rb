@@ -25,7 +25,7 @@ module TermApp
       str << "제  목 : #{@model.title.unicode_slice(term.columns - 10)}\n\n"
       str << @model.content
       editor = term.readonly_editor.new(term)
-      editor.exit_on = %i(n p)
+      editor.exit_on = %i(n p r R)
       editor.show(str: str)
     end
   end
