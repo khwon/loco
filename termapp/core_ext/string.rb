@@ -24,7 +24,7 @@ class String
   # Returns the sliced String.
   def unicode_slice(length)
     if size_for_print <= length
-      self
+      self.clone
     else
       result = unicode_slice_for_len(length - 2)
       if result != self
@@ -47,7 +47,7 @@ class String
 
   def unicode_slice_for_len(length)
     if size_for_print <= length
-      self
+      self.clone
     elsif ascii_only?
       self[0...length]
     else
