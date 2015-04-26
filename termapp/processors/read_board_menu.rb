@@ -399,7 +399,7 @@ module TermApp
       case KeyHelper.key_symbol(key)
       when :n then :read_next
       when :p then :read_prev
-      when :r,:R then [:reply, post]
+      when :r, :R then [:reply, post]
       else nil
       end
     end

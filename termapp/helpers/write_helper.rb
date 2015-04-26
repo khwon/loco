@@ -10,7 +10,7 @@ module TermApp
       if body
         Post.save_new_post(title: title, body: body,
                            user: term.current_user, board: term.current_board,
-                          parent: parent)
+                           parent: parent)
       else
         term.mvaddstr(1, 0, '저장을 취소합니다')
         term.press_any_key
@@ -27,10 +27,10 @@ module TermApp
 
         # handle old-style reply titles
         if old_title =~ /^\(re:.*\) (.*)/
-          old_title = $1
+          old_title = Regexp.last_match[1]
         end
         title = "(re:#{post.writer.username}) " +
-        old_title
+                old_title
         term.addstr(title)
         title
       else
@@ -44,14 +44,14 @@ module TermApp
         key = term.get_wch
         case KeyHelper.key_symbol(key)
         when :y, :Y
-          post.content.each_line.map{ |x| '> '+x}.join
+          post.content.each_line.map { |x| '> ' + x }.join
         when :e, :E
           post.content
         else
-          ""
+          ''
         end
       else
-        ""
+        ''
       end
     end
   end
