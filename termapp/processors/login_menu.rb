@@ -76,6 +76,8 @@ END
           tried = false
           @empty_id_cnt += 1
           next
+        elsif id == 'new'
+          return :signup_menu
         end
         tried = true
         term.mvgetnstr(21, 40, pw, 20, echo: false)
