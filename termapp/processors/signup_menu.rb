@@ -42,15 +42,17 @@ END
       email = get_email
       term.mvaddstr(17, 1, '정말 가입하시겠습니까? (Y/N) [Y] ')
       key = KeyHelper.key_symbol(term.get_wch)
-      if %i{n N}.include? key
+      if %i(n N).include? key
         return :goodbye_menu
       else
         u = User.create!(username: id, password: pw, nickname: nick,
-                    realname: realname, sex: sex, email: email)
+                         realname: realname, sex: sex, email: email)
         term.current_user = u
         return :welcome_emnu
       end
     end
+
+    private
 
     def get_id
       id = ''
@@ -61,7 +63,7 @@ END
         id = id.strip
         if id == 'off'
           return id
-        elsif %w{new anonymous bbs admin administrator}.include? id
+        elsif %w(new anonymous bbs admin administrator).include? id
           print_message('지원되지 않는 아이디입니다.')
           id = ''
         else
@@ -71,9 +73,9 @@ END
           else
             id.codepoints.each do |x|
               if x < 128
-                if (not (0x41..0x5a).include? x) &&
-                  (not (0x61..0x7a).include? x) &&
-                  (not (0x30..0x39).include? x)
+                if (!(0x41..0x5a).include? x) &&
+                   (!(0x61..0x7a).include? x) &&
+                   (!(0x30..0x39).include? x)
                   id = ''
                   print_message('아이디는 한글, 숫자, 영문만 사용 가능합니다')
                 end
@@ -85,7 +87,7 @@ END
           end
         end
       end
-      return id
+      id
     end
 
     def get_pw
@@ -119,9 +121,9 @@ END
       str = ''
       while str == ''
         term.mvgetnstr(13, 15, str, 3)
-        if not %w{M m F f 남 여}.include? str
+        unless %w(M m F f 남 여).include? str
           str = ''
-          print_message("(남/여) 혹은 (M/F)만 가능합니다.")
+          print_message('(남/여) 혹은 (M/F)만 가능합니다.')
         end
       end
     end
@@ -130,18 +132,16 @@ END
       get_str(15, 20)
     end
 
-    def get_str yidx, maxsize=10
+    def get_str(yidx, maxsize = 10)
       str = ''
-      while str == ''
-        term.mvgetnstr(yidx, 15, str, maxsize)
-      end
+      term.mvgetnstr(yidx, 15, str, maxsize) while str == ''
     end
 
     def draw_template
       term.mvaddstr(2, 0, TEMPLATE)
     end
 
-    def print_message str
+    def print_message(str)
       term.move(20, 0)
       term.clrtoeol
       term.mvaddstr(20, 0, '│')
