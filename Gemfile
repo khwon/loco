@@ -43,7 +43,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'ncursesw'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.1.0'
+  gem 'rspec-rails', '~> 3.0'
   gem 'factory_girl_rails', '~> 4.5.0'
   gem 'bullet', '~> 4.14.0'
 end
@@ -53,7 +53,7 @@ group :development do
   gem 'pry-remote'
   gem 'pry-stack_explorer'
   gem 'rubocop', '~> 0.28.0', require: false
-  gem 'guard', '~> 2.10.0', require: false
+  gem 'guard', '~> 2.13.0', require: false
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
 end
