@@ -73,9 +73,9 @@ END
           else
             id.codepoints.each do |x|
               if x < 128
-                if (!(0x41..0x5a).include? x) &&
-                   (!(0x61..0x7a).include? x) &&
-                   (!(0x30..0x39).include? x)
+                if (!(0x41..0x5a).cover?(x)) &&
+                   (!(0x61..0x7a).cover?(x)) &&
+                   (!(0x30..0x39).cover?(x))
                   id = ''
                   print_message('아이디는 한글, 숫자, 영문만 사용 가능합니다')
                 end
