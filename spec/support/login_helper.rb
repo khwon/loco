@@ -2,8 +2,8 @@
 module LoginHelper
   def mock_id_input(term, dummy_id)
     mocking = true
-    allow(term).to receive(:mvgetnstr).with(
-                     20, 40, anything, 20) do |y, x, str, n|
+    allow(term).to receive(:mvgetnstr)
+      .with(20, 40, anything, 20) do |y, x, str, n|
       if mocking
         mocking = false
         str.replace(dummy_id)
