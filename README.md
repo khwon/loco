@@ -9,7 +9,7 @@ LOCO BBS system for KAIST
 
 ## Requirements
 
-* Ruby >= 2.1.0
+* Ruby >= 2.2.0
 * Ncurses
     * Ubuntu
         ``` sh

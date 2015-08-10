@@ -19,11 +19,10 @@ RSpec.describe TermApp::Application, type: :termapp do
       expect(app.term).to have_received(:get_wch).with(no_args).once
 
       cached_processors = app.instance_variable_get(:@cached_processors)
-      expect(cached_processors).to only_have_processors(
-                                     %i(
-                                       login_menu
-                                       goodbye_menu
-                                     ))
+      expect(cached_processors).to only_have_processors(%i(
+        login_menu
+        goodbye_menu
+      ))
     end
 
     context 'when logged in' do
@@ -38,15 +37,15 @@ RSpec.describe TermApp::Application, type: :termapp do
           .with(user.password).and_call_original
         allow(user).to receive(:admin?).and_call_original
         allow(app.term).to receive(:get_wch).and_return(
-                             # WelcomeMenu
-                             [Ncurses::OK, 10, "\n"],
-                             # g
-                             [Ncurses::OK, 103, 'g'],
-                             # LocoMenu
-                             [Ncurses::OK, 10, "\n"],
-                             # GoodbyeMenu
-                             [Ncurses::OK, 10, "\n"]
-                           )
+          # WelcomeMenu
+          [Ncurses::OK, 10, "\n"],
+          # g
+          [Ncurses::OK, 103, 'g'],
+          # LocoMenu
+          [Ncurses::OK, 10, "\n"],
+          # GoodbyeMenu
+          [Ncurses::OK, 10, "\n"]
+        )
 
         app.run
 
@@ -61,13 +60,12 @@ RSpec.describe TermApp::Application, type: :termapp do
           .with(no_args).exactly(4).times
 
         cached_processors = app.instance_variable_get(:@cached_processors)
-        expect(cached_processors).to only_have_processors(
-                                       %i(
-                                         login_menu
-                                         welcome_menu
-                                         loco_menu
-                                         goodbye_menu
-                                       ))
+        expect(cached_processors).to only_have_processors(%i(
+          login_menu
+          welcome_menu
+          loco_menu
+          goodbye_menu
+        ))
       end
     end
   end

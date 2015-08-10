@@ -8,21 +8,21 @@ group :specs, halt_on_fail: true do
   #  * zeus: 'zeus rspec' (requires the server to be started separetly)
   #  * 'just' rspec: 'rspec'
   guard :rspec, cmd: 'bin/rspec' do
-    watch(/^spec\/.+_spec\.rb$/)
-    watch(/^lib\/(.+)\.rb$/)     { |m| "spec/lib/#{m[1]}_spec.rb" }
-    watch(/^termapp\/(.+)\.rb$/) { |m| "spec/termapp/#{m[1]}_spec.rb" }
+    watch(%r{^spec/.+_spec\.rb$})
+    watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
+    watch(%r{^termapp/(.+)\.rb$}) { |m| "spec/termapp/#{m[1]}_spec.rb" }
     watch('spec/spec_helper.rb')  { 'spec' }
 
     # Rails example
     watch('spec/rails_helper.rb') { 'spec' }
     watch(%r{^spec/support/(.+)\.rb$}) { 'spec' }
     watch('config/routes.rb') { 'spec/routing' }
-    watch(/^app\/(.+)\.rb$/) { |m| "spec/#{m[1]}_spec.rb" }
-    watch(/^app\/(.*)(\.erb|\.haml|\.slim)$/) do |m|
+    watch(%r{^app/(.+)\.rb$}) { |m| "spec/#{m[1]}_spec.rb" }
+    watch(%r{^app/(.*)(\.erb|\.haml|\.slim)$}) do |m|
       "spec/#{m[1]}#{m[2]}_spec.rb"
     end
     watch('app/controllers/application_controller.rb') { 'spec/controllers' }
-    watch(%r{^app/controllers/(.+)_(controller)\.rb$})  do |m|
+    watch(%r{^app/controllers/(.+)_(controller)\.rb$}) do |m|
       ["spec/routing/#{m[1]}_routing_spec.rb",
        "spec/#{m[2]}s/#{m[1]}_#{m[2]}_spec.rb",
        "spec/acceptance/#{m[1]}_spec.rb"]
@@ -42,11 +42,11 @@ group :specs, halt_on_fail: true do
 
   guard :rubocop, all_on_start: false do
     watch(/.+\.rb$/)
-    watch(/(?:.+\/)?\.rubocop\.yml$/) { |m| File.dirname(m[0]) }
-    watch(/(?:.+\/)?Gemfile$/)
-    watch(/(?:.+\/)?Guardfile$/)
-    watch(/(?:.+\/)?Rakefile$/)
-    watch(/(?:.+\/)?config\.ru$/)
+    watch(%r{(?:.+/)?\.rubocop\.yml$}) { |m| File.dirname(m[0]) }
+    watch(%r{(?:.+/)?Gemfile$})
+    watch(%r{(?:.+/)?Guardfile$})
+    watch(%r{(?:.+/)?Rakefile$})
+    watch(%r{(?:.+/)?config\.ru$})
     watch(/.+\.rake$/)
   end
 end
