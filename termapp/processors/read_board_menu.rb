@@ -7,14 +7,14 @@ module TermApp
       print_header
       unless term.current_board
         print_select_board
-        return :loco_menu
+        return :main_menu
       end
       process_init
       term.noecho
       if @posts.size == 0
         print_no_post
         term.echo
-        return :loco_menu
+        return :main_menu
       end
       result = loop do
         sanitize_current_index
@@ -112,9 +112,9 @@ module TermApp
       @num = ''
       case KeyHelper.key_symbol(key)
       when :esc, :q, :e
-        return :break, :loco_menu
+        return :break, :main_menu
       when :space, :r
-        return :break, :loco_menu unless @posts[@cur_index]
+        return :break, :main_menu unless @posts[@cur_index]
         return :read, @posts[@cur_index]
       when :R
         return :reply, @posts[@cur_index]

@@ -7,7 +7,7 @@ module TermApp
       term.mvaddstr(15, 30, 'welcome to new loco!')
       term.refresh
       term.get_wch
-      :loco_menu
+      :main_menu
     end
   end
 end

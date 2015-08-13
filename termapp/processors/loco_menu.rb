@@ -1,38 +1,38 @@
 module TermApp
-  # Main processor of the Application. User can navigate menus and select a
-  # menu. Processed after WelcomeMenu.
-  class LocoMenu < Processor
-    # Item of LocoMenu. Contains a regex for shortcut, title and a menu symbol
-    # of the class inheriting Processor.
-    class Item
-      # Returns the Regexp shortcut for the menu.
-      attr_reader :shortcut_regex
+  # Item of LocoMenu. Contains a regex for shortcut, title and a menu symbol
+  # of the class inheriting Processor.
+  class Item
+    # Returns the Regexp shortcut for the menu.
+    attr_reader :shortcut_regex
 
-      # Returns the String title of the menu.
-      attr_reader :title
+    # Returns the String title of the menu.
+    attr_reader :title
 
-      # Returns the Symbol of the class inheriting Processor.
-      attr_reader :menu
+    # Returns the Symbol of the class inheriting Processor.
+    attr_reader :menu
 
-      # Initialize a Item of LocoMenu.
-      #
-      # name      - A String indicates which menu it is.
-      # bind_menu - The Symbol of the class inheriting Processor of which the
-      #             process method to be called when selected
-      #             (default: "#{name}Menu".camelize.underscore.to_sym).
-      #
-      # Examples
-      #
-      #   Item.new('Post')
-      #
-      #   Item.new('New', :read_new_menu)
-      def initialize(name, bind_menu = "#{name}Menu".camelize.underscore.to_sym)
-        @shortcut_regex = Regexp.new("[#{name[0].upcase}#{name[0].downcase}]")
-        @title = name.camelize.sub(/^(.)/, '(\\1)')
-        @menu = bind_menu
-      end
+    # Initialize a Item of LocoMenu.
+    #
+    # name      - A String indicates which menu it is.
+    # bind_menu - The Symbol of the class inheriting Processor of which the
+    #             process method to be called when selected
+    #             (default: "#{name}Menu".camelize.underscore.to_sym).
+    #
+    # Examples
+    #
+    #   Item.new('Post')
+    #
+    #   Item.new('New', :read_new_menu)
+    def initialize(name, bind_menu = "#{name}Menu".camelize.underscore.to_sym)
+      @shortcut_regex = Regexp.new("[#{name[0].upcase}#{name[0].downcase}]")
+      @title = name.camelize.sub(/^(.)/, '(\\1)')
+      @menu = bind_menu
     end
+  end
 
+  # Generalized menu-helper class. Others can inherit this class
+  # to implement menu-like processor.
+  class LocoMenu < Processor
     # Initialize a LocoMenu. Initialize cur_menu and past_menu.
     #
     # args - Zero or more values to pass to initialize of super class as
@@ -40,21 +40,11 @@ module TermApp
     #
     # Examples
     #
-    #   LocoMenu.new(app)
     def initialize(*args)
       super
       @cur_menu = 0
       @past_menu = nil
-      @items = [Item.new('New', :read_new_menu),
-                Item.new('Boards', :print_board_menu),
-                Item.new('Select', :select_board_menu),
-                Item.new('Read', :read_board_menu)]
-      @items.concat(
-        %w(Post Talk Mail Diary Welcome Xyz Goodbye Help)
-          .map { |name| Item.new(name) })
-      # @items.concat(%w(Extra Visit InfoBBS).map { |name| Item.new(name) }))
-      @items << Item.new('Admin') if term.current_user.admin?
-      @items.freeze
+      @items = []
     end
 
     # Main routine of LocoMenu. Show menus. User can navigate menus and select a

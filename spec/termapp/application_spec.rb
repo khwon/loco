@@ -63,7 +63,7 @@ RSpec.describe TermApp::Application, type: :termapp do
         expect(cached_processors).to only_have_processors(%i(
           login_menu
           welcome_menu
-          loco_menu
+          main_menu
           goodbye_menu
         ))
       end

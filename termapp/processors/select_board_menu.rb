@@ -53,7 +53,7 @@ module TermApp
     #   # => :beep
     #
     #   process_key(27)
-    #   # => [:break, :loco_menu]
+    #   # => [:break, :main_menu]
     #
     # Returns nil or a Symbol which is one of :break or :beep with additional
     #   arguments.
@@ -64,13 +64,13 @@ module TermApp
         @selected << @cur_boards.first
         @str = @selected.last.path_name
       when :esc
-        return :break, :loco_menu
+        return :break, :main_menu
       when :enter
         return :beep unless selected_readable_board?
         # TODO: For now, only allow selecting non-dir boards.
         term.current_board = @cur_boards.first
         # TODO: For now, return to loco menu.
-        return :break, :loco_menu, :read_board_menu # focus read menu
+        return :break, :main_menu, :read_board_menu # focus read menu
       when :backspace
         if @selected.size > 0 && @str == @selected.last.path_name
           @past_boards = @cur_boards

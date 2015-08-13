@@ -64,7 +64,7 @@ module TermApp
             when :quit
               print_stop
               term.echo
-              return :loco_menu
+              return :main_menu
             end
             num += 1
           when :break then break args
@@ -77,13 +77,13 @@ module TermApp
       @time_spent = Time.now.to_f - started_time if @time_spent
       print_end
       term.echo
-      :loco_menu
+      :main_menu
     end
 
     def process_key(key)
       case KeyHelper.key_symbol(key)
       when :q
-        return :quit, :loco_menu
+        return :quit, :main_menu
       when :s
         return :break
       when :z

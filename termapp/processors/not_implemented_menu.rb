@@ -21,7 +21,7 @@ module TermApp
       term.mvaddstr(5, 5, "#{@name}: Not supported yet")
       term.refresh
       term.get_wch
-      :loco_menu
+      :main_menu
     end
   end
 end
