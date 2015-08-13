@@ -11,4 +11,22 @@ module TermApp
       @items.freeze
     end
   end
+
+  class MailSendMenu < Processor
+    def process
+      :mail_menu
+    end
+  end
+
+  class MailReadMenu < Processor
+    def process
+      :mail_menu
+    end
+  end
+
+  class MailOutboxMenu < Processor
+    def process
+      :mail_menu
+    end
+  end
 end
