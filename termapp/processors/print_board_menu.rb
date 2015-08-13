@@ -1,5 +1,5 @@
 module TermApp
-  # Corresponding Processor of LocoMenu::Item.new('Boards', :print_board_menu).
+  # Corresponding Processor of MenuItem.new('Boards', :print_board_menu).
   # Print the child Board list of current Board.
   class PrintBoardMenu < Processor
     def process

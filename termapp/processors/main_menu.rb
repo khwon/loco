@@ -13,15 +13,15 @@ module TermApp
     #   MainMenu.new(app)
     def initialize(*args)
       super
-      @items.concat [Item.new('New', :read_new_menu),
-                     Item.new('Boards', :print_board_menu),
-                     Item.new('Select', :select_board_menu),
-                     Item.new('Read', :read_board_menu)]
+      @items.concat [MenuItem.new('New', :read_new_menu),
+                     MenuItem.new('Boards', :print_board_menu),
+                     MenuItem.new('Select', :select_board_menu),
+                     MenuItem.new('Read', :read_board_menu)]
       @items.concat(
         %w(Post Talk Mail Diary Welcome Xyz Goodbye Help)
-          .map { |name| Item.new(name) })
-      # @items.concat(%w(Extra Visit InfoBBS).map { |name| Item.new(name) }))
-      @items << Item.new('Admin') if term.current_user.admin?
+          .map { |name| MenuItem.new(name) })
+      # @items.concat(%w(Extra Visit InfoBBS).map { |name| MenuItem.new(name) }))
+      @items << MenuItem.new('Admin') if term.current_user.admin?
       @items.freeze
     end
   end

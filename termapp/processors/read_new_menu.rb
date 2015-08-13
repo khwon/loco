@@ -1,5 +1,5 @@
 module TermApp
-  # Corresponding Processor of LocoMenu::Item.new('New', :read_new_menu).
+  # Corresponding Processor of MenuItem.new('New', :read_new_menu).
   class ReadNewMenu < Processor
     def process
       term.noecho

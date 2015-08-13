@@ -1,5 +1,5 @@
 module TermApp
-  # Corresponding Processor of LocoMenu::Item.new('Goodbye'). Terminate the
+  # Corresponding Processor of MenuItem.new('Goodbye'). Terminate the
   # Application after processing.
   class GoodbyeMenu < Processor
     def process

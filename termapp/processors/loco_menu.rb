@@ -1,7 +1,7 @@
 module TermApp
   # Item of LocoMenu. Contains a regex for shortcut, title and a menu symbol
   # of the class inheriting Processor.
-  class Item
+  class MenuItem
     # Returns the Regexp shortcut for the menu.
     attr_reader :shortcut_regex
 
@@ -20,9 +20,9 @@ module TermApp
     #
     # Examples
     #
-    #   Item.new('Post')
+    #   MenuItem.new('Post')
     #
-    #   Item.new('New', :read_new_menu)
+    #   MenuItem.new('New', :read_new_menu)
     def initialize(name, bind_menu = "#{name}Menu".camelize.underscore.to_sym)
       @shortcut_regex = Regexp.new("[#{name[0].upcase}#{name[0].downcase}]")
       @title = name.camelize.sub(/^(.)/, '(\\1)')
@@ -125,7 +125,7 @@ module TermApp
     #
     # item - The Item instance to print.
     #
-    # Returns the title of the Item.
+    # Returns the title of the MenuItem.
     def item_title(item)
       item.title
     end

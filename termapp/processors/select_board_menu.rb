@@ -1,5 +1,5 @@
 module TermApp
-  # Corresponding Processor of LocoMenu::Item.new('Select', :select_board_menu).
+  # Corresponding Processor of MenuItem.new('Select', :select_board_menu).
   # User can navigate Boards and select a Board.
   class SelectBoardMenu < Processor
     def process

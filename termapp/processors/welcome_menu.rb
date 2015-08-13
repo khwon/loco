@@ -1,5 +1,5 @@
 module TermApp
-  # Corresponding Processor of LocoMenu::Item.new('Welcome'). Processed when
+  # Corresponding Processor of MenuItem.new('Welcome'). Processed when
   # user logged in. Print welcome message to screen.
   class WelcomeMenu < Processor
     def process

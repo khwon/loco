@@ -1,5 +1,5 @@
 module TermApp
-  # Corresponding Processor of LocoMenu::Item.new('Read', :read_board_menu).
+  # Corresponding Processor of MenuItem.new('Read', :read_board_menu).
   # Print the Post list of current Board.
   class ReadBoardMenu < Processor
     def process
