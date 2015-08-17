@@ -12,18 +12,21 @@ module TermApp
     end
   end
 
+  # Corresponding Processor of MenuItem.new('Send', :mail_send_menu).
   class MailSendMenu < Processor
     def process
       :mail_menu
     end
   end
 
+  # Corresponding Processor of MenuItem.new('Read', :mail_read_menu).
   class MailReadMenu < Processor
     def process
       :mail_menu
     end
   end
 
+  # Corresponding Processor of MenuItem.new('outbox', :mail_outbox_menu).
   class MailOutboxMenu < Processor
     def process
       :mail_menu
